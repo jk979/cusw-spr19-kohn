@@ -1,7 +1,7 @@
 float[] x = new float[1];
 float[] y = new float[1];
 float segLength = 50; //how long to make agent segment
-float num_garbages = 10; //number of garbage balls
+float num_inert = 10; //number of inert garbage particles
 float num_background_changes = 0; //number of times background changed
 float m = 0;
 
@@ -25,7 +25,7 @@ void setup() {
 
   //make an add-able array of garbages
   garbages = new ArrayList<GarbageInert>();
-  for (int i=0; i<num_garbages; i++) {
+  for (int i=0; i<num_inert; i++) {
     GarbageInert a = new GarbageInert(200, 200, 20);
     a.reset();
     garbages.add(a);
