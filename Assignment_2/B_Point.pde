@@ -24,10 +24,10 @@ class POI{
    
    void draw(){
      PVector screenLocation = map.getScreenLocation(coord); //converting screen into coordinates
-     //fill(poi_fill); //fill it if it's a restaurant
+     fill(poi_fill); //fill pois
      if(Restaurant) fill(restaurant);
      noStroke(); //remove point border
-     ellipse(screenLocation.x, screenLocation.y, 6, 6);
+     ellipse(screenLocation.x, screenLocation.y, 6, 6); //fill restaurant
 
    }
    

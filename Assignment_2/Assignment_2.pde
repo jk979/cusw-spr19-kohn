@@ -1,5 +1,11 @@
 //make blank map
 
+//goal: map with capabilities: 
+//restaurant: press R to show restaurants
+//free food: press F to show free food on campus
+//seasons of free food: press 1 for spring set, 2 for summer set, 3 for fall set, 4 for winter set
+//buildings: press B to show building layer
+
 MercatorMap map;
 PImage background;
 
