@@ -1,6 +1,7 @@
 JSONObject mit_central;
 JSONArray features;
 JSONObject mit_all;
+Table attributes;
 
 void loadData(){
   background = loadImage("data/mit_central.png");
@@ -9,9 +10,38 @@ void loadData(){
   mit_central = loadJSONObject("data/mit_central_osm.json");//get mit central area
   features = mit_central.getJSONArray("features");
   println("There are: ",features.size(), " features");
+  
+  //load CSV also
+  attributes = loadTable("data/freefood_metadata_2_26_19_geocoded.csv","header");
+  //nodes = loadTable("data/)
+  
 }
 
 void parseData(){
+  
+  //parse CSV
+  int previd = 0; 
+  ArrayList<PVector> coords = newArrayList<PVector>();
+  for(int i = 0; i<attributes.getRowCount(); i++){
+    int foodid = int(attributes.getString(i,0));
+      if(shapeid != previd){
+        if(coords.size() > 0){
+          POI poi = new new POI(coords);
+          pois.add(poi);
+        }
+        coords = new ArrayList<PVector>();
+        //reset variable
+        previd = shapeid;
+      }
+      if(shapeid == previd){
+        float lat = float(attributes.getString(i,13));
+        float lon = float(attributes.getString(i,12));
+        coords.add(new PVector(lat, lon));
+      }
+  }
+  println(pois.size());
+  
+  //parse JSON
   for(int i = 0; i<features.size(); i++){
     String type = features.getJSONObject(i).getJSONObject("geometry").getString("type");
     JSONObject geometry = features.getJSONObject(i).getJSONObject("geometry");
