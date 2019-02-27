@@ -20,7 +20,7 @@ void setup(){
 
   //small mit map
   //map = new MercatorMap(width, height, 42.3636, 42.3557, -71.1034, -71.0869, 0);
-  map = new MercatorMap(width, height, 42.3561, 42.3655, -71.0973, -71.0813,0);
+  map = new MercatorMap(width, height, 42.3655, 42.3561, -71.0973, -71.0813,0);
   pois = new ArrayList<POI>();
   polygons = new ArrayList<Polygon>();
   foods = new ArrayList<FoodPOI>();
@@ -33,7 +33,7 @@ void setup(){
 
 void draw(){
   //draw background image and make it size of screen
-  image(background,0,0);
+  //image(background,0,0);
   fill(0,120);
   rect(0,0,width,height);
   
@@ -42,13 +42,19 @@ void draw(){
   }
   drawInfo();
   
-for(int i = 0; i<polygons.size(); i++){
-      polygons.get(i).draw();
-    }
-    
-for(int i = 0; i<pois.size(); i++){
+  for(int i = 0; i<polygons.size(); i++){
+        polygons.get(i).draw();
+      }
+   
+  for(int i = 0; i<pois.size(); i++){
     pois.get(i).draw();
   }
+    
+  for(int i = 0; i<foods.size(); i++){
+    foods.get(i).draw();
+  }
+  
+
 
 }
 void keyPressed(){

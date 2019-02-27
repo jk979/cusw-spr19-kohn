@@ -29,7 +29,7 @@ class FoodPOI{
 
   //Drawing point
   void draw(){
-    PVector screenLocation = map.getScreenLocation(foodcoord); //converting screen into coordinates
+     PVector screenLocation = map.getScreenLocation(foodcoord); //converting screen into coordinates
      fill(food_fill); //fill pois
      noStroke(); //remove point border
      ellipse(screenLocation.x, screenLocation.y, 8, 8); //fill food

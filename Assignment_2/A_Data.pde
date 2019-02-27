@@ -22,11 +22,14 @@ void parseData(){
   //parse CSV
   int previd = 0; 
   ArrayList<PVector> foodcoords = new ArrayList<PVector>();
-  float lat_food = float(attributes.getString(1,13))*-1;
-  float lon_food = float(attributes.getString(1,12));
-  //println(lat_food,lon_food);
+  float lat_food, lon_food;
       
   for(int i = 0; i<attributes.getRowCount(); i++){
+    
+    lat_food = float(attributes.getString(i,12));
+    lon_food = float(attributes.getString(i,13))*-1;
+    //println(lat_food,lon_food);
+    
     int foodid = int(attributes.getString(i,0));
       if(foodid != previd){
         if(foodcoords.size() > 0){ //create constructor for foodcords
@@ -39,11 +42,10 @@ void parseData(){
         previd = foodid;
       }
       if(foodid == previd){
-        float lat_foodmatch = float(attributes.getString(i,13))*-1; //west
-        float lon_foodmatch = float(attributes.getString(i,12));
+        float lat_foodmatch = float(attributes.getString(i,12)); //west
+        float lon_foodmatch = float(attributes.getString(i,13))*-1;
         foodcoords.add(new PVector(lat_foodmatch, lon_foodmatch));
       }
-      println(foodcoords);
   }
   
   //parse JSON
@@ -56,6 +58,11 @@ void parseData(){
     String amenity = ""; //check for gaps
     if(dataAmenity!=null) amenity = dataAmenity;
     else amenity = ""; //clean amenity field
+    
+    String dataBuilding = properties.getJSONObject("tags").getString("building"); //get building tag
+    String building = ""; //check for gaps
+    if(dataBuilding!=null) building = dataBuilding;
+    else building = ""; //clean amenity field
     
     if(type.equals("Point")){
       //create new point
@@ -85,8 +92,10 @@ void parseData(){
       //create Polygon with coordinate PVectors
       Polygon poly = new Polygon(coords);
       //poly.type = amenity;
-      if(amenity.equals("university")) {
+      
+      if(building.equals("university")) {
         poly.University = true;
+        poly.makeShape();
       }
       polygons.add(poly);
     }

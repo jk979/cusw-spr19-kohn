@@ -19,7 +19,13 @@ class Polygon{
   void makeShape(){
     p = createShape();
     p.beginShape();
-    p.fill(polygon_fill);
+    
+    if(University) {
+      p.fill(mit, 100);
+    } else {
+      p.fill(polygon_fill, 100);
+    }
+    
     p.strokeWeight(.5);
     p.stroke(255);
     for(int i = 0; i < coordinates.size(); i++){
@@ -30,7 +36,6 @@ class Polygon{
   }
   
   void draw(){
-    if(University) fill(mit);
     shape(p, 0, 0); //not shifting shape from coordinate system
     
   }
