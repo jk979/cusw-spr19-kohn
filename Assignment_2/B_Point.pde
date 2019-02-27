@@ -28,7 +28,6 @@ class POI{
      if(Restaurant) fill(restaurant);
      noStroke(); //remove point border
      ellipse(screenLocation.x, screenLocation.y, 6, 6); //fill restaurant
-
    }
    
 }

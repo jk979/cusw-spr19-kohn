@@ -21,25 +21,30 @@ void parseData(){
   
   //parse CSV
   int previd = 0; 
-  ArrayList<PVector> coords = newArrayList<PVector>();
+  ArrayList<PVector> foodcoords = new ArrayList<PVector>();
+  float lat_food = float(attributes.getString(1,13))*-1;
+  float lon_food = float(attributes.getString(1,12));
+  //println(lat_food,lon_food);
+      
   for(int i = 0; i<attributes.getRowCount(); i++){
     int foodid = int(attributes.getString(i,0));
-      if(shapeid != previd){
-        if(coords.size() > 0){
-          POI poi = new new POI(coords);
-          pois.add(poi);
+      if(foodid != previd){
+        if(foodcoords.size() > 0){ //create constructor for foodcords
+          FoodPOI food = new FoodPOI(lat_food,lon_food);
+          foods.add(food);
         }
-        coords = new ArrayList<PVector>();
+        //clear coords
+        foodcoords = new ArrayList<PVector>();
         //reset variable
-        previd = shapeid;
+        previd = foodid;
       }
-      if(shapeid == previd){
-        float lat = float(attributes.getString(i,13));
-        float lon = float(attributes.getString(i,12));
-        coords.add(new PVector(lat, lon));
+      if(foodid == previd){
+        float lat_foodmatch = float(attributes.getString(i,13))*-1; //west
+        float lon_foodmatch = float(attributes.getString(i,12));
+        foodcoords.add(new PVector(lat_foodmatch, lon_foodmatch));
       }
+      println(foodcoords);
   }
-  println(pois.size());
   
   //parse JSON
   for(int i = 0; i<features.size(); i++){
