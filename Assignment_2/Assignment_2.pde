@@ -67,7 +67,7 @@ void draw(){
   //image(background,0,0);
   fill(0,180);
   rect(0,0,width,height);
-  pierreSizeSide = 50;
+  //pierreSizeSide = 50;
   
   //draw roads
   if(button_roads){
@@ -106,7 +106,7 @@ void draw(){
   k.move();
   k.display();
   garbage1.display();
-  image(pierreSize,200,200,pierreSizeSide,pierreSizeSide);
+  image(pierreSize,500,540,pierreSizeSide,pierreSizeSide);
 
   
   fill(255,255,255);
@@ -144,9 +144,10 @@ void draw(){
   //distance and collision measurement
    euclidean = parseInt(dist(garbage1.xpos, garbage1.ypos, k.xpos.get(0), k.ypos.get(0)));
     if (euclidean < (k.sidelen + garbage1.radius) ) {
+      pierreSizeSide = pierreSizeSide+10;
       garbage1.reset();
       k.addLink();
-      pierreSizeSide = pierreSizeSide+10;
+      
 
       //b.update();
     }
