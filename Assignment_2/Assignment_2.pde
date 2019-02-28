@@ -12,6 +12,7 @@ int euclidean;
 float segLength = 50; //how long to make agent segment
 PImage pierreSize;
 int pierreSizeSide;
+boolean pierreFull;
 
 
 //initialize timer
@@ -41,6 +42,7 @@ void setup(){
   pickupCount = 0;
   frameRate = 40;
   pierreSize = loadImage("data/pierre.png");
+  pierreFull = false;
   
   //k = new Agent(30);
   //garbage1 = new Garbage();
@@ -142,8 +144,6 @@ void draw(){
   }
   text("00:"+time, 600, 590);
   
-  
-  
   //distance and collision measurement
    euclidean = parseInt(dist(garbage1.xpos, garbage1.ypos, k.xpos.get(0), k.ypos.get(0)));
     if (euclidean < (k.sidelen + garbage1.radius) ) {
@@ -151,9 +151,16 @@ void draw(){
       garbage1.reset();
       k.addLink();
       
-
       //b.update();
     }
+    
+    if(pierreSizeSide >=40){
+      pierreFull = true;
+      fill(255,0,0);
+      textSize(80);
+      text("PIERRE IS FULL!",200,325);
+    }
+    
   //}
   
 }
