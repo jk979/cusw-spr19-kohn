@@ -7,6 +7,12 @@ class Polygon{
   //is university?
   boolean University;
   
+  //is Water?
+  boolean Water;
+  
+  //is Other building?
+  boolean Other;
+  
   Polygon(){
     coordinates = new ArrayList<PVector>();
   }
@@ -22,9 +28,14 @@ class Polygon{
     
     if(University) {
       p.fill(mit,-50);
-    } else {
+    } else if (Water){
+      p.fill(water_color);
+    }
+      else if(Other){
+        p.fill(others_color);
+      } else {
       //if other building, color gray
-      p.fill(polygon_fill, 20);
+      p.fill(polygon_fill,0);
       
       //if water, color light blue
       

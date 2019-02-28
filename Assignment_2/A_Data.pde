@@ -54,15 +54,29 @@ void parseData(){
     JSONObject geometry = features.getJSONObject(i).getJSONObject("geometry");
     JSONObject properties = features.getJSONObject(i).getJSONObject("properties");
   
+    //amenity polygon
     String dataAmenity = properties.getJSONObject("tags").getString("amenity"); //get amenity tag
     String amenity = ""; //check for gaps
     if(dataAmenity!=null) amenity = dataAmenity;
     else amenity = ""; //clean amenity field
     
+    //building polygon
     String dataBuilding = properties.getJSONObject("tags").getString("building"); //get building tag
     String building = ""; //check for gaps
     if(dataBuilding!=null) building = dataBuilding;
     else building = ""; //clean amenity field
+    
+    //water polygon
+    String dataWater = properties.getJSONObject("tags").getString("water"); //get water tag
+    String water = ""; //check for gaps
+    if(dataWater!=null) water = dataWater;
+    else water = ""; //clean amenity field
+    
+    //water polygon
+    String dataLanduse = properties.getJSONObject("tags").getString("landuse"); //get water tag
+    String landuse = ""; //check for gaps
+    if(dataLanduse!=null) landuse = dataLanduse;
+    else landuse = ""; //clean amenity field
     
     if(type.equals("Point")){
       //create new point
@@ -89,15 +103,29 @@ void parseData(){
         PVector coordinate = new PVector(lat, lon);
         coords.add(coordinate);
       }
+      
       //create Polygon with coordinate PVectors
       Polygon poly = new Polygon(coords);
-      //poly.type = amenity;
       
-      if(building.equals("university")) {
+      if(building.equals("university")==false && building.equals("yes") || building.equals("warehouse")){
+        poly.Other = true;
+        poly.makeShape();
+      }
+      
+      else if(building.equals("university") || building.equals("dormitory") || building.equals("house")) {
         poly.University = true;
         poly.makeShape();
       }
+      
+      
+      else if(water.equals("river")){
+        poly.Water = true;
+        poly.makeShape();
+      }
+      
+      
       polygons.add(poly);
+      
     }
     
      //make Lines if it's a LineString

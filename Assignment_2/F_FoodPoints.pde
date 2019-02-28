@@ -13,19 +13,6 @@ class FoodPOI{
      lon_food = _lon;
      foodcoord = new PVector(lat_food, lon_food);
    }
-  
-  //Making the shape to draw
-  /*void makeShape(){
-    f = createShape();
-    f.beginShape();
-    f.fill(fill);
-    f.stroke(0);
-    for(int i = 0; i<coordinates.size(); i++){
-        PVector screenLocation = map.getScreenLocation(coordinates.get(i));
-        f.vertex(screenLocation.x, screenLocation.y);
-    }
-    f.endShape();
-  }*/
 
   //Drawing point
   void draw(){
