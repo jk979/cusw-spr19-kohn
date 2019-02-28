@@ -12,19 +12,19 @@ MercatorMap map;
 PImage background;
 
 void setup(){
-  size(850,700);
+  size(1000,650);
   
   //Initialize data structures
   //big mit map
   //map = new MercatorMap(width, height, 42.3557, 42.3636, -71.0869,-71.1034,0);
 
   //small mit map
-  //map = new MercatorMap(width, height, 42.3636, 42.3557, -71.1034, -71.0869, 0);
-  map = new MercatorMap(width, height, 42.3655, 42.3561, -71.0973, -71.0813,0);
+  map = new MercatorMap(width, height, 42.3644,42.3550,-71.0990,-71.0795,0);
+  //map = new MercatorMap(width, height, 42.3655, 42.3561, -71.0973, -71.0813,0);
   pois = new ArrayList<POI>();
   polygons = new ArrayList<Polygon>();
   foods = new ArrayList<FoodPOI>();
-  //ways = new ArrayList<Way>();
+  ways = new ArrayList<Way>();
   
   loadData();
   parseData();
@@ -42,9 +42,16 @@ void draw(){
   }
   drawInfo();
   
+  //draw each of the lines
+  for(int i = 0; i<ways.size(); i++){
+    ways.get(i).draw();
+  } 
+  
   for(int i = 0; i<polygons.size(); i++){
         polygons.get(i).draw();
       }
+   
+  
    
   for(int i = 0; i<pois.size(); i++){
     pois.get(i).draw();
@@ -53,6 +60,8 @@ void draw(){
   for(int i = 0; i<foods.size(); i++){
     foods.get(i).draw();
   }
+  
+  
   
 
 

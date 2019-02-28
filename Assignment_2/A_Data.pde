@@ -99,6 +99,24 @@ void parseData(){
       }
       polygons.add(poly);
     }
+    
+     //make Lines if it's a LineString
+      if(type.equals("LineString")){
+        //make a new Line
+        ArrayList<PVector> coords = new ArrayList<PVector>();
+        //get coordinates and iterate through them
+        JSONArray coordinates = geometry.getJSONArray("coordinates");
+        for(int j = 0; j<coordinates.size(); j++){
+          float lat = coordinates.getJSONArray(j).getFloat(1);
+          float lon = coordinates.getJSONArray(j).getFloat(0);
+          //make PVector and add it
+          PVector coordinate = new PVector(lat,lon);
+          coords.add(coordinate);
+        }
+        //create the Way with the coordinate PVectors
+        Way way = new Way(coords);
+        ways.add(way);
+      }
       
 }
 }

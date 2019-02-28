@@ -32,7 +32,7 @@ class FoodPOI{
      PVector screenLocation = map.getScreenLocation(foodcoord); //converting screen into coordinates
      fill(food_fill); //fill pois
      noStroke(); //remove point border
-     ellipse(screenLocation.x, screenLocation.y, 8, 8); //fill food
+     ellipse(screenLocation.x, screenLocation.y, 10, 10); //fill food
     //shape(f, 0, 0);
   }
 }
