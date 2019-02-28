@@ -199,7 +199,7 @@ void drawCount() {
   textSize(14);
   text("Toggle Layers:\nf: free food\nr: restaurants\ns: streets", 830, 580); //text placement
   fill(250,250,100);
-  text("Help Pierre consume the \nfree food by using the arrow \nkeys to race to their locations!",600,480);
+  text("Help Pierre consume the \nfree food by using the arrow \nkeys to race to food locations!",600,480);
   
   //score
   stroke(180,180,180);
