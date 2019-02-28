@@ -201,6 +201,10 @@ void drawCount() {
   fill(250,250,100);
   text("Help Pierre consume the \nfree food by using the arrow \nkeys to race to food locations!",600,480);
   
+  fill(255,255,255);
+  textSize(10);
+  text("Pierre's Current \nStomach Size:",500,510);
+  
   //score
   stroke(180,180,180);
   fill(255,255,255);
