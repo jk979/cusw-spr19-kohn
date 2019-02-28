@@ -2,7 +2,7 @@ color poi_fill = color(255, 99, 71); //any point color
 color restaurant = color(255, 255, 0); //if poi is restaurant
 color mit = color(32, 178, 170); 
 color polygon_fill = color(32, 255, 170);
-color road_color = color(105,105,105);
+color road_color = color(220,20,60);
 color food_fill = color(0,250,0); //food color
 color mit_bldgs = color(32, 178, 170);
 color water_color = color(16,12,68);
@@ -11,21 +11,23 @@ color others_color = color(100,100,100);
 void drawInfo(){ 
   //Rectangle
   fill(0);
-  rect(800, 500, 200,180);
-  textSize(16);
+  rect(820, 400, 200, 300);
+  textSize(14);
   //POI
-  fill(poi_fill);
-  text("poi", 810, 520);
+  //fill(poi_fill);
+  //text("poi", 810, 520);
   //Free Food
   fill(food_fill);
-  text("free food", 810, 540);
+  text("Free Food", 830, 460);
   //Restaurant
   fill(restaurant);
-  text("Restaurants", 810, 560);
+  text("Restaurants", 830, 480);
   fill(road_color);
-  text("Streets", 810, 580);
-  fill(polygon_fill);
-  text("Buildings", 810, 600);
+  text("Streets", 830, 500);
+  //fill(polygon_fill);
+  //text("Buildings", 810, 600);
   fill(mit);
-  text("MIT Campus", 810, 620);
+  text("MIT Campus", 830, 520);
+  fill(others_color);
+  text("Other Buildings", 830,540);
 }

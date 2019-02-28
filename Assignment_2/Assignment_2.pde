@@ -6,7 +6,23 @@
 //seasons of free food: press 1 for spring set, 2 for summer set, 3 for fall set, 4 for winter set
 //buildings: press B to show building layer
 
-int key_press_f = 0;
+//game begin
+float[] x = new float[1];
+float[] y = new float[1];
+float segLength = 50; //how long to make agent segment
+
+//initialize timer
+//PFont font;
+String time = "00:10";
+int t;
+int interval = 10;
+
+Garbage garbage1;
+Agent k;
+int pickupCount;
+
+//ArrayList<GarbageInert> garbages;
+ArrayList<Agent> kabadiwala;
 
 MercatorMap map;
 PImage background;
@@ -19,6 +35,11 @@ boolean button_roads = false;
 
 void setup(){
   size(1000,650);
+  pickupCount = 0;
+  frameRate = 40;
+  
+  k = new Agent(30);
+  garbage1 = new Garbage();
   
   //Initialize data structures
   //big mit map
@@ -33,6 +54,7 @@ void setup(){
   
   loadData();
   parseData();
+  
   
 }
 
@@ -68,10 +90,55 @@ void draw(){
       }
   }
   
+  //pick random value from arraylist FoodPOI
+  
+   
   //draw legend
   drawInfo();
   //draw instructions box
   drawCount();
+  
+  k.move();
+  k.display();
+  garbage1.display();
+  
+  fill(255,255,255);
+  textSize(16);
+  text("Time until Food Moved:",600,550);
+  
+  t = interval-int(millis()/1000);
+  time = nf(t , 2);
+  if(t >=4){
+    fill(255,255,255);
+    textSize(36);
+  }
+  else if(t==3){
+    fill(255,255,0);
+    textSize(36);
+  }
+  else if(t==2){
+    fill(255,140,0);
+    textSize(36);
+  }
+  else if(t==1){
+    fill(255,0,0);
+    textSize(36);
+  }
+  if(t == 0){
+    fill(255,20,147);
+    textSize(36);
+    println("Free Food Moved!");
+    garbage1.reset();
+    interval+=10;
+  }
+  text("00:"+time, 600, 590);
+
+    if ( dist(garbage1.xpos, garbage1.ypos, k.xpos.get(0), k.ypos.get(0)) < (k.sidelen + garbage1.radius) ) {
+      garbage1.reset();
+      k.addLink();
+      //b.update();
+    }
+  //}
   
 }
 void keyPressed(){
@@ -84,49 +151,58 @@ void keyPressed(){
   if(key=='s'){
     button_roads = !button_roads;
   }
+  if (key == CODED) {
+    if (keyCode == LEFT) {
+      k.dir = "left";
+    }
+    if (keyCode == RIGHT) {
+      k.dir = "right";
+    }
+    if (keyCode == UP) {
+      k.dir = "up";
+    }
+    if (keyCode == DOWN) {
+      k.dir = "down";
+    }
+  }
 }
   
 void drawCount() {
   //instructions 1
-  fill(250, 250, 100); //title color
-  textSize(16); //title text size
-  text("Free Food Chase",600,420);
+  fill(255, 255, 255); //title color
+  textSize(24); //title text size
+  text("Free Food Chase \n      @ MIT",600,420);
   //instructions
+  fill(250,250,250);
+  textSize(18);
+  text("Legend",830,420);
+  fill(255,255,255);
+  textSize(14);
+  text("----------------",830,560);
   fill(250,250,50);
   textSize(14);
-  text("Toggle Layers:\nf: free food\nr: restaurants\ns: streets", 600, 520); //text placement
+  text("Toggle Layers:\nf: free food\nr: restaurants\ns: streets", 830, 580); //text placement
   fill(250,250,100);
-  text("Use the arrow keys to race to the food\nas it appears at each establishment!",600,450);
+  text("Help Pierre consume the \nfree food by using the arrow \nkeys to race to their locations!",600,480);
   
-  /*
   //score
   stroke(180,180,180);
-  fill(255,0,255);
-  text("Free Food Collected: " + k.len, width/100, 80);
-  */
-}
-
-/*
-  //score
-  stroke(180, 180, 180);
-  fill(255, 0, 255);
-  //rect(50, 50, 50, 50);
-  fill(250, 20, 170);
-  textSize(11);
-  text("Garbage Particles Collected: " + k.len, width/100, 80);
+  fill(255,255,255);
+  text("Free Food Collected: " + (parseInt(k.len)-1), 600,610);
   
   //Framerate
-  fill(250, 20, 200);
+  fill(128,128,128);
   textSize(11);
-  text("Framerate: " + frameRate, width/100, 100);
+  text("Framerate: " + frameRate, 600, 625);
   
   //author
-  fill(250, 0, 100);
+  fill(128,128,128);
   textSize(10);
-  text("By Jacob Kohn", width/1000, 140);
+  text("By Jacob Kohn", 600, 640);
+}
+
+
   
-  //Background Changes
-  fill(250, 20, 200);
-  textSize(11);
-  text("Press any alphabetic key to flash the background! #keypresses: " + num_background_changes, width/100, 120);
-  */
+  
+  
+  

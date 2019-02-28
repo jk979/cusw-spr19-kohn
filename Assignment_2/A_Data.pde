@@ -28,7 +28,6 @@ void parseData(){
     
     lat_food = float(attributes.getString(i,12));
     lon_food = float(attributes.getString(i,13))*-1;
-    //println(lat_food,lon_food);
     
     int foodid = int(attributes.getString(i,0));
       if(foodid != previd){

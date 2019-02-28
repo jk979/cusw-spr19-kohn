@@ -22,4 +22,5 @@ class FoodPOI{
      ellipse(screenLocation.x, screenLocation.y, 10, 10); //fill food
     //shape(f, 0, 0);
   }
+  
 }
