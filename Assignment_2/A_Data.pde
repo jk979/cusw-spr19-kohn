@@ -13,6 +13,8 @@ void loadData(){
   
   //load CSV also
   attributes = loadTable("data/freefood_metadata_2_26_19_geocoded.csv","header");
+   numAttributeRows = attributes.getRowCount();
+  println(attributes.getRowCount());
   //nodes = loadTable("data/)
   
 }
