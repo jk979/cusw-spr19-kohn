@@ -4,12 +4,15 @@
 //restaurant: press R to show restaurants
 //free food: press F to load free food on campus
 //seasons of free food: press 1 for spring set, 2 for summer set, 3 for fall set, 4 for winter set
-//buildings: press B to show building layer
 
 //game begin
 float[] x = new float[1];
 float[] y = new float[1];
+int euclidean;
 float segLength = 50; //how long to make agent segment
+PImage pierreSize;
+int pierreSizeSide;
+
 
 //initialize timer
 //PFont font;
@@ -37,6 +40,7 @@ void setup(){
   size(1000,650);
   pickupCount = 0;
   frameRate = 40;
+  pierreSize = loadImage("data/pierre.png");
   
   k = new Agent(30);
   garbage1 = new Garbage();
@@ -63,6 +67,7 @@ void draw(){
   //image(background,0,0);
   fill(0,180);
   rect(0,0,width,height);
+  pierreSizeSide = 50;
   
   //draw roads
   if(button_roads){
@@ -101,11 +106,12 @@ void draw(){
   k.move();
   k.display();
   garbage1.display();
+  image(pierreSize,200,200,pierreSizeSide,pierreSizeSide);
+
   
   fill(255,255,255);
   textSize(16);
   text("Time until Food Moved:",600,550);
-  
   t = interval-int(millis()/1000);
   time = nf(t , 2);
   if(t >=4){
@@ -132,10 +138,16 @@ void draw(){
     interval+=10;
   }
   text("00:"+time, 600, 590);
-
-    if ( dist(garbage1.xpos, garbage1.ypos, k.xpos.get(0), k.ypos.get(0)) < (k.sidelen + garbage1.radius) ) {
+  
+  
+  
+  //distance and collision measurement
+   euclidean = parseInt(dist(garbage1.xpos, garbage1.ypos, k.xpos.get(0), k.ypos.get(0)));
+    if (euclidean < (k.sidelen + garbage1.radius) ) {
       garbage1.reset();
       k.addLink();
+      pierreSizeSide = pierreSizeSide+10;
+
       //b.update();
     }
   //}
@@ -190,10 +202,11 @@ void drawCount() {
   fill(255,255,255);
   text("Free Food Collected: " + (parseInt(k.len)-1), 600,610);
   
-  //Framerate
+  //Framerate or distance to food
   fill(128,128,128);
   textSize(11);
-  text("Framerate: " + frameRate, 600, 625);
+  text("Distance to food: "+euclidean,600,625);
+  //text("Framerate: " + frameRate, 600, 625);
   
   //author
   fill(128,128,128);

@@ -22,7 +22,6 @@ class Agent {
     ypos.add(random(height));
     pierre = loadImage("data/pierre.png");
 
-
     screenLocation = new PVector(width/2, height/2); //returns an Agent 
     //half width and height of screen
   
