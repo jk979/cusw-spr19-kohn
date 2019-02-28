@@ -11,23 +11,23 @@ color others_color = color(100,100,100);
 void drawInfo(){ 
   //Rectangle
   fill(0);
-  rect(820, 400, 200, 300);
+  rect(820+280, 400+105, 200, 300);
   textSize(14);
   //POI
   //fill(poi_fill);
   //text("poi", 810, 520);
   //Free Food
   fill(food_fill);
-  text("Free Food", 830, 460);
+  text("Free Food", 830+280, 460+105);
   //Restaurant
   fill(restaurant);
-  text("Restaurants", 830, 480);
+  text("Restaurants", 830+280, 480+105);
   fill(road_color);
-  text("Streets", 830, 500);
+  text("Streets", 830+280, 500+105);
   //fill(polygon_fill);
   //text("Buildings", 810, 600);
   fill(mit);
-  text("MIT Campus", 830, 520);
+  text("MIT Campus", 830+280, 520+105);
   fill(others_color);
-  text("Other Buildings", 830,540);
+  text("Other Buildings", 830+280,540+105);
 }

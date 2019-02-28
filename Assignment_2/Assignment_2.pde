@@ -38,7 +38,7 @@ boolean button_roads = false;
 
 
 void setup(){
-  size(1000,650);
+  size(1280,755);
   pickupCount = 0;
   frameRate = 40;
   pierreSize = loadImage("data/pierre.png");
@@ -111,12 +111,29 @@ void draw(){
   k.move();
   k.display();
   garbage1.display();
-  image(pierreSize,500,540,pierreSizeSide,pierreSizeSide);
-
+  fill(255,0,0); 
+  rect(480+280,540+105,100,100);
+  
+  if(((pierreSizeSide*pierreSizeSide)/100) == 16){ 
+        fill(255,140,0); 
+        rect(480+280,540+105,100,100);
+      }
+  if(((pierreSizeSide*pierreSizeSide)/100) == 36){
+    fill(250,250,0);
+    rect(480+280,540+105,100,100);
+  }
+  if(((pierreSizeSide*pierreSizeSide)/100) == 64){
+    fill(0,255,0);
+    rect(480+280,540+105,100,100);
+      }
+      
+      
+  image(pierreSize,480+280,540+105,pierreSizeSide,pierreSizeSide);
+  
   
   fill(255,255,255);
   textSize(16);
-  text("Time until Food Moved:",600,550);
+  text("Time until Food Moved:",600+280,550+105);
   t = interval-int(millis()/1000);
   time = nf(t , 2);
   if(t >=4){
@@ -142,23 +159,24 @@ void draw(){
     garbage1.reset();
     interval+=10;
   }
-  text("00:"+time, 600, 590);
+  text("00:"+time, 600+280, 590+105);
   
   //distance and collision measurement
    euclidean = parseInt(dist(garbage1.xpos, garbage1.ypos, k.xpos.get(0), k.ypos.get(0)));
     if (euclidean < (k.sidelen + garbage1.radius) ) {
-      pierreSizeSide = pierreSizeSide+10;
+      pierreSizeSide = pierreSizeSide+20;
       garbage1.reset();
       k.addLink();
-      
       //b.update();
     }
     
-    if(pierreSizeSide >=40){
+    
+      
+    if(pierreSizeSide >=100){
       pierreFull = true;
-      fill(255,0,0);
+      fill(0,255,0);
       textSize(80);
-      text("PIERRE IS FULL!",200,325);
+      text("PIERRE IS FULL!",200+180,325+105);
     }
     
   //}
@@ -194,39 +212,39 @@ void drawCount() {
   //instructions 1
   fill(255, 255, 255); //title color
   textSize(24); //title text size
-  text("Free Food Chase \n      @ MIT",600,420);
+  text("Free Food Chase \n      @ MIT",600+280,420+105);
   //instructions
   fill(250,250,250);
   textSize(18);
-  text("Legend",830,420);
+  text("Legend",830+280,420+105);
   fill(255,255,255);
   textSize(14);
-  text("----------------",830,560);
+  text("----------------",830+280,560+105);
   fill(250,250,50);
   textSize(14);
-  text("Toggle Layers:\nf: free food\nr: restaurants\ns: streets", 830, 580); //text placement
+  text("Toggle Layers:\nf: free food\nr: restaurants\ns: streets", 830+280, 580+105); //text placement
   fill(250,250,100);
-  text("Help Pierre consume the \nfree food by using the arrow \nkeys to race to food locations!",600,480);
+  text("Help Pierre consume the \nfree food by using the arrow \nkeys to race to food locations!",600+280,480+105);
   
   fill(255,255,255);
   textSize(10);
-  text("Pierre's Current \nStomach Size:",500,510);
+  text("Pierre's Current \nStomach Fullness: "+((pierreSizeSide*pierreSizeSide)/100) + "%",480+280,510+105);
   
   //score
   stroke(180,180,180);
   fill(255,255,255);
-  text("Free Food Collected: " + (parseInt(k.len)-1), 600,610);
+  text("Free Food Collected: " + (parseInt(k.len)-1), 600+280,610+105);
   
   //Framerate or distance to food
-  fill(128,128,128);
+  fill(180,180,180);
   textSize(11);
-  text("Distance to food: "+euclidean,600,625);
+  text("Distance to food: "+euclidean,600+280,625+105);
   //text("Framerate: " + frameRate, 600, 625);
   
   //author
   fill(128,128,128);
   textSize(10);
-  text("By Jacob Kohn", 600, 640);
+  text("By Jacob Kohn", 600+280, 640+105);
 }
 
 

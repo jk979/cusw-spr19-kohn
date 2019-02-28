@@ -14,7 +14,7 @@ class Agent {
     len = 1;
     dir = "up"; //keyboard direction
     //sidelen = 1; //for human-size Pierre
-    sidelen = 5; //for visible Pierre
+    sidelen = 10; //for visible Pierre
     //sidelen = 50; //for HUGE Pierre
     xpos = new ArrayList();
     ypos = new ArrayList();
