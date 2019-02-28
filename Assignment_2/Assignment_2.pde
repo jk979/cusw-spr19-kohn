@@ -20,7 +20,6 @@ void setup(){
 
   //small mit map
   map = new MercatorMap(width, height, 42.3644,42.3550,-71.0990,-71.0795,0);
-  //map = new MercatorMap(width, height, 42.3655, 42.3561, -71.0973, -71.0813,0);
   pois = new ArrayList<POI>();
   polygons = new ArrayList<Polygon>();
   foods = new ArrayList<FoodPOI>();
@@ -34,13 +33,12 @@ void setup(){
 void draw(){
   //draw background image and make it size of screen
   //image(background,0,0);
-  fill(0,120);
+  fill(0,180);
   rect(0,0,width,height);
   
   for(int i=0; i<foods.size();i++){
     foods.get(i).draw();
   }
-  drawInfo();
   
   //draw each of the lines
   for(int i = 0; i<ways.size(); i++){
@@ -51,8 +49,6 @@ void draw(){
         polygons.get(i).draw();
       }
    
-  
-   
   for(int i = 0; i<pois.size(); i++){
     pois.get(i).draw();
   }
@@ -60,6 +56,8 @@ void draw(){
   for(int i = 0; i<foods.size(); i++){
     foods.get(i).draw();
   }
+  
+  drawInfo();
   
   
   

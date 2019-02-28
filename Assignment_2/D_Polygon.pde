@@ -21,9 +21,14 @@ class Polygon{
     p.beginShape();
     
     if(University) {
-      p.fill(mit, 100);
+      p.fill(mit,-50);
     } else {
-      p.fill(polygon_fill, 100);
+      //if other building, color gray
+      p.fill(polygon_fill, 20);
+      
+      //if water, color light blue
+      
+      //else, color black
     }
     
     p.strokeWeight(.5);
