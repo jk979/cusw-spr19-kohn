@@ -1,35 +1,28 @@
-int numAttributeRows;
-
 class Garbage{
-
+  
   // define variables
   float x_food, y_food;
   float xpos, ypos;
   float radius = 20;
   boolean locked;
   PVector foodappear;
-  PVector screenLocation;
+  PVector screenLocation; 
   PImage img;
-  //println(attributes.getRowCount());
-  int randomRowReset = int(random(numAttributeRows-1));
+  Table attributes;
+  int randomRowReset; 
 
-
-  //int randomRowReset = int(random(attributes.getRowCount()));
-
-  
+   
   float lat_food, lon_food;
   String food_type;
-
+    
   //constructor
   Garbage(){
-
-    randomRowReset = int(random(numAttributeRows-1));
-
+    
 //select a random point from the list
-     x_food = attributes.getFloat(randomRowReset,"lat");
-     y_food = float(attributes.getString(randomRowReset,"lon"))*-1;
-     //x_food = float(attributes.getString(randomRowReset,12));
-     //y_food = float(attributes.getString(randomRowReset,13))*-1;
+     attributes = loadTable("data/freefood_metadata_2_26_19_geocoded.csv","header");
+     randomRowReset = int(random(attributes.getRowCount()));
+     x_food = float(attributes.getString(randomRowReset,12));
+     y_food = float(attributes.getString(randomRowReset,13))*-1;
 
     xpos = random(100, width - 100);
     ypos = random(100, height - 100);
@@ -46,14 +39,15 @@ class Garbage{
    image(img,xpos,ypos,width/20,height/20);
    //ellipse(xpos,ypos,radius, radius);
  }
-
+ 
 void reset(){
-     screenLocation = map.getScreenLocation(foodappear); //converting screen into coordinates
+    screenLocation = map.getScreenLocation(foodappear); //converting screen into coordinates
 
     println("why not print on reset");
+    
     //print a random line from the CSV
     /*
-    int randomRowReset = int(random(attributes.getRowCount()));
+    randomRowReset = int(random(attributes.getRowCount()));
     println(randomRowReset);
       x_food = float(attributes.getString(randomRowReset,12));
       y_food = float(attributes.getString(randomRowReset,13))*-1;
@@ -63,11 +57,9 @@ void reset(){
     */
     //x_food = float(attributes.getString(randomRowReset,12));
     //y_food = float(attributes.getString(randomRowReset,13))*-1;
-
-    //xpos = random(100, width - 100);
-    //ypos = random(100, height - 100);
-
+    
     xpos = random(100, width - 100);
     ypos = random(100, height - 100);
+    
 }
 }
