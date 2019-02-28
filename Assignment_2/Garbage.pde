@@ -1,3 +1,5 @@
+int numAttributeRows;
+
 class Garbage{
   
   // define variables
@@ -8,7 +10,8 @@ class Garbage{
   PVector foodappear;
   PVector screenLocation; 
   PImage img;
-  int randomRowReset = int(random(attributes.getRowCount()));
+  //println(attributes.getRowCount());
+  int randomRowReset = int(random(numAttributeRows-1));
 
   
   float lat_food, lon_food;
@@ -17,9 +20,11 @@ class Garbage{
   //constructor
   Garbage(){
     
+    randomRowReset = int(random(numAttributeRows-1));
+    
 //select a random point from the list
-     x_food = float(attributes.getString(randomRowReset,12));
-     y_food = float(attributes.getString(randomRowReset,13))*-1;
+     x_food = attributes.getFloat(randomRowReset,"lat");
+     y_food = float(attributes.getString(randomRowReset,"lon"))*-1;
 
     xpos = random(100, width - 100);
     ypos = random(100, height - 100);

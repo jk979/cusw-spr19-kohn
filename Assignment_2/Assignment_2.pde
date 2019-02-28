@@ -42,8 +42,8 @@ void setup(){
   frameRate = 40;
   pierreSize = loadImage("data/pierre.png");
   
-  k = new Agent(30);
-  garbage1 = new Garbage();
+  //k = new Agent(30);
+  //garbage1 = new Garbage();
   
   //Initialize data structures
   //big mit map
@@ -58,6 +58,9 @@ void setup(){
   
   loadData();
   parseData();
+  
+    k = new Agent(30);
+  garbage1 = new Garbage();
   
   
 }
