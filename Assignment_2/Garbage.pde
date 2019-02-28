@@ -8,6 +8,8 @@ class Garbage{
   PVector foodappear;
   PVector screenLocation; 
   PImage img;
+  int randomRowReset = int(random(attributes.getRowCount()));
+
   
   float lat_food, lon_food;
   String food_type;
@@ -16,9 +18,12 @@ class Garbage{
   Garbage(){
     
 //select a random point from the list
+     x_food = float(attributes.getString(randomRowReset,12));
+     y_food = float(attributes.getString(randomRowReset,13))*-1;
+
     xpos = random(100, width - 100);
     ypos = random(100, height - 100);
-    foodappear = new PVector(xpos,ypos);
+    foodappear = new PVector(y_food,x_food);
     img = loadImage("data/pizza.png");
 
   }
