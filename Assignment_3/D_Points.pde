@@ -1,3 +1,4 @@
+ArrayList<Point_k> k_array = new ArrayList<Point_k>();
 
 class Point_k{
     PVector kcoord;
