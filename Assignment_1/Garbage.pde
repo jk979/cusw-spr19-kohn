@@ -2,7 +2,7 @@ class Garbage{
   
   // define variables
   float xpos, ypos;
-  float radius;
+  float radius = 20;
   boolean locked;
   
   //constructor
@@ -14,7 +14,7 @@ class Garbage{
 // functions
  void display(){
    fill(200,0,100);
-   ellipse(xpos, ypos,20, 20);
+   ellipse(xpos, ypos,radius, radius);
  }
  
  

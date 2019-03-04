@@ -46,12 +46,10 @@ void draw() {
     b.update();
     b.drawGarbage();
 
-    if ( dist(garbage1.xpos, garbage1.ypos, k.xpos.get(0), k.ypos.get(0)) < k.sidelen ) {
+    if ( dist(garbage1.xpos, garbage1.ypos, k.xpos.get(0), k.ypos.get(0)) < (k.sidelen + garbage1.radius)/2 ) {
       garbage1.reset();
       k.addLink();
-    }
-    if (dist(b.screenLocation.x, b.screenLocation.y, k.xpos.get(0), k.ypos.get(0)) == k.sidelen){
-     b.update();
+      b.update();
     }
   }
 }
