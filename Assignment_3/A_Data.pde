@@ -71,6 +71,7 @@ void parseData(){
       if(k_id != previd_k){
         if(kcoords.size() > 0){ //create constructor for kcoords
           Point_k k = new Point_k(lat_k,lon_k);
+          println(k);
           k_array.add(k);
           println(k_array);
         }

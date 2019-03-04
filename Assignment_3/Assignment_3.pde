@@ -22,11 +22,11 @@ void draw(){
     PopPolygons.get(i).draw();
   }
   
-  /*
+  
   for(int i=0; i<kData.getRowCount(); i++){
-    kPoints.get(i).draw();
+    k_array.get(i).draw();
   }
-  */
+  
   
   //raster.draw();
   block.draw();
