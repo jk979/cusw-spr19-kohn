@@ -23,7 +23,7 @@ void draw(){
   }
   
   
-  for(int i=0; i<kData.getRowCount(); i++){
+  for(int i=0; i<kData.getRowCount()-1; i++){
     k_array.get(i).draw();
   }
   

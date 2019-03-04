@@ -1,4 +1,3 @@
-ArrayList<Point_k> k_array;
 
 class Point_k{
     PVector kcoord;
