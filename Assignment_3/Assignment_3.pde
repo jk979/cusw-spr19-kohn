@@ -52,8 +52,5 @@ void draw(){
   //raster.draw();
   drawInfo();
   
-  
-  
-  
-  
+  noLoop();
 }

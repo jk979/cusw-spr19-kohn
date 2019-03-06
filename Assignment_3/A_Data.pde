@@ -6,7 +6,6 @@ void loadData(){
   roads_json = loadJSONObject("data/mumbai_streetnetwork.json");
   line_features = roads_json.getJSONArray("geometries");
 
-  
   MumbaiOutline = loadTable("data/mumbai_outline-nodes.csv", "header");
   MumbaiWardBoundary = loadTable("data/mumbai_wards-nodes.csv","header");
   PopBlocks = loadTable("data/mumbai_pop2011-nodes.csv", "header");
