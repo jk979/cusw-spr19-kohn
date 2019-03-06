@@ -1,7 +1,11 @@
 ArrayList<Point_k> k_array = new ArrayList<Point_k>();
+ArrayList<Point_k> mrf_array = new ArrayList<Point_k>();
 
 class Point_k{
     PVector kcoord;
+    
+    boolean typeMRF;
+    boolean typeK;
   
     //lat, lon values
     float lat_k; 
@@ -17,9 +21,15 @@ class Point_k{
   //Drawing point
   void draw(){
      PVector screenLocation = map.getScreenLocation(kcoord); //converting screen into coordinates
-     fill(k_fill); //fill pois
-     noStroke(); //remove point border
-     ellipse(screenLocation.x, screenLocation.y, 10, 10); //fill food
+     if(typeK){
+       fill(k_fill); //fill pois
+       noStroke(); //remove point border
+       ellipse(screenLocation.x, screenLocation.y, 5, 5); //fill point
+     } else if(typeMRF){
+       fill(mrf_fill);
+       noStroke();
+       ellipse(screenLocation.x, screenLocation.y, 8,8);
+     }
     //shape(f, 0, 0);
   }
   

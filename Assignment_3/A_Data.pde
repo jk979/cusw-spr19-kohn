@@ -1,10 +1,15 @@
-Table MumbaiWardBoundary, PopBlocks, PopData, kData;
+Table MumbaiWardBoundary, PopBlocks, PopData, kData, mrfData,transportNodes,transportData;
 
 void loadData(){
   MumbaiWardBoundary = loadTable("data/mumbai_outline-nodes.csv", "header");
   PopBlocks = loadTable("data/mumbai_pop2011-nodes.csv", "header");
   PopData = loadTable("data/mumbai_pop2011-attributes.csv", "header");
   kData = loadTable("data/k_short.csv", "header");
+  mrfData = loadTable("data/mrf_formatted.csv", "header");
+  transportData = loadTable("data/mumbai_transport-western-nodes.csv","header");
+  //transportData = loadTable("data/mumbai_transport-western-attributes.csv","header");
+  //load streets
+  
   println("Data loaded");
 }
 
@@ -55,7 +60,7 @@ void parseData(){
     PopPolygons.get(i).makeShape();
   }
   
-  //parse CSV
+  //parse CSV for k
   int previd_k = 0; 
   ArrayList<PVector> kcoords = new ArrayList<PVector>();
   float lat_k, lon_k;
@@ -63,17 +68,14 @@ void parseData(){
   for(int i = 0; i<kData.getRowCount(); i++){
     
     lat_k = float(kData.getString(i,2));
-    println(lat_k);
     lon_k = float(kData.getString(i,3));
-    println(lon_k);
     
     int k_id = int(kData.getString(i,0));
       if(k_id != previd_k){
         if(kcoords.size() > 0){ //create constructor for kcoords
           Point_k k = new Point_k(lat_k,lon_k);
-          println(k);
+          k.typeK = true;
           k_array.add(k);
-          println(k_array);
         }
         //clear coords
         kcoords = new ArrayList<PVector>();
@@ -87,6 +89,63 @@ void parseData(){
       }
   }
   
+  //parse CSV for MRF
+  int previd_mrf = 0; 
+  ArrayList<PVector> mrfcoords = new ArrayList<PVector>();
+  float lat_mrf, lon_mrf;
+      
+  for(int i = 0; i<mrfData.getRowCount(); i++){
+    
+    lat_mrf = float(mrfData.getString(i,3));
+    lon_mrf = float(mrfData.getString(i,4));
+    
+    int mrf_id = int(mrfData.getString(i,0));
+      if(mrf_id != previd_mrf){
+        if(mrfcoords.size() > 0){ //create constructor for kcoords
+          Point_k mrf = new Point_k(lat_mrf,lon_mrf);
+          //mrf.typeK = false;
+          mrf.typeMRF = true;
+          mrf_array.add(mrf);
+        }
+        //clear coords
+        mrfcoords = new ArrayList<PVector>();
+        //reset variable
+        previd_mrf = mrf_id;
+      }
+      if(mrf_id == previd_mrf){
+        float lat_mrfmatch = float(mrfData.getString(i,3)); //west
+        float lon_mrfmatch = float(mrfData.getString(i,4));
+        mrfcoords.add(new PVector(lat_mrfmatch, lon_mrfmatch));
+      }
+  }
+  
+  //parse CSV for lines
+  float previd_transport = 0; 
+  ArrayList<PVector> transportcoords = new ArrayList<PVector>();
+  float lat_transport, lon_transport;
+      
+  for(int i = 0; i<transportData.getRowCount(); i++){
+    lat_transport = float(transportData.getString(i,1));
+    lon_transport = float(transportData.getString(i,2));
+    
+    float transport_id = float(transportData.getString(i,0));
+      if(transport_id != previd_transport){
+        if(transportcoords.size() > 0){ //create constructor for kcoords
+          Way transport = new Way(lat_transport,lon_transport);
+          transport.typeWestern = true;
+          transport_ways.add(transport);
+        }
+        //clear coords
+        transportcoords = new ArrayList<PVector>();
+        //reset variable
+        previd_transport = transport_id;
+      }
+      if(transport_id == previd_transport){
+        float lat_transportmatch = float(transportData.getString(i,1)); //west
+        float lon_transportmatch = float(transportData.getString(i,2));
+        transportcoords.add(new PVector(lat_transportmatch, lon_transportmatch));
+      }
+  }
   
   //
   println("Data Parsed");
