@@ -35,7 +35,7 @@ void draw(){
   }
   
   //draw outline
-  outline_city.draw();
+  //outline_city.draw();
   
   //draw wards
   outline_wards.draw();
