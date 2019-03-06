@@ -63,7 +63,7 @@ void parseData(){
   
   //add attribute of the polygon
    for(int i = 0; i<PopPolygons.size(); i++){
-    PopPolygons.get(i).score = PopData.getFloat(i, "TOT_HH"); //this is ONLY if the IDs are accurate
+    PopPolygons.get(i).score = PopData.getFloat(i, "TOT_POP"); //this is ONLY if the IDs are accurate
     PopPolygons.get(i).colorByScore();
     PopPolygons.get(i).makeShape();
   }

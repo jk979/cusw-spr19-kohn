@@ -30,7 +30,8 @@ class Polygon{
   
   
   void colorByScore(){
-    fill = color(score/500,0,0);
+    fill = color(score*255/760573,82,190); //fill choropleth according to population buckets
+    println(score*255/760573);
   }
   
   //Making the shape to draw
