@@ -1,25 +1,19 @@
-ArrayList<Way> transport_ways = new ArrayList<Way>();
+ArrayList<Way> ways; 
 
 class Way{
   //coordinates and color variables
- ArrayList<PVector>coordinates;
-  float lat;
-  float lon;
+  ArrayList<PVector>coordinates;
   
-  boolean typeWestern;
-  boolean typeCentral;
   //empty constructor
   Way(){}
   
   //Constructor of coordinates
-  Way(float _lat, float _lon){
-    lat = _lat;
-    lon = _lon;
+  Way(ArrayList<PVector> coords){
+    coordinates = coords;
   }
   
   //draw the road
   void draw(){
-    if(typeWestern){
     strokeWeight(1);
     stroke(road_color);
     //must be less than coordinates size -1 because it's second to last element
@@ -28,8 +22,7 @@ class Way{
     PVector screenStart = map.getScreenLocation(coordinates.get(i));
     PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
     line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
+    }
     noStroke();
-    }
-    }
   }
 }

@@ -36,17 +36,20 @@ void draw(){
   
   //draw outline
   outline_city.draw();
+  
+  //draw wards
+  outline_wards.draw();
+
 
   //draw transport
-  for(int i=0; i<transportData.getRowCount()-1; i++){
+  /*
+  for(int i=0; i<ways.size(); i++){
     //println(transport_ways); 
-    //transport_ways.get(i).draw();
+    ways.get(i).draw();
   }
-  
-  
+  */
   
   //raster.draw();
-  outline_wards.draw();
   drawInfo();
   
   

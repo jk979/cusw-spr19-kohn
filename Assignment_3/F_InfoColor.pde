@@ -7,13 +7,18 @@ color ward_color = color(255,255,0);
 void drawInfo(){
   //Rectangle
   fill(105,105,105);
-  rect(width-100,height-200,200,200);
+  rect(width-110,height-200,200,200);
   textSize(14);
-  fill(road_color);
-  text("Streets", width-90, height-130);
-  fill(k_fill);
-  text("Kabadiwala",width-90,height-150);
+  
   fill(mrf_fill);
-  text("MRF",width-90,height-170);
+  text("MRF",width-105,height-170);
+  fill(k_fill);
+  text("Kabadiwala",width-105,height-150);
+  fill(road_color);
+  text("Streets", width-105, height-130);
+  fill(outline_color);
+  text("City Boundary",width-105,height-110);
+  fill(ward_color);
+  text("Ward Boundary",width-105,height-90);
   
 }

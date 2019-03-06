@@ -1,6 +1,12 @@
 Table MumbaiOutline, MumbaiWardBoundary, PopBlocks, PopData, kData, mrfData,transportNodes,transportData;
+JSONObject roads_json;
+JSONArray line_features;
 
 void loadData(){
+  roads_json = loadJSONObject("data/mumbai_streetnetwork.json");
+  line_features = roads_json.getJSONArray("geometries");
+
+  
   MumbaiOutline = loadTable("data/mumbai_outline-nodes.csv", "header");
   MumbaiWardBoundary = loadTable("data/mumbai_wards-nodes.csv","header");
   PopBlocks = loadTable("data/mumbai_pop2011-nodes.csv", "header");
@@ -137,33 +143,32 @@ void parseData(){
       }
   }
   
-  //parse CSV for lines
-  float previd_transport = 0; 
-  ArrayList<PVector> transportcoords = new ArrayList<PVector>();
-  float lat_transport, lon_transport;
-      
-  for(int i = 0; i<transportData.getRowCount(); i++){
-    lat_transport = float(transportData.getString(i,1));
-    lon_transport = float(transportData.getString(i,2));
-    
-    float transport_id = float(transportData.getString(i,0));
-      if(transport_id != previd_transport){
-        if(transportcoords.size() > 0){ //create constructor for kcoords
-          Way transport = new Way(lat_transport,lon_transport);
-          transport.typeWestern = true;
-          transport_ways.add(transport);
-        }
-        //clear coords
-        transportcoords = new ArrayList<PVector>();
-        //reset variable
-        previd_transport = transport_id;
-      }
-      if(transport_id == previd_transport){
-        float lat_transportmatch = float(transportData.getString(i,1)); //west
-        float lon_transportmatch = float(transportData.getString(i,2));
-        transportcoords.add(new PVector(lat_transportmatch, lon_transportmatch));
-      }
+  //make Lines if it's a LineString
+  /*
+  for(int i = 0; i<line_features.size(); i++){
+    String type = line_features.getJSONObject(i).getString("type");
+    String geometry = line_features.getJSONObject(i).getString("coordinates");
+    println(geometry);
   }
+
+        //make a new Line
+        ArrayList<PVector> line_coords = new ArrayList<PVector>();
+        //get coordinates and iterate through them
+        JSONArray coordinates = geometry.getJSONArray("coordinates");
+        for(int j = 0; j<coordinates.size(); j++){
+          float lat = coordinates.getJSONArray(j).getFloat(1);
+          float lon = coordinates.getJSONArray(j).getFloat(0);
+          //make PVector and add it
+          PVector coordinate = new PVector(lat,lon);
+          line_coords.add(coordinate);
+        }
+        //create the Way with the coordinate PVectors
+        Way way = new Way(line_coords);
+        ways.add(way);
+      }
+      */
+      
+      
   
   //
   println("Data Parsed");
