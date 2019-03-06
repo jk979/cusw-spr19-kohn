@@ -1,7 +1,8 @@
-Table MumbaiWardBoundary, PopBlocks, PopData, kData, mrfData,transportNodes,transportData;
+Table MumbaiOutline, MumbaiWardBoundary, PopBlocks, PopData, kData, mrfData,transportNodes,transportData;
 
 void loadData(){
-  MumbaiWardBoundary = loadTable("data/mumbai_outline-nodes.csv", "header");
+  MumbaiOutline = loadTable("data/mumbai_outline-nodes.csv", "header");
+  MumbaiWardBoundary = loadTable("data/mumbai_wards-nodes.csv","header");
   PopBlocks = loadTable("data/mumbai_pop2011-nodes.csv", "header");
   PopData = loadTable("data/mumbai_pop2011-attributes.csv", "header");
   kData = loadTable("data/k_short.csv", "header");
@@ -14,7 +15,8 @@ void loadData(){
 }
 
 void parseData(){
-  //first, parse the ward polygons
+  
+  //1. parse the ward polygons
   ArrayList<PVector> coords = new ArrayList<PVector>();
   //get lat and lon from Ward Boundary CSV
   for(int i=0; i<MumbaiWardBoundary.getRowCount(); i++){
@@ -24,11 +26,12 @@ void parseData(){
     coords.add(new PVector(lat, lon));
   }
   
-  block = new Polygon(coords);
-  block.outline = true; 
-  block.makeShape();
+  outline_wards = new Polygon(coords);
+  outline_wards.cityOutline = false; 
+  outline_wards.wardOutline = true;
+  outline_wards.makeShape();
   
-  //parse population polygons
+  //2. parse population polygons
   int previd = 0; 
   coords = new ArrayList<PVector>();
   for(int i = 0; i<PopBlocks.getRowCount(); i++){
@@ -48,17 +51,32 @@ void parseData(){
     if(shapeid == previd){
       float lat = float(PopBlocks.getString(i,2));
       float lon = float(PopBlocks.getString(i,1));
-      //println(lat, lon);
       coords.add(new PVector(lat,lon));
     }
   }
   
   //add attribute of the polygon
    for(int i = 0; i<PopPolygons.size(); i++){
-    PopPolygons.get(i).score = PopData.getFloat(i, "TOT_POP"); //this is ONLY if the IDs are accurate
+    PopPolygons.get(i).score = PopData.getFloat(i, "TOT_HH"); //this is ONLY if the IDs are accurate
     PopPolygons.get(i).colorByScore();
     PopPolygons.get(i).makeShape();
   }
+  
+  
+   //get lat and lon from Outline CSV
+  ArrayList<PVector> outline_coords = new ArrayList<PVector>();
+
+  for(int i=0; i<MumbaiOutline.getRowCount(); i++){
+    float lat = float(MumbaiOutline.getString(i,2));
+    float lon = float(MumbaiOutline.getString(i,1));
+    //add them to new PVector
+    outline_coords.add(new PVector(lat, lon));
+  }
+  
+  outline_city= new Polygon(outline_coords);
+  outline_city.cityOutline = true; 
+  outline_city.makeShape();
+  
   
   //parse CSV for k
   int previd_k = 0; 

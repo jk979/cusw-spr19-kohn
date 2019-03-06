@@ -1,6 +1,8 @@
 color k_fill = color(255,255,0);
 color mrf_fill = color(139,0,139);
 color road_color = color(220,20,60);
+color outline_color = color(0,255,0);
+color ward_color = color(255,255,0);
 
 void drawInfo(){
   //Rectangle

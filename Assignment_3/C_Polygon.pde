@@ -1,5 +1,6 @@
 ArrayList<Polygon> PopPolygons;
-Polygon block; 
+Polygon outline_wards; 
+Polygon outline_city;
 
 class Polygon{
   //Shape, coordinates, and color variables
@@ -9,7 +10,8 @@ class Polygon{
   float pop;
   int id; 
   float score;
-  boolean outline; 
+  boolean cityOutline; 
+  boolean wardOutline;
 
   //Empty constructor
   Polygon(){
@@ -38,11 +40,18 @@ class Polygon{
     p.fill(fill);
     p.stroke(0);
     p.strokeWeight(.5);
-    if(outline){
+    
+    if(cityOutline){
       p.noFill();
-      p.stroke(255, 200, 20);
+      p.stroke(outline_color);
       p.strokeWeight(1);
+    } 
+    else if(wardOutline){
+      p.noFill();
+      p.stroke(ward_color);
+      p.strokeWeight(0.5);
     }
+    
     for(int i = 0; i<coordinates.size(); i++){
         PVector screenLocation = map.getScreenLocation(coordinates.get(i));
         p.vertex(screenLocation.x, screenLocation.y);

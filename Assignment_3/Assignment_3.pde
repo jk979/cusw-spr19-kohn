@@ -19,19 +19,25 @@ void setup(){
 void draw(){
   background(0);
   
+  //draw population polygons
   for(int i=0; i<PopPolygons.size(); i++){
     PopPolygons.get(i).draw();
   }
   
-  
+  //draw kabadiwalas
   for(int i=0; i<kData.getRowCount()-1; i++){
     k_array.get(i).draw();
   }
   
+  //draw mrfs
   for(int i=0; i<mrfData.getRowCount()-1; i++){
      mrf_array.get(i).draw();
   }
   
+  //draw outline
+  outline_city.draw();
+
+  //draw transport
   for(int i=0; i<transportData.getRowCount()-1; i++){
     //println(transport_ways); 
     //transport_ways.get(i).draw();
@@ -40,7 +46,11 @@ void draw(){
   
   
   //raster.draw();
-  block.draw();
+  outline_wards.draw();
   drawInfo();
+  
+  
+  
+  
   
 }
