@@ -24,13 +24,24 @@ class Point_k{
      if(typeK){
        fill(k_fill); //fill pois
        noStroke(); //remove point border
-       ellipse(screenLocation.x, screenLocation.y, 5, 5); //fill point
+       ellipse(screenLocation.x, screenLocation.y, 4, 4); //fill point
      } else if(typeMRF){
        fill(mrf_fill);
        noStroke();
-       ellipse(screenLocation.x, screenLocation.y, 8,8);
+       polygon(screenLocation.x, screenLocation.y,5,4);
      }
     //shape(f, 0, 0);
   }
   
+}
+
+void polygon(float x, float y, float radius, int npoints) {
+  float angle = TWO_PI / npoints;
+  beginShape();
+  for (float a = 0; a < TWO_PI; a += angle) {
+    float sx = x + cos(a) * radius;
+    float sy = y + sin(a) * radius;
+    vertex(sx, sy);
+  }
+  endShape(CLOSE);
 }

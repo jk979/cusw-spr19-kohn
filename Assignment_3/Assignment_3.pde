@@ -4,6 +4,8 @@ Heatmap heatmap;
 float cellWidth = 10;
 float cellHeight = 10;
 int numXCells, numYCells;
+boolean button_k = false;
+boolean button_mrf = false;
 
 
 void setup(){
@@ -15,11 +17,24 @@ void setup(){
   //mumbai
   map = new MercatorMap(width, height, 19.2904, 18.8835,72.7364,73.0570, 0);
   
+  
   loadData();
   parseData();
   makeFakeHeatmap();
   //raster = new Raster(20, 600, 600);
 }
+
+void keyPressed(){
+  if(key=='k'){
+    println("button_pressed");
+    button_k = !button_k;
+    println("button k is" +button_k);
+  }
+  if(key=='m'){
+    button_mrf = !button_mrf;
+  }
+}
+
 
 void draw(){
   background(0);
@@ -27,19 +42,23 @@ void draw(){
   //draw population polygons
   for(int i=0; i<PopPolygons.size(); i++){
     PopPolygons.get(i).draw();
+    
   }
   
-  //draw kabadiwalas
-  for(int i=0; i<kData.getRowCount()-1; i++){
-    k_array.get(i).draw();
-  }
-  
+ 
+    
   //image(heatmap.p, 0, 0);
   
   //draw mrfs
   for(int i=0; i<mrfData.getRowCount()-1; i++){
      mrf_array.get(i).draw();
   }
+  
+   //draw kabadiwalas
+    for(int i=0; i<kData.getRowCount()-1; i++){
+      k_array.get(i).draw();
+    }
+
   
   //draw outline
   //outline_city.draw();
