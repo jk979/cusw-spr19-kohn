@@ -10,7 +10,9 @@ What statistical test did you use and why?
 
 I attempted to make a heat map showing a correlation between a recycling point's location and the nearby population, as a proxy for recyclable material generation in a given area. In other words, if there is a large population in a given area, one would expect to find many kabadiwalas serving the recycling demand in that area. 
 
-Since the heat map did not work, I used a proxy which normalized the population by area. I made a new column showing population per square km and colored the sub-ward polygons based on this metric, showing areas where population density was high. 
+I used a proxy which normalized the population by area. I made a new column showing population per square km and colored the sub-ward polygons based on this metric, showing areas where population density was high. 
+
+To make the heatmap and show the statistical calculation, I planned to divide the map into small squares, and color the squares based on their population density. I would then use a function that would count the number of kabadiwala or MRF points within a particular square, and recolor the square a lighter or darker shade based on that metric. Unfortunately, the heatmap did not work. 
 
 What was its result (again not graded for accuracy)?
 

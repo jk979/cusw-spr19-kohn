@@ -65,6 +65,7 @@ void parseData(){
     PopPolygons.get(i).score = PopData.getFloat(i, "pop_km");
     println("pop per km is " + PopPolygons.get(i).score);
     PopPolygons.get(i).colorByScore();
+    println(i);
     PopPolygons.get(i).makeShape();
   }
   

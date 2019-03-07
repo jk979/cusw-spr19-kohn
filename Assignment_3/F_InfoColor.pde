@@ -6,13 +6,14 @@ color road_color = color(220,20,60);
 color outline_color = color(211,211,211);
 color ward_color = color(255,0,0);
 color pop_title = color(255,255,255);
-color pop_7 = color(128,128,128);
-color pop_6 = color(149,149,149);
-color pop_5 = color(170,170,170);
-color pop_4 = color(192,192,192);
-color pop_3 = color(213,213,213);
-color pop_2 = color(234,234,234);
-color pop_1 = color(244,244,244);
+color pop_6 = color(172, 132, 53);
+color pop_5 = color(163, 151, 86);
+color pop_4 = color(154, 171, 120);
+color pop_3 = color(145, 190, 154);
+color pop_2 = color(136, 210, 188);
+//color pop_1 = color(127, 230, 222);
+color pop_1 = color(255,255,255);
+color pop_0 = color(255,255,255);
 
 void drawInfo(){
   textSize(14);
@@ -24,28 +25,27 @@ void drawInfo(){
   //recycling points
   textSize(12);
   fill(mrf_fill);
-  text("MRF",width-170,height-190);
+  text("Material Recovery Facility \n(MRF)",width-170,height-190);
   fill(k_fill);
-  text("Kabadiwala",width-170,height-170);
+  text("Kabadiwala",width-170,height-150);
   
   //population gradient
+  
   fill(pop_title);
-  text("Population per sq km:",width-170,height-150);
+  text("Population per sq km:",width-170,height-130);
   //population densities
-  fill(pop_7);
-  text("> 200,000",width-170,height-130);
   fill(pop_6);
-  text("100,000-200,000",width-170,height-110);
+  text(">500,000",width-170,height-110);
   fill(pop_5);
-  text("50,000-100,000",width-170,height-90);
+  text("200,000-500,000",width-170,height-90);
   fill(pop_4);
-  text("20,000-50,000", width-170,height-70);
+  text("100,000-200,000", width-170,height-70);
   fill(pop_3);
-  text("10,000-20,000", width-170, height-50);
+  text("60,000-100,000", width-170, height-50);
   fill(pop_2);
-  text("1,000-5,000", width-170, height-30);
+  text("25,000-60,000", width-170, height-30);
   fill(pop_1);
-  text("<1,000", width-170, height-10);
+  text("0-25,000", width-170, height-10);
   
   //fill(road_color);
   //text("Streets", width-170, height-70);
