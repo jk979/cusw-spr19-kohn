@@ -63,9 +63,12 @@ void parseData(){
   //add attribute of the polygon
    for(int i = 0; i<PopPolygons.size(); i++){
     PopPolygons.get(i).score = PopData.getFloat(i, "pop_km");
-    println("pop per km is " + PopPolygons.get(i).score);
+//    println("pop per km is " + PopPolygons.get(i).score);
+
     PopPolygons.get(i).colorByScore();
-    println(i);
+    
+  //  println("Id: ", i);
+    
     PopPolygons.get(i).makeShape();
   }
   
@@ -164,6 +167,7 @@ void parseData(){
 }
 
 void makeFakeHeatmap(){
+  println("Make fake heatmap");
   
   numXCells = int(width/cellWidth) + 1;
   numYCells = int(height/cellHeight) + 1;

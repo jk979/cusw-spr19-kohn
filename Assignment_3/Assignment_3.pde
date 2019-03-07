@@ -17,7 +17,6 @@ void setup(){
   //mumbai
   map = new MercatorMap(width, height, 19.2904, 18.8835,72.7364,73.0570, 0);
   
-  
   loadData();
   parseData();
   makeFakeHeatmap();

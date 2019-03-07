@@ -115,7 +115,6 @@ public class MercatorMap {
   }
   
   public PVector getGeo(PVector loc) {
-    
     PVector screen = new PVector(loc.x, loc.y);
     screen.x -= mapScreenWidth/2;
     screen.y -= mapScreenHeight/2;
@@ -123,8 +122,6 @@ public class MercatorMap {
     screen.x += lg_width/2;
     screen.y += lg_height/2;
     return new PVector(getLatitude(screen.y), getLongitude(screen.x));
-    
-    
   }
   
   private float getLatitude(float screenY) {
