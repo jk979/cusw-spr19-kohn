@@ -18,7 +18,7 @@ color pop_0 = color(255,255,255);
 void drawInfo(){
   textSize(14);
   fill(255,255,255);
-  text("Spatial Distribution of \nRecycling Aggregation \nPoints | Mumbai, India", width-170,height-250);
+  text("Population Density vs. \nSpatial Distribution of \nRecycling Aggregation \nPoints | Mumbai, India", width-170,height-290);
   
   //legend
   
