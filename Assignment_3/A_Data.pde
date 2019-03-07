@@ -62,15 +62,14 @@ void parseData(){
   
   //add attribute of the polygon
    for(int i = 0; i<PopPolygons.size(); i++){
-    PopPolygons.get(i).score = PopData.getFloat(i, "TOT_POP"); //this is ONLY if the IDs are accurate
+    PopPolygons.get(i).score = PopData.getFloat(i, "pop_km");
+    println("pop per km is " + PopPolygons.get(i).score);
     PopPolygons.get(i).colorByScore();
     PopPolygons.get(i).makeShape();
   }
   
-  
    //get lat and lon from Outline CSV
   ArrayList<PVector> outline_coords = new ArrayList<PVector>();
-
   for(int i=0; i<MumbaiOutline.getRowCount(); i++){
     float lat = float(MumbaiOutline.getString(i,2));
     float lon = float(MumbaiOutline.getString(i,1));
@@ -82,17 +81,13 @@ void parseData(){
   outline_city.cityOutline = true; 
   outline_city.makeShape();
   
-  
   //parse CSV for k
   int previd_k = 0; 
   ArrayList<PVector> kcoords = new ArrayList<PVector>();
   float lat_k, lon_k;
-      
   for(int i = 0; i<kData.getRowCount(); i++){
-    
     lat_k = float(kData.getString(i,2));
     lon_k = float(kData.getString(i,3));
-    
     int k_id = int(kData.getString(i,0));
       if(k_id != previd_k){
         if(kcoords.size() > 0){ //create constructor for kcoords
@@ -116,12 +111,9 @@ void parseData(){
   int previd_mrf = 0; 
   ArrayList<PVector> mrfcoords = new ArrayList<PVector>();
   float lat_mrf, lon_mrf;
-      
   for(int i = 0; i<mrfData.getRowCount(); i++){
-    
     lat_mrf = float(mrfData.getString(i,3));
     lon_mrf = float(mrfData.getString(i,4));
-    
     int mrf_id = int(mrfData.getString(i,0));
       if(mrf_id != previd_mrf){
         if(mrfcoords.size() > 0){ //create constructor for kcoords
@@ -167,8 +159,94 @@ void parseData(){
       }
       */
       
-      
-  
-  //
   println("Data Parsed");
+}
+
+void makeFakeHeatmap(){
+  
+  numXCells = int(width/cellWidth) + 1;
+  numYCells = int(height/cellHeight) + 1;
+  PopData = loadTable("data/mumbai_pop2011-attributes.csv", "header");
+  
+  heatmap = new Heatmap(numXCells, numYCells, cellWidth, cellHeight);
+  float[][] randData = new float[numXCells][numYCells];
+  float[][] popSquare = new float[numXCells][numYCells];
+  
+  for(int i = 0; i<numXCells; i++){
+    for(int j = 0; j<numYCells; j++){
+      //in each cell, load this color
+      //randData[i][j] = random(200);
+      //first, in each cell, load the color of the normalized population by area
+      
+      //value of the pop_km
+    }
+  }
+  heatmap.scores = popSquare;
+  heatmap.normalizeScores();
+
+  heatmap.draw();
+}
+
+
+class Heatmap{
+  int cellX, cellY;
+  float cellW, cellH;
+  float[][] scores;
+  color worst, mid, best;
+  PGraphics p;
+ 
+  Heatmap(){}
+  
+  Heatmap(int _cellX, int _cellY, float _cellW, float _cellH){
+    cellX = _cellX;
+    cellY = _cellY;
+    cellW = _cellW;
+    cellH = _cellH;
+    worst = color(200, 0, 0);
+    mid = color(255, 255, 0);
+    best = color(0, 200, 0);
+    scores = new float[cellX][cellY];
+    p = createGraphics(int(cellX*cellW), int(cellY*cellH));
+    
+  }
+  
+  void normalizeScores(){
+    float min = 1000000;
+    float max = 0;
+    for(int i = 0; i<cellX; i++){
+      for(int j = 0; j<cellY; j++){
+        float val = scores[i][j];
+        if (val < min) min = val;
+        if (val > max) max = val;
+      }
+    }
+    
+    for(int i = 0; i<cellX; i++){
+      for(int j = 0; j<cellY; j++){
+        float val = scores[i][j];
+        float newVal = map(val, min, max, 0, 100);
+        scores[i][j] = newVal;
+      }
+    }
+  }
+  
+  void draw(){
+    p.beginDraw();
+    p.clear();
+    for(int i = 0; i<cellX; i++){
+      for(int j = 0; j<cellY; j++){
+        color col = color(0, 0, 0);
+        float val = scores[i][j];
+        if(val < 50) col = lerpColor(worst, mid, val/100);
+        if(val == 50) col = mid;
+        if(val > 50) col = lerpColor(mid, best, val/100-.5);
+        p.fill(col);
+        p.noStroke();
+        p.rect(i*cellW, j*cellH, cellW, cellH);
+      }
+    }
+    p.endDraw();
+    
+  }
+  
 }
