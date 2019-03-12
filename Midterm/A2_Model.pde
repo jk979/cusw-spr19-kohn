@@ -97,7 +97,7 @@ void poiPaths(int numPaths) {
     while(notFound) {
       //  An example Origin and Desination between which we want to know the shortest path
       //
-      // Origin is Random POI
+      // Origin is Random POI *need to change this to make Origin  from B2_KPoints*
       int orig_index = int(random(pois.size()));
       PVector orig = pois.get(orig_index).coord;
       orig = map.getScreenLocation(orig);
