@@ -1,6 +1,5 @@
 //midterm assignment
 
-
 //Background 
 
 //make Bandra map
@@ -29,8 +28,10 @@ void initModel(){
 }
 
 void setup(){
-  size(500,800);
+  size(470,750);
   //initialize data structures
+  //map = new MercatorMap(width, height, 19.2904, 18.8835,72.7364,73.0570, 0);
+
   map = new MercatorMap(width, height, 19.0942,19.0391, 72.8143,72.8462, 0);
   polygons = new ArrayList<Polygon>();
   ways = new ArrayList<Way>();
@@ -48,7 +49,16 @@ void setup(){
 void draw(){
   background(0);
   drawGISObjects();
+ 
+  //draw mrfs
+  for(int i=0; i<mrfData.getRowCount()-1; i++){
+     mrf_array.get(i).draw();
+  }
   
+  //draw kabadiwalas
+  for(int i=0; i<kData.getRowCount()-1; i++){
+     k_array.get(i).draw();
+  }
 }
 
 

@@ -3,6 +3,11 @@ class Polygon{
   PShape p;
   ArrayList<PVector>coordinates;
   color fill;
+   //get sub-features: buildings, water, beach, land, park, road
+    
+    //buildings: properties/tags/building/residential
+    boolean BuildingResidential;
+    
 
   //Empty constructor
   Polygon(){
@@ -20,8 +25,17 @@ class Polygon{
   void makeShape(){
     p = createShape();
     p.beginShape();
+    
+    if(BuildingResidential){
+      p.fill(colorBuildingResidential);
+      p.noStroke();
+    }
+    
+    /*
     p.fill(fill);
     p.noStroke();
+    }
+    */
     for(int i = 0; i<coordinates.size(); i++){
         PVector screenLocation = map.getScreenLocation(coordinates.get(i));
         p.vertex(screenLocation.x, screenLocation.y);
