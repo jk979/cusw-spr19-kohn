@@ -15,6 +15,15 @@ class Path {
     straightPath();
   }
   
+  //alternate constructor
+  /*Path(float x, float y, float l, float w) {
+    origin = new PVector( random(x, x+l), random(y, y+w) );
+    destination = new PVector( random(x, x+l), random(y, y+w) );
+    waypoints = new ArrayList<PVector>();
+    straightPath();
+  }
+  */
+  
   // Constructs an Empy Path with waypoints yet to be included
   Path(PVector o, PVector d) {
     origin = o;

@@ -19,12 +19,21 @@ class Way{
   void draw(){
     
     if(Street){
-    strokeWeight(2);
-    stroke(colorStreet);
+    
     for(int i = 0; i<coordinates.size()-1; i++){
         //iterate through the coordinates and draw lines
         PVector screenStart = map.getScreenLocation(coordinates.get(i));
         PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
+        
+        //make and print intermediate points between streets
+        PVector intermediates = map.intermediate(screenStart,screenEnd, 0.5);
+        fill(color(255,0,0));
+        noStroke();
+        ellipse(intermediates.x, intermediates.y, 3, 3);
+        
+        //make street network
+        strokeWeight(2);
+        stroke(colorStreet);
         line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
     }
     }

@@ -21,7 +21,7 @@ class POI{
     fill(fill);
     noStroke();
     ellipse(screenLocation.x, screenLocation.y, 10, 10);
-  }
+  } 
   
   
 }
