@@ -180,6 +180,15 @@ void parseData() {
   }
 }
 
+void makeIntermediates(){
+  //how many points to generate
+  //for each point, generate a number between 0 and 1 to get the point on the road segment
+  //i.e. random(0.25, 0.75)
+  //call function in parseData, and save points to arrayList of PVectors
+  
+  
+}
+
 void drawGISObjects() {
 
   //draw all Polygons
