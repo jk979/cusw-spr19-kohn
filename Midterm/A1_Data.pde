@@ -183,17 +183,21 @@ void parseData() {
 void makeIntermediates(){
   float int_loc;
   int num_intpoints;
+  
   //how many points to generate
   num_intpoints = 200;
+  
   //for each point, generate a number between 0 and 1 to get the point on the road segment
-  //i.e. random(0.25, 0.75)
   int_loc = random(0,1);
-  //call function in parseData, and save points to arrayList of PVectors
+}
+
+//call makeIntermediates function in parseData, and save points to arrayList of PVectors
+void saveIntPoints(){
   ArrayList<PVector> intpoints;
+
   intpoints = new ArrayList<PVector>();
   for(int i=0; i<num_intpoints; i++){
-    Way.Streets.map.intermediate(screenStart, screenEnd, int_loc);
-    
+     Way.Streets.map.intermediate(screenStart, screenEnd, int_loc);
   }
   
 }
