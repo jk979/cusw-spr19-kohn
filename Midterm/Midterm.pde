@@ -1,5 +1,8 @@
 //midterm assignment
 
+//done: base map and kabadiwala points
+//to do: agent movements between kabadiwala points and random sources + kabadiwala and mrf
+
 //Background 
 
 //make Bandra map
@@ -15,20 +18,20 @@ ArrayList<Polygon> polygons;
 void initModel(){
 
   //1. initialize the network using one of these methods
-  //randomNetwork(0.5);
+  randomNetwork(0.5);
   //waysNetwork(ways);
   //randomNetworkMinusBuildings(0.1, polygons);
   
   //2. initialize paths using one of these methods
-  //randomPaths(3);
+  randomPaths(3);
   //poiPaths(3);
   
   //3. initialize population
-  //initPopulation(30*paths.size());
+  initPopulation(30*paths.size());
 }
 
 void setup(){
-  size(470,750);
+  size(450,750);
   //initialize data structures
   //map = new MercatorMap(width, height, 19.2904, 18.8835,72.7364,73.0570, 0);
 
@@ -62,20 +65,7 @@ void draw(){
 }
 
 
-
-
-
 ////////////////////////////////////
-
-//Buildings
-//make kabadiwala points
-//make MRF points
-//make source locations (3 around each kabadiwala)
-
-//Characters
-//kabadiwala
-//garbage
-
 
 /*
 Classes Contained: 

@@ -143,7 +143,7 @@ void parseData() {
         poly.BuildingResidential = true;
         poly.makeShape();
       }
-
+      
       polygons.add(poly);
     }
 
