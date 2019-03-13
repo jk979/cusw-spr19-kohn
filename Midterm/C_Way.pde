@@ -26,10 +26,11 @@ class Way{
         PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
         
         //make and print intermediate points between streets
-        PVector intermediates = map.intermediate(screenStart,screenEnd, 0.5);
+        PVector intermediates = map.intermediate(coordinates.get(i),coordinates.get(i+1), 0.5);
+        PVector screenInt = map.getScreenLocation(intermediates);
         fill(color(255,0,0));
         noStroke();
-        ellipse(intermediates.x, intermediates.y, 3, 3);
+        ellipse(screenInt.x, screenInt.y, 3, 3);
         
         //make street network
         strokeWeight(2);

@@ -196,9 +196,9 @@ void saveIntPoints(){
   ArrayList<PVector> intpoints;
 
   intpoints = new ArrayList<PVector>();
-  for(int i=0; i<num_intpoints; i++){
-     Way.Streets.map.intermediate(screenStart, screenEnd, int_loc);
-  }
+  //for(int i=0; i<num_intpoints; i++){
+  //   Way.Streets.map.intermediate(screenStart, screenEnd, int_loc);
+  //}
   
 }
 
