@@ -31,7 +31,7 @@ void initModel(){
 }
 
 void setup(){
-  size(450,750);
+  size(450,750); //add ,P3D to make it 3D
   //initialize data structures
   //map = new MercatorMap(width, height, 19.2904, 18.8835,72.7364,73.0570, 0);
 
@@ -50,6 +50,9 @@ void setup(){
 }
 
 void draw(){
+  
+  //camera(70.0,-35.0, 1200.0, 450.0, -50, 0, 0, 1, 0);
+  
   background(0);
   drawGISObjects();
  
@@ -62,6 +65,7 @@ void draw(){
   for(int i=0; i<kData.getRowCount()-1; i++){
      k_array.get(i).draw();
   }
+  noLoop();
 }
 
 

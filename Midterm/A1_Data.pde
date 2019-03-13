@@ -180,6 +180,7 @@ void parseData() {
   }
 }
 
+/*
 void makeIntermediates(){
   float int_loc;
   int num_intpoints;
@@ -201,6 +202,7 @@ void saveIntPoints(){
   //}
   
 }
+*/
 
 void drawGISObjects() {
 
