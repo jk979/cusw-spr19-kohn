@@ -20,7 +20,7 @@ class Way{
     
     //concatenate all collectionOfPairs
     ArrayList collectionOfCollections = new ArrayList<PVector>();
-    
+
     if(Street){
     
     //coordinates.size() is the size of each road array
@@ -29,10 +29,10 @@ class Way{
     //singlePair is a pair of joined road nodes: [ [],[] ]
     //collectionOfPairs will be a collection of pairs of road nodes: [ [ [],[] ], [ [],[] ] ]
     //concatenate collectionOfPairs for all streets you loop through
-    
       ArrayList collectionOfPairs = new ArrayList<PVector>();
       PVector firstElement = new PVector();
       PVector secondElement = new PVector();
+
       //for each element in the single road array:
       println("size of this block is " + coordinates.size());
       for(int a = 0; a < coordinates.size()-1; a++){
@@ -45,9 +45,13 @@ class Way{
         //add singlePair to the collection for that road
         collectionOfPairs.add(singlePair);
       }
-      //println("this block of " +coordinates.size()+ " road segments looks like this: "+collectionOfPairs);
-      //collectionOfCollections.add(collectionOfPairs);
-    
+
+      println("this block of " +coordinates.size()+ " road segments has " +collectionOfPairs.size()+" segments: "+collectionOfPairs+"\n");
+      println("this is Pairs: ");
+      println(collectionOfPairs);
+      collectionOfCollections.add(collectionOfPairs);
+
+      
     //draw road nodes
     for(int i = 0; i<coordinates.size()-1; i++){
         //iterate through the coordinates and draw lines
@@ -105,9 +109,8 @@ class Way{
             line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
         }
      }
-   
-       println(collectionOfCollections);
-
-   
+     
+     //println("now let's start building the collection of collections");
+     //println("collection of collections size: " +collectionOfCollections.size());  
 }
 }
