@@ -2,7 +2,6 @@
 
 //Input simplified node network generated from OSMNX
 
-
 //
 class Node {
   PVector loc;

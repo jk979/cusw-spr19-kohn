@@ -25,7 +25,7 @@ class Path {
   }
   */
   
-  // Constructs an Empy Path with waypoints yet to be included
+  // Constructs an Empty Path with waypoints yet to be included
   Path(PVector o, PVector d) {
     origin = o;
     destination = d;

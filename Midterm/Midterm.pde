@@ -14,6 +14,23 @@ ArrayList<POI> pois;
 ArrayList<Way> ways;
 ArrayList<Polygon> polygons;
 
+///////////////////////
+
+//set up GUI
+String title = "Kabadiwala Simulation";
+String project = "Description here";
+
+//scrollbars (horizontal and vertical)
+HScrollbar hs;
+
+// Drag Functions
+XYDrag drag;
+
+boolean showUI = true;
+
+/////////////////////////
+
+
 //contain the model initialization
 void initModel(){
 
@@ -46,6 +63,11 @@ void setup(){
   
   //initialize model and simulation
   //initModel();
+  
+  /*
+  hs = new HScrollbar(width - int(height*MARGIN) - int(0.3*height), int((1-1.5*MARGIN)*height), int(0.3*height), int(MARGIN*height), 5);
+  camRotation = hs.getPosPI(); // (0 - 2*PI)
+  */
   
 }
 
@@ -85,4 +107,16 @@ Standard GIS shapes:
   Way() - lines (streets, paths, etc)
   Polygons() - buildings, parcels, etc. 
 
+*/
+
+////////////
+/*
+Each Agent gets 1 randomly generated Garbage to pick up. 
+1. Generate the 1 garbage along node-edge network for each agent. 
+for each agent: 
+- find shortest path between agent and garbage
+- move on that path to the garbage
+- when collision detection between agent and garbage, garbage location = agent location - some radius
+- after collision detection, agent receives Rupees and reverses path
+- when collision detection between agent and shop, agent prints "Collected!"
 */
