@@ -1,6 +1,10 @@
+import java.util.HashSet;
+
 class Way{
   //Coordinates and color variables
   ArrayList<PVector>coordinates;
+  ArrayList<HashSet<PVector>> collectionOfCollections = new ArrayList<HashSet<PVector>>();
+
   color stroke;
   boolean Street;
   boolean Coastline;
@@ -19,17 +23,15 @@ class Way{
   void draw(){
     
     //concatenate all collectionOfPairs
-    ArrayList collectionOfCollections = new ArrayList<PVector>();
+    HashSet collectionOfPairs = new HashSet<PVector>();
 
     if(Street){
-    
+    println("CC is now"+collectionOfCollections.size());
     //coordinates.size() is the size of each road array
-    
     //firstElement and secondElement are the base road elements--the first and second lat-long coordinate pairs in a node: [] and []
     //singlePair is a pair of joined road nodes: [ [],[] ]
     //collectionOfPairs will be a collection of pairs of road nodes: [ [ [],[] ], [ [],[] ] ]
     //concatenate collectionOfPairs for all streets you loop through
-      ArrayList collectionOfPairs = new ArrayList<PVector>();
       PVector firstElement = new PVector();
       PVector secondElement = new PVector();
 
@@ -47,11 +49,12 @@ class Way{
       }
 
       println("this block of " +coordinates.size()+ " road segments has " +collectionOfPairs.size()+" segments: "+collectionOfPairs+"\n");
-      println("this is Pairs: ");
-      println(collectionOfPairs);
-      collectionOfCollections.add(collectionOfPairs);
-
+      println("next we'll add"+collectionOfPairs+" to bigger list");
       
+      //each collectionOfPairs is working, but it's not concatenating to a bigger list every time there's a Street
+      collectionOfCollections.add(collectionOfPairs);
+      println(collectionOfCollections.size());
+
     //draw road nodes
     for(int i = 0; i<coordinates.size()-1; i++){
         //iterate through the coordinates and draw lines
@@ -71,11 +74,13 @@ class Way{
         stroke(colorStreet);
         line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
     }
-
     }
     
+     //println("now let's start building the collection of collections");
+     //println("collection of collections size: " +collectionOfCollections.size());  
+    
     //draw coastline
-    else if(Coastline){
+    if(Coastline){
       strokeWeight(3);
       stroke(colorCoastline);
     for(int i = 0; i<coordinates.size()-1; i++){
@@ -109,8 +114,6 @@ class Way{
             line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
         }
      }
-     
-     //println("now let's start building the collection of collections");
-     //println("collection of collections size: " +collectionOfCollections.size());  
+
 }
 }
