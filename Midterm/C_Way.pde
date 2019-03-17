@@ -1,9 +1,10 @@
 import java.util.HashSet;
+ArrayList<HashSet<PVector>> collectionOfCollections = new ArrayList<HashSet<PVector>>();
+HashSet collectionOfPairs = new HashSet<PVector>();
 
 class Way{
   //Coordinates and color variables
   ArrayList<PVector>coordinates;
-  ArrayList<HashSet<PVector>> collectionOfCollections = new ArrayList<HashSet<PVector>>();
 
   color stroke;
   boolean Street;
@@ -22,8 +23,9 @@ class Way{
   //Draw the road
   void draw(){
     
+    //ArrayList<HashSet<PVector>> collectionOfCollections = new ArrayList<HashSet<PVector>>();
     //concatenate all collectionOfPairs
-    HashSet collectionOfPairs = new HashSet<PVector>();
+    //HashSet collectionOfPairs = new HashSet<PVector>();
 
     if(Street){
     println("CC is now"+collectionOfCollections.size());
@@ -48,8 +50,9 @@ class Way{
         collectionOfPairs.add(singlePair);
       }
 
-      println("this block of " +coordinates.size()+ " road segments has " +collectionOfPairs.size()+" segments: "+collectionOfPairs+"\n");
-      println("next we'll add"+collectionOfPairs+" to bigger list");
+      println("this block of " +coordinates.size()+ " road segments and so far we have added "+collectionOfPairs.size()+" segments");
+      //+collectionOfPairs+"\n");
+      //println("next we'll add"+collectionOfPairs+" to bigger list");
       
       //each collectionOfPairs is working, but it's not concatenating to a bigger list every time there's a Street
       collectionOfCollections.add(collectionOfPairs);
