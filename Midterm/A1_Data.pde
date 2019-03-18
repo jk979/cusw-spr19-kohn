@@ -5,8 +5,11 @@ Table kData, mrfData;
 
 //for pair-nodes
 import java.util.HashSet;
-ArrayList<HashSet<PVector>> collectionOfCollections = new ArrayList<HashSet<PVector>>();
-HashSet collectionOfPairs = new HashSet<PVector>();
+
+//ArrayList<HashSet<PVector>> collectionOfCollections = new ArrayList<HashSet<PVector>>();
+//HashSet collectionOfPairs = new HashSet<PVector>();
+ArrayList<ArrayList<PVector>> collectionOfCollections = new ArrayList<ArrayList<PVector>>();
+ArrayList collectionOfPairs = new ArrayList<PVector>();
 
 void loadData() {
   //load and resize background Bandra image
@@ -225,19 +228,26 @@ void parseData() {
     println("but really: "+collectionOfCollections.size());
     
     //finally, flatten collectionOfCollections
+    //make a finalCollection
+    ArrayList finalCollection = new ArrayList<PVector>();
+    
       //collectionOfCollections exists as [ ( [pair1, pair2] ),( [pair1, pair2] ) ] 
       //goal: [ [pair1, pair2],[pair1, pair2] ]
       //drill into Segment
       for (int p = 0; p<collectionOfCollections.size(); p++){
-        HashSet segment = new HashSet<PVector>();
+        //HashSet segment = new HashSet<PVector>();
+        ArrayList segment = new ArrayList<PVector>();
         segment = collectionOfCollections.get(p);
         //drill into Pair
-        for (int c = 0; c<segment.size(); c++){
-          println(segment.get(c));
+        for (int q = 0; q<segment.size(); q++){
+          ArrayList<PVector> pair = new ArrayList<PVector>();
+          pair = segment.get(q);
           //add Pair into a new ArrayList
+          //finalCollection.add(segment.get(q));
         }
       }
       //print the new, flattened ArrayList
+      //println(finalCollection.size());
 
   }
 
