@@ -233,9 +233,11 @@ void chooseRandomSource(){
   //get the intermediate point between those two points
   println("the types of these points are " + randomSegment.get(0).getClass(),", "+ randomSegment.get(1).getClass());
   println("so why doesn't intermediate give a point?");
-  //map.intermediate(randomSegment.get(0), randomSegment.get(1),0.5);
-  //
+  PVector pt1 = (PVector)randomSegment.get(0);
+  PVector pt2 = (PVector)randomSegment.get(1);
   
+  map.intermediate(pt1, pt2,0.5);
+  println(map.intermediate(pt1, pt2,0.5));
   
 }
 
