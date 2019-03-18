@@ -220,7 +220,7 @@ void parseData() {
   
   
 //now determine a random Source point from collectionOfCollections
-void drawRandomSource(){
+void chooseRandomSource(){
   //show size of the complete list of two-node segments
   println("Random source chosen from: "+collectionOfCollections.size());
   //get a random index from that list
@@ -232,18 +232,12 @@ void drawRandomSource(){
   println("the random Segment is "+randomSegment);
   //get the intermediate point between those two points
   println("the types of these points are " + randomSegment.get(0).getClass(),", "+ randomSegment.get(1).getClass());
+  println("so why doesn't intermediate give a point?");
   PVector pt1 = (PVector)randomSegment.get(0);
   PVector pt2 = (PVector)randomSegment.get(1);
   
   map.intermediate(pt1, pt2,0.5);
   println(map.intermediate(pt1, pt2,0.5));
-  //generate intermediate points
-  PVector intermediates = map.intermediate(pt1,pt2, 0.5);
-  PVector screenInt = map.getScreenLocation(intermediates);
-  fill(color(255,0,0));
-  noStroke();
-  ellipse(screenInt.x, screenInt.y, 3, 3);
-        
   
 }
 
