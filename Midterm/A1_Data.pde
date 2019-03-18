@@ -10,6 +10,7 @@ import java.util.HashSet;
 //HashSet collectionOfPairs = new HashSet<PVector>();
 ArrayList<ArrayList<PVector>> collectionOfCollections = new ArrayList<ArrayList<PVector>>();
 ArrayList collectionOfPairs = new ArrayList<PVector>();
+ArrayList collection_kcoords = new ArrayList<ArrayList<PVector>>();
 
 void loadData() {
   //load and resize background Bandra image
@@ -93,6 +94,7 @@ void parseData() {
         float lat_kmatch = float(kData.getString(m,2)); //west
         float lon_kmatch = float(kData.getString(m,3));
         kcoords.add(new PVector(lat_kmatch, lon_kmatch));
+
       }
   }
   
@@ -218,6 +220,21 @@ void parseData() {
 
   } //end parseData function
   
+void chooseRandomKabadiwala(){
+  //chooses from big list of 199 kabadiwalas. May not show up on the small Bandra map for every run. 
+  println("Random kabadiwala chosen from: "+collection_kcoords.size()); //kcoords is global
+  int randomKIndex = parseInt(random(0,collection_kcoords.size()));
+  println("the random KIndex is "+randomKIndex);
+  //get kabadiwala coordinates for that index
+  PVector randomKabadiwala = new PVector();
+  println(collection_kcoords);
+  println("type is"+collection_kcoords.getClass());
+  randomKabadiwala = (PVector)collection_kcoords.get(randomKIndex);
+  PVector screenRandomK = map.getScreenLocation(randomKabadiwala);
+  fill(color(128,128,255));
+  noStroke();
+  polygon(screenRandomK.x, screenRandomK.y, 10, 4);
+}
   
 //now determine a random Source point from collectionOfCollections
 void drawRandomSource(){
@@ -242,34 +259,8 @@ void drawRandomSource(){
   PVector screenInt = map.getScreenLocation(intermediates);
   fill(color(255,0,0));
   noStroke();
-  ellipse(screenInt.x, screenInt.y, 3, 3);
-        
-  
+  polygon(screenInt.x, screenInt.y, 6, 3);
 }
-
-/*
-void makeIntermediates(){
-  float int_loc;
-  int num_intpoints;
-  
-  //how many points to generate
-  num_intpoints = 200;
-  
-  //for each point, generate a number between 0 and 1 to get the point on the road segment
-  int_loc = random(0,1);
-}
-
-//call makeIntermediates function in parseData, and save points to arrayList of PVectors
-void saveIntPoints(){
-  ArrayList<PVector> intpoints;
-
-  intpoints = new ArrayList<PVector>();
-  //for(int i=0; i<num_intpoints; i++){
-  //   Way.Streets.map.intermediate(screenStart, screenEnd, int_loc);
-  //}
-  
-}
-*/
 
 void drawGISObjects() {
 
