@@ -3,6 +3,11 @@ JSONArray features;
 JSONObject bandra;
 Table kData, mrfData;
 
+//for pair-nodes
+import java.util.HashSet;
+ArrayList<HashSet<PVector>> collectionOfCollections = new ArrayList<HashSet<PVector>>();
+HashSet collectionOfPairs = new HashSet<PVector>();
+
 void loadData() {
   //load and resize background Bandra image
   //background = loadImage("data/Bandra.png");
@@ -176,9 +181,65 @@ void parseData() {
       }
 
       ways.add(way);
+      
+    //make pair-nodes
+    if(way.Street = true){
+    //println("CC is now"+collectionOfCollections.size());
+    //coordinates.size() is the size of each road array
+    //firstElement and secondElement are the base road elements--the first and second lat-long coordinate pairs in a node: [] and []
+    //singlePair is a pair of joined road nodes: [ [],[] ]
+    //collectionOfPairs will be a collection of pairs of road nodes: [ [ [],[] ], [ [],[] ] ]
+    //concatenate collectionOfPairs for all streets you loop through
+      PVector firstElement = new PVector();
+      PVector secondElement = new PVector();
+
+      //for each element in the single road array:
+      //println("size of this block is " + coords.size());
+      for(int a = 0; a < coords.size()-1; a++){
+        ArrayList singlePair = new ArrayList<PVector>();
+        firstElement = coords.get(a);
+        secondElement = coords.get(a+1);
+        //add 1 and 2 to singlePair
+        singlePair.add(firstElement);
+        singlePair.add(secondElement);
+        //add singlePair to the collection for that road
+        collectionOfPairs.add(singlePair);
+      }
+
+      //println("this is a block of " +coordinates.size()+ " road segments and so far we have added "+collectionOfPairs.size()+" pair segments to collectionOfPairs");
+      //println("next we'll add"+collectionOfPairs+" to bigger list");
+      
+      //add collectionOfPairs to the larger collection
+      collectionOfCollections.add(collectionOfPairs);
+      
+      //print collectionOfCollections every time it loops through a new street collectionOfPairs
+      //println(collectionOfCollections.size());
     }
+      
+      //iterate through each element in collectionOfCollections
+      //then iterate through each pair 
+      //add each pair element to a new list
+      
+    }
+    }
+    println("but really: "+collectionOfCollections.size());
+    
+    //finally, flatten collectionOfCollections
+      //collectionOfCollections exists as [ ( [pair1, pair2] ),( [pair1, pair2] ) ] 
+      //goal: [ [pair1, pair2],[pair1, pair2] ]
+      //drill into Segment
+      for (int p = 0; p<collectionOfCollections.size(); p++){
+        HashSet segment = new HashSet<PVector>();
+        segment = collectionOfCollections.get(p);
+        //drill into Pair
+        for (int c = 0; c<segment.size(); c++){
+          println(segment.get(c));
+          //add Pair into a new ArrayList
+        }
+      }
+      //print the new, flattened ArrayList
+
   }
-}
 
 /*
 void makeIntermediates(){
