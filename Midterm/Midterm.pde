@@ -51,18 +51,14 @@ void setup(){
   size(1250,750); //add ,P3D to make it 3D
   
   //initialize data structures
-  
+  //map = new MercatorMap(width, height, 19.2904, 18.8835,72.7364,73.0570, 0);
   
   //draw the map with given dimensions
   int width_map = 450;
   int height_map = height;
   
   pushMatrix();
-  //bandra only
   map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0);
-  
-  //mumbai
-  //map = new MercatorMap(width_map+150, height_map, 19.2904, 18.8835,72.7364,73.0570, 0);
   popMatrix();
   
   polygons = new ArrayList<Polygon>();
@@ -98,9 +94,6 @@ void draw(){
   for(int i=0; i<kData.getRowCount()-1; i++){
      k_array.get(i).draw();
   }
-  
-  //choose random kabadiwala
-  chooseRandomKabadiwala();
   
   //draw random source for kabadiwala
   drawRandomSource();
