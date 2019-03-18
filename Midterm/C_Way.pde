@@ -87,3 +87,31 @@ class Way{
 
 }
 }
+
+/*
+//code to flatten an array collection
+
+    //finally, flatten collectionOfCollections
+    //make a finalCollection
+    ArrayList finalCollection = new ArrayList<PVector>();
+    
+      //collectionOfCollections exists as [ ( [pair1, pair2] ),( [pair1, pair2] ) ] 
+      //goal: [ [pair1, pair2],[pair1, pair2] ]
+      //drill into Segment
+      for (int p = 0; p<collectionOfCollections.size(); p++){
+        //HashSet segment = new HashSet<PVector>();
+        ArrayList segment = new ArrayList<PVector>();
+        segment = collectionOfCollections.get(p);
+        //drill into Pair
+        //println(segment.size());
+        for (int q = 0; q<segment.size(); q++){
+          ArrayList<PVector> pair = new ArrayList<PVector>();
+          //pair = segment.get(q);
+          //add Pair into a new ArrayList
+          //finalCollection.add(segment.get(q));
+        }
+      }
+      //print the new, flattened ArrayList
+      //println(finalCollection.size());
+
+*/

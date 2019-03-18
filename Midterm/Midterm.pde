@@ -60,7 +60,7 @@ void setup(){
   //load and parse data in setup
   loadData();
   parseData();
-  
+  chooseRandomSource();
   //initialize model and simulation
   //initModel();
   

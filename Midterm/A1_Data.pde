@@ -208,52 +208,36 @@ void parseData() {
         //add singlePair to the collection for that road
         collectionOfPairs.add(singlePair);
         collectionOfCollections.add(singlePair);
-
-      }
-
-      //println("this is a block of " +coordinates.size()+ " road segments and so far we have added "+collectionOfPairs.size()+" pair segments to collectionOfPairs");
-      //println("next we'll add"+collectionOfPairs+" to bigger list");
-      
-      //add collectionOfPairs to the larger collection
-      
-      //print collectionOfCollections every time it loops through a new street collectionOfPairs
-    }
-      
-      //iterate through each element in collectionOfCollections
-      //then iterate through each pair 
-      //add each pair element to a new list
-      
-    }
-    }
+      } //end make singlePairs
+    } //end if way Street == true
+    } //end if type equals LineString
+    } //end parseData's 3-way sorting
     
     //checking to see if this is correct structure
-    println("but really: "+collectionOfCollections.size());
-    println(collectionOfCollections);
-    
-    //finally, flatten collectionOfCollections
-    //make a finalCollection
-    ArrayList finalCollection = new ArrayList<PVector>();
-    
-      //collectionOfCollections exists as [ ( [pair1, pair2] ),( [pair1, pair2] ) ] 
-      //goal: [ [pair1, pair2],[pair1, pair2] ]
-      //drill into Segment
-      for (int p = 0; p<collectionOfCollections.size(); p++){
-        //HashSet segment = new HashSet<PVector>();
-        ArrayList segment = new ArrayList<PVector>();
-        segment = collectionOfCollections.get(p);
-        //drill into Pair
-        //println(segment.size());
-        for (int q = 0; q<segment.size(); q++){
-          ArrayList<PVector> pair = new ArrayList<PVector>();
-          //pair = segment.get(q);
-          //add Pair into a new ArrayList
-          //finalCollection.add(segment.get(q));
-        }
-      }
-      //print the new, flattened ArrayList
-      //println(finalCollection.size());
+    println("Total segment pairs in this road file: "+collectionOfCollections.size());
 
-  }
+  } //end parseData function
+  
+  
+//now determine a random Source point from collectionOfCollections
+void chooseRandomSource(){
+  //show size of the complete list of two-node segments
+  println("Random source chosen from: "+collectionOfCollections.size());
+  //get a random index from that list
+  int randomIndex = parseInt(random(0,collectionOfCollections.size()));
+  println("the random Index is "+ randomIndex); 
+  //get the segment coordinates of that index
+  ArrayList randomSegment = new ArrayList<PVector>();
+  randomSegment = collectionOfCollections.get(randomIndex);
+  println("the random Segment is "+randomSegment);
+  //get the intermediate point between those two points
+  println("the types of these points are " + randomSegment.get(0).getClass(),", "+ randomSegment.get(1).getClass());
+  println("so why doesn't intermediate give a point?");
+  //map.intermediate(randomSegment.get(0), randomSegment.get(1),0.5);
+  //
+  
+  
+}
 
 /*
 void makeIntermediates(){
