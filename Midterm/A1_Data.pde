@@ -186,7 +186,7 @@ void parseData() {
       ways.add(way);
       
     //make pair-nodes
-    if(way.Street = true){
+    if(way.Street == true){
     //println("CC is now"+collectionOfCollections.size());
     //coordinates.size() is the size of each road array
     //firstElement and secondElement are the base road elements--the first and second lat-long coordinate pairs in a node: [] and []
@@ -207,16 +207,16 @@ void parseData() {
         singlePair.add(secondElement);
         //add singlePair to the collection for that road
         collectionOfPairs.add(singlePair);
+        collectionOfCollections.add(singlePair);
+
       }
 
       //println("this is a block of " +coordinates.size()+ " road segments and so far we have added "+collectionOfPairs.size()+" pair segments to collectionOfPairs");
       //println("next we'll add"+collectionOfPairs+" to bigger list");
       
       //add collectionOfPairs to the larger collection
-      collectionOfCollections.add(collectionOfPairs);
       
       //print collectionOfCollections every time it loops through a new street collectionOfPairs
-      //println(collectionOfCollections.size());
     }
       
       //iterate through each element in collectionOfCollections
@@ -225,7 +225,10 @@ void parseData() {
       
     }
     }
+    
+    //checking to see if this is correct structure
     println("but really: "+collectionOfCollections.size());
+    println(collectionOfCollections);
     
     //finally, flatten collectionOfCollections
     //make a finalCollection
@@ -239,9 +242,10 @@ void parseData() {
         ArrayList segment = new ArrayList<PVector>();
         segment = collectionOfCollections.get(p);
         //drill into Pair
+        //println(segment.size());
         for (int q = 0; q<segment.size(); q++){
           ArrayList<PVector> pair = new ArrayList<PVector>();
-          pair = segment.get(q);
+          //pair = segment.get(q);
           //add Pair into a new ArrayList
           //finalCollection.add(segment.get(q));
         }

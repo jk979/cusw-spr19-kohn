@@ -35,9 +35,9 @@ class Way{
         //generate intermediate points
         PVector intermediates = map.intermediate(coordinates.get(i),coordinates.get(i+1), 0.5);
         PVector screenInt = map.getScreenLocation(intermediates);
-        fill(color(255,0,0));
-        noStroke();
-        ellipse(screenInt.x, screenInt.y, 3, 3);
+        //fill(color(255,0,0));
+        //noStroke();
+        //ellipse(screenInt.x, screenInt.y, 3, 3);
         
         //make street network
         strokeWeight(2);
