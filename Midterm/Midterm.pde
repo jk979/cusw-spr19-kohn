@@ -68,7 +68,6 @@ void setup(){
   //load and parse data in setup
   loadData();
   parseData();
-  chooseRandomSource();
   //initialize model and simulation
   //initModel();
   
@@ -95,6 +94,9 @@ void draw(){
   for(int i=0; i<kData.getRowCount()-1; i++){
      k_array.get(i).draw();
   }
+  
+  //draw random source for kabadiwala
+  drawRandomSource();
   
   //draw title box
   int bgColor = 230;
