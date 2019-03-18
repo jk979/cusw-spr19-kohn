@@ -48,11 +48,19 @@ void initModel(){
 }
 
 void setup(){
-  size(450,750); //add ,P3D to make it 3D
+  size(1250,750); //add ,P3D to make it 3D
+  
   //initialize data structures
   //map = new MercatorMap(width, height, 19.2904, 18.8835,72.7364,73.0570, 0);
-
-  map = new MercatorMap(width, height, 19.0942,19.0391, 72.8143,72.8462, 0);
+  
+  //draw the map with given dimensions
+  int width_map = 450;
+  int height_map = height;
+  
+  pushMatrix();
+  map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0);
+  popMatrix();
+  
   polygons = new ArrayList<Polygon>();
   ways = new ArrayList<Way>();
   pois = new ArrayList<POI>();
@@ -87,6 +95,36 @@ void draw(){
   for(int i=0; i<kData.getRowCount()-1; i++){
      k_array.get(i).draw();
   }
+  
+  //draw title box
+  int bgColor = 230;
+  fill(bgColor, 2*baseAlpha);
+  rect(520,20,700,120,10);
+  //draw title text
+  fill(255,255,255);
+  textSize(24);
+  text("The Kabadiwala's Journey", 540, 60);
+  //draw description
+  fill(240,240,240);
+  textSize(12);
+  text("This map shows kabadiwalas moving back and forth between their shop (green) and the source of material (red). \nPress SPACE to begin the work week!",540,100);
+
+  //draw input box
+  textSize(12);
+  fill(bgColor, 2*baseAlpha);
+  rect(520, 150, 300, 500, 10);
+  //draw inputs
+  fill(255,0,0);
+  text("Inputs",540,170);
+  
+  //draw output box
+  fill(bgColor, 2*baseAlpha);
+  rect(920, 150, 300, 500, 10);
+  //draw outputs
+  fill(0,255,0);
+  text("Outputs",940,170);
+  
+  
   noLoop();
 }
 
