@@ -2,6 +2,9 @@ JSONObject example;
 JSONArray features;
 JSONObject bandra;
 Table kData, mrfData;
+PVector randomKabadiwala = new PVector();
+PVector randomSource = new PVector();
+
 
 //for pair-nodes
 import java.util.HashSet;
@@ -226,14 +229,13 @@ void chooseRandomKabadiwala(){
   int randomKIndex = parseInt(random(0,collection_kcoords.size()));
   println("the random KIndex is "+randomKIndex);
   //get kabadiwala coordinates for that index
-  PVector randomKabadiwala = new PVector();
   println(collection_kcoords);
   println("type is"+collection_kcoords.getClass());
   randomKabadiwala = (PVector)collection_kcoords.get(randomKIndex);
-  PVector screenRandomK = map.getScreenLocation(randomKabadiwala);
+  randomKabadiwala = map.getScreenLocation(randomKabadiwala);
   fill(color(128,128,255));
   noStroke();
-  polygon(screenRandomK.x, screenRandomK.y, 10, 4);
+  polygon(randomKabadiwala.x, randomKabadiwala.y, 6, 4);
 }
   
 //now determine a random Source point from collectionOfCollections
@@ -252,14 +254,14 @@ void drawRandomSource(){
   PVector pt1 = (PVector)randomSegment.get(0);
   PVector pt2 = (PVector)randomSegment.get(1);
   
-  map.intermediate(pt1, pt2,0.5);
-  println(map.intermediate(pt1, pt2,0.5));
+  //map.intermediate(pt1, pt2,0.5);
+  //println(map.intermediate(pt1, pt2,0.5));
   //generate intermediate points
   PVector intermediates = map.intermediate(pt1,pt2, 0.5);
-  PVector screenInt = map.getScreenLocation(intermediates);
+  randomSource = map.getScreenLocation(intermediates);
   fill(color(255,0,0));
   noStroke();
-  polygon(screenInt.x, screenInt.y, 6, 3);
+  polygon(randomSource.x, randomSource.y, 6, 3);
 }
 
 void drawGISObjects() {

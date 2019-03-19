@@ -74,6 +74,7 @@ void randomPaths(int numPaths) {
     PVector orig = new PVector(random(1.0)*width, random(1.0)*height);
     PVector dest = new PVector(random(1.0)*width, random(1.0)*height);
     Path p = new Path(orig, dest);
+    //Path p = new Path(randomKabadiwala, randomSource);
     p.solve(finder);
     paths.add(p);
   }
@@ -107,7 +108,9 @@ void poiPaths(int numPaths) {
       PVector dest = pois.get(dest_index).coord;
       dest = map.getScreenLocation(dest);
       
+      //Path p = new Path(randomKabadiwala, randomSource);
       Path p = new Path(orig, dest);
+      println("solving...not found...");
       p.solve(finder);
       
       if(p.waypoints.size() > 1) {
