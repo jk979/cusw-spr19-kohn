@@ -39,9 +39,17 @@ void initModel(){
   waysNetwork(ways);
   //randomNetworkMinusBuildings(0.1, polygons);
   
+  //initialize origin and destinations
+  //choose random kabadiwala
+  chooseRandomKabadiwala();
+  
+  //draw random source for kabadiwala
+  chooseRandomSource();
+  
   //2. initialize paths using one of these methods
   //randomPaths(3);
-  poiPaths(3);
+  //poiPaths(1);
+  kPath();
   
   //3. initialize population
   initPopulation(30*paths.size());
@@ -72,8 +80,13 @@ void setup(){
   //load and parse data in setup
   loadData();
   parseData();
+  
   //initialize model and simulation
   initModel();
+  
+  
+  
+  
   
   /*
   hs = new HScrollbar(width - int(height*MARGIN) - int(0.3*height), int((1-1.5*MARGIN)*height), int(0.3*height), int(MARGIN*height), 5);
@@ -109,12 +122,10 @@ void draw(){
     p.update(personLocations(people), collisionDetection);
     p.display(#FFFFFF, 255);
   }
+ 
   
-  //choose random kabadiwala
-  chooseRandomKabadiwala();
-  
-  //draw random source for kabadiwala
-  drawRandomSource();
+  displayKabadiwala();
+  displaySource();
   
   //draw title box
   int bgColor = 230;
@@ -151,7 +162,9 @@ void draw(){
   //noLoop();
 }
 
-
+void keyPressed(){
+  initModel();
+}
 ////////////////////////////////////
 
 /*

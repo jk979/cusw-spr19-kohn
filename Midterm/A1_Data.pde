@@ -13,7 +13,7 @@ import java.util.HashSet;
 //HashSet collectionOfPairs = new HashSet<PVector>();
 ArrayList<ArrayList<PVector>> collectionOfCollections = new ArrayList<ArrayList<PVector>>();
 ArrayList collectionOfPairs = new ArrayList<PVector>();
-ArrayList collection_kcoords = new ArrayList<ArrayList<PVector>>();
+ArrayList collection_kcoords = new ArrayList<PVector>();
 
 void loadData() {
   //load and resize background Bandra image
@@ -96,9 +96,11 @@ void parseData() {
       if(k_id == previd_k){
         float lat_kmatch = float(kData.getString(m,2)); //west
         float lon_kmatch = float(kData.getString(m,3));
-        kcoords.add(new PVector(lat_kmatch, lon_kmatch));
-
+        PVector temp = new PVector(lat_kmatch, lon_kmatch);
+        kcoords.add(temp);
+        collection_kcoords.add(temp);
       }
+
   }
   
   //parse CSV for MRF
@@ -229,17 +231,21 @@ void chooseRandomKabadiwala(){
   int randomKIndex = parseInt(random(0,collection_kcoords.size()));
   println("the random KIndex is "+randomKIndex);
   //get kabadiwala coordinates for that index
-  println(collection_kcoords);
+  //println(collection_kcoords);
   println("type is"+collection_kcoords.getClass());
   randomKabadiwala = (PVector)collection_kcoords.get(randomKIndex);
   randomKabadiwala = map.getScreenLocation(randomKabadiwala);
+}
+
+void displayKabadiwala(){
   fill(color(128,128,255));
   noStroke();
   polygon(randomKabadiwala.x, randomKabadiwala.y, 6, 4);
+  
 }
   
 //now determine a random Source point from collectionOfCollections
-void drawRandomSource(){
+void chooseRandomSource(){
   //show size of the complete list of two-node segments
   println("Random source chosen from: "+collectionOfCollections.size());
   //get a random index from that list
@@ -259,6 +265,9 @@ void drawRandomSource(){
   //generate intermediate points
   PVector intermediates = map.intermediate(pt1,pt2, 0.5);
   randomSource = map.getScreenLocation(intermediates);
+}
+
+void displaySource(){
   fill(color(255,0,0));
   noStroke();
   polygon(randomSource.x, randomSource.y, 6, 3);

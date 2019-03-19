@@ -21,7 +21,6 @@ class Point_k{
   //Drawing point
   void draw(){
      PVector screenLocation = map.getScreenLocation(kcoord); //converting screen into coordinates
-     collection_kcoords.add(kcoord);
 
      if(typeK){
        fill(k_fill); //fill pois

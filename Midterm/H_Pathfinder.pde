@@ -10,10 +10,8 @@ class Path {
   // Constructs a random straight-line path within a specified rectangle
   //adapt agents to make Shop (the kData CSV points) the origin
   Path(float x, float y, float l, float w) {
-    origin = randomKabadiwala; 
-    destination = randomSource;
-    //origin = new PVector( random(x, x+l), random(y, y+w) );
-    //destination = new PVector( random(x, x+l), random(y, y+w) );
+    origin = new PVector( random(x, x+l), random(y, y+w) );
+    destination = new PVector( random(x, x+l), random(y, y+w) );
     waypoints = new ArrayList<PVector>();
     straightPath();
   }

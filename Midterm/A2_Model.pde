@@ -81,6 +81,8 @@ void randomPaths(int numPaths) {
   
 }
 
+
+
 void poiPaths(int numPaths) {
   /*  An pathfinder object used to derive the shortest path. */
   finder = new Pathfinder(network);
@@ -123,6 +125,53 @@ void poiPaths(int numPaths) {
   }
   
 }
+
+void kPath() {
+  /*  An pathfinder object used to derive the shortest path. */
+  finder = new Pathfinder(network);
+  
+  /*  Generate List of Shortest Paths through our network
+   *  FORMAT 1: Path(float x, float y, float l, float w) <- defines 2 random points inside a rectangle
+   *  FORMAT 2: Path(PVector o, PVector d) <- defined by two specific coordinates
+   */
+   
+  paths = new ArrayList<Path>();
+  int numPaths = 1;
+  for (int i=0; i<numPaths; i++) {
+    
+    // Searches for valid paths only
+    boolean notFound = true;
+    
+    //while(notFound) {
+      //  An example Origin and Desination between which we want to know the shortest path
+      //
+      // Origin is Random POI *need to change this to make Origin  from B2_KPoints*
+      /*int orig_index = int(random(pois.size()));
+      PVector orig = pois.get(orig_index).coord;
+      orig = map.getScreenLocation(orig);
+      
+      // Destination is Random POI
+      int dest_index = int(random(pois.size()));
+      PVector dest = pois.get(dest_index).coord;
+      dest = map.getScreenLocation(dest);
+      */
+      
+      //Path p = new Path(randomKabadiwala, randomSource);
+      Path p = new Path(randomKabadiwala, randomSource);
+      println("using randomK and randomSource");
+      p.solve(finder);
+      
+      if(p.waypoints.size() > 1) {
+        notFound = false;
+        paths.add(p);
+      }
+      
+    //}
+    
+  }
+  
+}
+
 
 void initPopulation(int count) {
   /*  An example population that traverses along various paths
