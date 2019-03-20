@@ -52,7 +52,8 @@ void initModel(){
   kPath();
   
   //3. initialize population
-  initPopulation(30*paths.size());
+  //initPopulation(30*paths.size());
+  initPopulation(1*paths.size());
 }
 
 void setup(){
@@ -126,9 +127,11 @@ void draw(){
   
   displayKabadiwala();
   displaySource();
+  displayPaper();
   
   //draw title box
   int bgColor = 230;
+  noStroke();
   fill(bgColor, 2*baseAlpha);
   rect(520,20,700,120,10);
   //draw title text
@@ -148,7 +151,6 @@ void draw(){
   rect(520,150,300,50,10);
   fill(139,0,0);
   text("Inputs",640,180);
-  
   
   //draw output box
   fill(bgColor, 2*baseAlpha);
@@ -185,12 +187,18 @@ Standard GIS shapes:
 
 ////////////
 /*
-Each Agent gets 1 randomly generated Garbage to pick up. 
-1. Generate the 1 garbage along node-edge network for each agent. 
+Each Agent gets 1 randomly generated Garbage to pick up. ***DONE***
+1. Generate the 1 garbage along node-edge network for each agent. ***DONE***
 for each agent: 
-- find shortest path between agent and garbage
-- move on that path to the garbage
+- find shortest path between agent and garbage ***DONE***
+- move on that path to the garbage ***DONE***
+-----------------------------------
 - when collision detection between agent and garbage, garbage location = agent location - some radius
 - after collision detection, agent receives Rupees and reverses path
 - when collision detection between agent and shop, agent prints "Collected!"
+- profit++;
+-----------------------------------
+- measure total distance traveled
+-----------------------------------
+- limit appearance of Sources to less than 2km network distance in any direction from the kabadiwala
 */

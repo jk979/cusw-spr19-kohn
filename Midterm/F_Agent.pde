@@ -9,7 +9,8 @@ class Agent {
   ArrayList<PVector> path;
   int pathIndex, pathLength; // Index and Amount of Nodes in a Path
   int pathDirection; // -1 or +1 to specific directionality
-  
+  int laps = 0;
+
   Agent(float x, float y, int rad, float maxS, ArrayList<PVector> path) {
     r = rad;
     tolerance *= r;
@@ -98,7 +99,8 @@ class Agent {
     PVector waypoint = path.get(pathIndex);
     float jitterX = random(-tolerance, tolerance);
     float jitterY = random(-tolerance, tolerance);
-    PVector direction = new PVector(waypoint.x + jitterX, waypoint.y + jitterY);
+    //PVector direction = new PVector(waypoint.x + jitterX, waypoint.y + jitterY);
+    PVector direction = new PVector(waypoint.x, waypoint.y);
     PVector seekForce = seek(direction);
     seekForce.mult(1);
     acceleration.add(seekForce);
@@ -122,12 +124,33 @@ class Agent {
     if (prox < 3 && path.size() > 1 ) {
       if (pathDirection == 1 && pathIndex == pathLength-1 || pathDirection == -1 && pathIndex == 0) {
         pathDirection *= -1;
+        //checkLaps();
+        //laps +=1;
       }
       pathIndex += pathDirection;
     }
   }
   
-  void display(color col, int alpha) {
+  void getCumulativeDistance(){
+    //get real-time distance kabadiwala agent has traveled so far
+    //print it in the Outputs section
+  }
+  
+  /*
+  void checkLaps(){
+    //if it intersects with the Garbage, make it 1
+     if(laps==0){
+        println("I'm moving!");
+        }
+        if(laps==1){
+          println("I'm coming back...");
+        } else if(laps>1){
+          println("I've completed.");
+        }
+  }
+  */
+  
+  void display(color col, int alpha) { //agent color
     fill(col, alpha);
     noStroke();
     ellipse(location.x, location.y, r, r);

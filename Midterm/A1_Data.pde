@@ -4,6 +4,7 @@ JSONObject bandra;
 Table kData, mrfData;
 PVector randomKabadiwala = new PVector();
 PVector randomSource = new PVector();
+PVector paper = new PVector();
 
 
 //for pair-nodes
@@ -78,9 +79,14 @@ void parseData() {
   int previd_k = 0; 
   ArrayList<PVector> kcoords = new ArrayList<PVector>();
   float lat_k, lon_k;
+  String ward; 
   for(int m = 0; m<kData.getRowCount(); m++){
+    ward = kData.getString(m,1);
     lat_k = float(kData.getString(m,2));
     lon_k = float(kData.getString(m,3));
+    
+    //only for Bandra kabadiwalas, can add the others once the GeoJSON full merge on all street networks is operational
+    if(ward.equals("HW")){
     int k_id = int(kData.getString(m,0));
       if(k_id != previd_k){
         if(kcoords.size() > 0){ //create constructor for kcoords
@@ -100,6 +106,7 @@ void parseData() {
         kcoords.add(temp);
         collection_kcoords.add(temp);
       }
+    }
 
   }
   
@@ -265,12 +272,19 @@ void chooseRandomSource(){
   //generate intermediate points
   PVector intermediates = map.intermediate(pt1,pt2, 0.5);
   randomSource = map.getScreenLocation(intermediates);
+  paper = map.getScreenLocation(intermediates);
 }
 
 void displaySource(){
   fill(color(255,0,0));
   noStroke();
   polygon(randomSource.x, randomSource.y, 6, 3);
+}
+
+void displayPaper(){
+  stroke(color(255,255,0));
+  noFill();
+  ellipse(paper.x, paper.y, 13, 13);
 }
 
 void drawGISObjects() {
