@@ -95,6 +95,7 @@ void poiPaths(int numPaths) {
   paths = new ArrayList<Path>();
   for (int i=0; i<numPaths; i++) {
     
+    
     // Searches for valid paths only
     boolean notFound = true;
     while(notFound) {
@@ -142,7 +143,7 @@ void kPath() {
     // Searches for valid paths only
     boolean notFound = true;
     
-    //while(notFound) {
+    while(notFound) {
       //  An example Origin and Desination between which we want to know the shortest path
       //
       // Origin is Random POI *need to change this to make Origin  from B2_KPoints*
@@ -155,21 +156,25 @@ void kPath() {
       PVector dest = pois.get(dest_index).coord;
       dest = map.getScreenLocation(dest);
       */
+      chooseRandomKabadiwala();
+      chooseRandomSource();
       
       //Path p = new Path(randomKabadiwala, randomSource);
       Path p = new Path(randomKabadiwala, randomSource);
       println("using randomK and randomSource");
-
+      
       //Path p = new Path(kabadiwala, randomSource);
       //println("using all kabadiwalas and randomSource");
       p.solve(finder);
       
-      if(p.waypoints.size() > 1) {
+      if(p.waypoints.size() > 2) {
         notFound = false;
         paths.add(p);
       }
       
-    //}
+      displayKabadiwala();
+      displaySource();
+    }
     
   }
   

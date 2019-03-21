@@ -19,17 +19,35 @@ int euclideanOriginBundle;
 //costs and quantities (can change these dynamically)
 //paper
 int kabadiwala_pickup_cost_paper;
-int paperKBuy = 12;
+int paperKBuy = 10;
 int paperQuantity = 1500;
 int kabadiwala_offload_cost_paper;
-int paperKSell = 15;
+int paperKSell = 12;
 
 //plastic
 int kabadiwala_pickup_cost_plastic;
-int plasticKBuy = 10; 
-int plasticQuantity = 100; 
+int plasticKBuy = 12; 
+int plasticQuantity = 120; 
 int kabadiwala_offload_cost_plastic;
 int plasticKSell = 20;
+
+//glass
+int kabadiwala_pickup_cost_glass;
+int glassKBuy = 1; 
+int glassQuantity = 60; 
+int kabadiwala_offload_cost_glass;
+int glassKSell = 4;
+
+//metal
+int kabadiwala_pickup_cost_metal;
+int metalKBuy = 80; 
+int metalQuantity = 10; 
+int kabadiwala_offload_cost_metal;
+int metalKSell = 100;
+
+//distance calculation
+float HavD;
+int roundtripKM;
 
 //for pair-nodes
 import java.util.HashSet;
@@ -398,7 +416,11 @@ void chooseAllSources(){
 }
 
 
+/*
+  Only set it if the Haversine from the random souce  is <= 2000 
+*/
 void chooseRandomKabadiwala() {
+  boolean foundPoint = false;
   //chooses from big list of 199 kabadiwalas. May not show up on the small Bandra map for every run. 
   println("Random kabadiwala chosen from: "+collection_kcoords.size()); //kcoords is global
   int randomKIndex = parseInt(random(0, collection_kcoords.size()));
@@ -406,8 +428,17 @@ void chooseRandomKabadiwala() {
   //get kabadiwala coordinates for that index
   //println(collection_kcoords);
   println("type is"+collection_kcoords.getClass());
-  randomKabadiwala = (PVector)collection_kcoords.get(randomKIndex);
-  randomKabadiwala = map.getScreenLocation(randomKabadiwala);
+
+  while(!foundPoint){
+    randomKIndex = parseInt(random(0, collection_kcoords.size()));
+    HavD = (map.Haversine(map.getGeo(randomKabadiwala), map.getGeo(randomSource)));
+    if(HavD <= 5000){
+        println("Haversine is: ", (map.Haversine(map.getGeo(randomKabadiwala), map.getGeo(randomSource))));
+        randomKabadiwala = (PVector)collection_kcoords.get(randomKIndex);
+        randomKabadiwala = map.getScreenLocation(randomKabadiwala);
+        foundPoint = true;
+    }
+  }
 }
 
 void displayKabadiwala() {

@@ -16,15 +16,6 @@ class Path {
     straightPath();
   }
   
-  //alternate constructor
-  /*Path(float x, float y, float l, float w) {
-    origin = new PVector( random(x, x+l), random(y, y+w) );
-    destination = new PVector( random(x, x+l), random(y, y+w) );
-    waypoints = new ArrayList<PVector>();
-    straightPath();
-  }
-  */
-  
   // Constructs an Empty Path with waypoints yet to be included
   Path(PVector o, PVector d) {
     origin = o;
@@ -57,9 +48,9 @@ class Path {
       line(n1.x, n1.y, n2.x, n2.y);
     }
     
-    // Draw Origin (Red) and Destination (Blue)
+    // Draw Origin (Green) and Destination (Blue)
     //
-    fill(#FF0000); // Red
+    fill(#00FF00); // Green
     ellipse(randomKabadiwala.x, randomKabadiwala.y, diameter, diameter);
     //ellipse(origin.x, origin.y, diameter, diameter);
     fill(#0000FF); // Blue
@@ -291,9 +282,9 @@ class Pathfinder {
       line(n1.x, n1.y, n2.x, n2.y);
     }
     
-    // Draw Origin (Red) and Destination (Blue)
+    // Draw Origin (Green) and Destination (Blue)
     //
-    stroke(#FF0000, alpha); // Red
+    stroke(#00FF00, alpha); // Green
     ellipse(a.x, a.y, network.SCALE, network.SCALE);
     stroke(#0000FF, alpha); // Blue
     ellipse(b.x, b.y, network.SCALE, network.SCALE);

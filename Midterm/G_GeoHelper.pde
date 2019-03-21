@@ -137,6 +137,7 @@ public class MercatorMap {
   }
 
 //additional utilities by Anisha Nakagawa, modified by Nina Lutz
+//Returns distance in meters 
   public float Haversine(PVector p1, PVector p2)
   {
     int R = 6371000; // meters
