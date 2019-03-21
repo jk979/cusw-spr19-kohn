@@ -77,13 +77,51 @@ void parseDataMumbai() {
           PVector coordinate = new PVector(lat, lon);
           coords.add(coordinate);
         }
-      //create Way with coordinate PVectors
-      Way way = new Way(coords);
+        //create Way with coordinate PVectors
+        Way way = new Way(coords);
 
-      if (fclass.equals("motorway") || fclass.equals("trunk") || fclass.equals("secondary") || fclass.equals("residential") || fclass.equals("tertiary") || fclass.equals("motorway_link")) {
-        way.Street = true;
-      }
-      ways.add(way);
+        if (fclass.equals("motorway") || fclass.equals("trunk") || fclass.equals("secondary") || fclass.equals("residential") || fclass.equals("tertiary") || fclass.equals("motorway_link")) {
+          way.Street = true;
+        }
+        if (fclass.equals("coastline")) {
+        way.Coastline = true;
+        }
+        if (fclass.equals("rail")) {
+          way.Rail = true;
+        }
+        if (fclass.equals("river")) {
+          way.Waterway = true;
+        }
+
+        
+        ways.add(way);
+        
+      //make pair-nodes
+      if (way.Street == true) {
+        //println("CC is now"+collectionOfCollections.size());
+        //coordinates.size() is the size of each road array
+        //firstElement and secondElement are the base road elements--the first and second lat-long coordinate pairs in a node: [] and []
+        //singlePair is a pair of joined road nodes: [ [],[] ]
+        //collectionOfPairs will be a collection of pairs of road nodes: [ [ [],[] ], [ [],[] ] ]
+        //concatenate collectionOfPairs for all streets you loop through
+        PVector firstElement = new PVector();
+        PVector secondElement = new PVector();
+
+        //for each element in the single road array:
+        //println("size of this block is " + coords.size());
+        for (int a = 0; a < coords.size()-1; a++) {
+          ArrayList singlePair = new ArrayList<PVector>();
+          firstElement = coords.get(a);
+          secondElement = coords.get(a+1);
+          //add 1 and 2 to singlePair
+          singlePair.add(firstElement);
+          singlePair.add(secondElement);
+          //add singlePair to the collection for that road
+          collectionOfPairs.add(singlePair);
+          collectionOfCollections.add(singlePair);
+        } //end make singlePairs
+      } //end if way Street == true
+        
       }
 
       //make Polygons if polygon
@@ -109,14 +147,11 @@ void parseDataMumbai() {
 
         polygons.add(poly);
       }
-      
     }
-  parseKabadiwala();
-  parseMRF();
+    parseKabadiwala();
+    parseMRF();
   }
 }
-
-
 
 void parseData() {
   //parse the JSON object
@@ -158,7 +193,7 @@ void parseData() {
     String street = "";
     if (dataStreet!=null) street = dataStreet;
     else street = "";
-    
+
     //make POIs if point
     if (type.equals("Point")) {
       //create new POI
@@ -168,6 +203,7 @@ void parseData() {
       pois.add(poi);
     }
     
+    parseMRF();
     parseKabadiwala();
 
     //make Polygons if polygon
@@ -222,7 +258,7 @@ void parseData() {
       }
 
       ways.add(way);
-
+      
       //make pair-nodes
       if (way.Street == true) {
         //println("CC is now"+collectionOfCollections.size());
@@ -255,70 +291,70 @@ void parseData() {
   println("Total segment pairs in this road file: "+collectionOfCollections.size());
 } //end parseData function
 
-void parseKabadiwala(){
-    //parse CSV for k
-    int previd_k = 0; 
-    ArrayList<PVector> kcoords = new ArrayList<PVector>();
-    float lat_k, lon_k;
-    String ward; 
-    for (int m = 0; m<kData.getRowCount(); m++) {
-      ward = kData.getString(m, 1);
-      lat_k = float(kData.getString(m, 2));
-      lon_k = float(kData.getString(m, 3));
+void parseKabadiwala() {
+  //parse CSV for k
+  int previd_k = 0; 
+  ArrayList<PVector> kcoords = new ArrayList<PVector>();
+  float lat_k, lon_k;
+  String ward; 
+  for (int m = 0; m<kData.getRowCount(); m++) {
+    ward = kData.getString(m, 1);
+    lat_k = float(kData.getString(m, 2));
+    lon_k = float(kData.getString(m, 3));
 
-      //only for Bandra kabadiwalas, can add the others once the GeoJSON full merge on all street networks is operational
-      if (ward.equals("HW")) {
-        int k_id = int(kData.getString(m, 0));
-        if (k_id != previd_k) {
-          if (kcoords.size() > 0) { //create constructor for kcoords
-            Point_k k = new Point_k(lat_k, lon_k);
-            k.typeK = true;
-            k_array.add(k);
-          }
-          //clear coords
-          kcoords = new ArrayList<PVector>();
-          //reset variable
-          previd_k = k_id;
+    //only for Bandra kabadiwalas, can add the others once the GeoJSON full merge on all street networks is operational
+    if (ward.equals("HW")) {
+      int k_id = int(kData.getString(m, 0));
+      if (k_id != previd_k) {
+        if (kcoords.size() > 0) { //create constructor for kcoords
+          Point_k k = new Point_k(lat_k, lon_k);
+          k.typeK = true;
+          k_array.add(k);
         }
-        if (k_id == previd_k) {
-          float lat_kmatch = float(kData.getString(m, 2)); //west
-          float lon_kmatch = float(kData.getString(m, 3));
-          PVector temp = new PVector(lat_kmatch, lon_kmatch);
-          kcoords.add(temp);
-          collection_kcoords.add(temp);
-        }
+        //clear coords
+        kcoords = new ArrayList<PVector>();
+        //reset variable
+        previd_k = k_id;
+      }
+      if (k_id == previd_k) {
+        float lat_kmatch = float(kData.getString(m, 2)); //west
+        float lon_kmatch = float(kData.getString(m, 3));
+        PVector temp = new PVector(lat_kmatch, lon_kmatch);
+        kcoords.add(temp);
+        collection_kcoords.add(temp);
       }
     }
+  }
 }
 
 
-void parseMRF(){
+void parseMRF() {
   //parse CSV for MRF
-    int previd_mrf = 0; 
-    ArrayList<PVector> mrfcoords = new ArrayList<PVector>();
-    float lat_mrf, lon_mrf;
-    for (int n = 0; n<mrfData.getRowCount(); n++) {
-      lat_mrf = float(mrfData.getString(n, 3));
-      lon_mrf = float(mrfData.getString(n, 4));
-      int mrf_id = int(mrfData.getString(n, 0));
-      if (mrf_id != previd_mrf) {
-        if (mrfcoords.size() > 0) { //create constructor for kcoords
-          Point_k mrf = new Point_k(lat_mrf, lon_mrf);
-          //mrf.typeK = false;
-          mrf.typeMRF = true;
-          mrf_array.add(mrf);
-        }
-        //clear coords
-        mrfcoords = new ArrayList<PVector>();
-        //reset variable
-        previd_mrf = mrf_id;
+  int previd_mrf = 0; 
+  ArrayList<PVector> mrfcoords = new ArrayList<PVector>();
+  float lat_mrf, lon_mrf;
+  for (int n = 0; n<mrfData.getRowCount(); n++) {
+    lat_mrf = float(mrfData.getString(n, 3));
+    lon_mrf = float(mrfData.getString(n, 4));
+    int mrf_id = int(mrfData.getString(n, 0));
+    if (mrf_id != previd_mrf) {
+      if (mrfcoords.size() > 0) { //create constructor for kcoords
+        Point_k mrf = new Point_k(lat_mrf, lon_mrf);
+        //mrf.typeK = false;
+        mrf.typeMRF = true;
+        mrf_array.add(mrf);
       }
-      if (mrf_id == previd_mrf) {
-        float lat_mrfmatch = float(mrfData.getString(n, 3)); //west
-        float lon_mrfmatch = float(mrfData.getString(n, 4));
-        mrfcoords.add(new PVector(lat_mrfmatch, lon_mrfmatch));
-      }
+      //clear coords
+      mrfcoords = new ArrayList<PVector>();
+      //reset variable
+      previd_mrf = mrf_id;
     }
+    if (mrf_id == previd_mrf) {
+      float lat_mrfmatch = float(mrfData.getString(n, 3)); //west
+      float lon_mrfmatch = float(mrfData.getString(n, 4));
+      mrfcoords.add(new PVector(lat_mrfmatch, lon_mrfmatch));
+    }
+  }
 }
 
 

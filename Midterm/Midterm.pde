@@ -8,6 +8,7 @@
 //make Bandra map
 MercatorMap map; 
 PImage background;
+PGraphics pg;
 
 //declare GIS-style objects
 ArrayList<POI> pois;
@@ -60,6 +61,7 @@ void initModel(){
 
 void setup(){
   size(1250,750); //add ,P3D to make it 3D
+  pg = createGraphics(40,40);
   
   //initialize data structures
   
@@ -82,12 +84,11 @@ void setup(){
   
   //load and parse data in setup
   loadData();
-  //parseData();
+  //parseData(); //bandra
   parseDataMumbai();
-  //parseMRF();
-  //parseKabadiwala();
+  
   //initialize model and simulation
-  //initModel();
+  initModel();
   
   /*
   hs = new HScrollbar(width - int(height*MARGIN) - int(0.3*height), int((1-1.5*MARGIN)*height), int(0.3*height), int(MARGIN*height), 5);
@@ -101,7 +102,11 @@ void draw(){
   //camera(70.0,-35.0, 1200.0, 450.0, -50, 0, 0, 1, 0);
   
   background(0);
-  //drawGISObjects(); //make this into PGraphic
+  
+  pg.beginDraw();
+  drawGISObjects(); //make this into PGraphic
+  pg.endDraw();
+  image(pg, 50,50);
   //try to get framerate to 60, don't do calculations every frame
   
  
@@ -114,15 +119,18 @@ void draw(){
   for(int i=0; i<kData.getRowCount()-1; i++){
      k_array.get(i).draw();
   }
-  /*
+  
+ 
   //draw path
   for (Path p: paths) {
     p.display(100,100);
   }
   
+  
   displayKabadiwala();
   displaySource();
   displayPaper();
+  
   
   boolean collisionDetection = true;
   for (Agent p: people) {
@@ -137,7 +145,7 @@ void draw(){
       paper.y = p.location.y;
     }
   }
-  */
+  
   text(frameRate, 25, 25);
   
   //draw title box
