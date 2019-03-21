@@ -221,3 +221,19 @@ for each agent:
 -----------------------------------
 - limit appearance of Sources to less than 2km network distance in any direction from the kabadiwala
 */
+
+/*fclasses: 
+- residential
+- forest
+- park 
+- commercial
+- nature_reserve
+- farm
+- recreation_ground
+- industrial
+- beach
+- cliff
+- rail
+- river
+- wetland
+*/

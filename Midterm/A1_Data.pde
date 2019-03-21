@@ -1,20 +1,23 @@
+//loading JSONs
 JSONObject example;
 JSONArray features;
 JSONArray geometries;
 JSONObject bandra;
 Table kData, mrfData;
-PVector randomKabadiwala = new PVector();
-PVector randomSource = new PVector();
-PVector paper = new PVector();
-int euclidean;
 JSONObject mumbai_geojson;
 JSONObject featureCollection;
+
+//drawing paths
+PVector randomKabadiwala = new PVector();
+PVector randomSource = new PVector();
+PVector kabadiwala = new PVector();
+PVector source = new PVector();
+PVector paper = new PVector();
+int euclidean;
 
 //for pair-nodes
 import java.util.HashSet;
 
-//ArrayList<HashSet<PVector>> collectionOfCollections = new ArrayList<HashSet<PVector>>();
-//HashSet collectionOfPairs = new HashSet<PVector>();
 ArrayList<ArrayList<PVector>> collectionOfCollections = new ArrayList<ArrayList<PVector>>();
 ArrayList collectionOfPairs = new ArrayList<PVector>();
 ArrayList collection_kcoords = new ArrayList<PVector>();
@@ -357,6 +360,26 @@ void parseMRF() {
   }
 }
 
+//activate all kabadiwalas at once
+void chooseAllKabadiwalas(){
+ for(int q = 0; q<collection_kcoords.size()-1; q++){
+  //get the index of each row
+  int index = q;
+  kabadiwala = (PVector)collection_kcoords.get(index);
+  kabadiwala = map.getScreenLocation(kabadiwala);
+ }
+}
+
+//build all sources at once
+void chooseAllSources(){
+  //get same number of sources as kabadiwalas
+  for(int r = 0; r<collection_kcoords.size()-1; r++){
+    int index = r; 
+  //choose random sources within 3km network distance of these kabadiwala points
+  
+  }
+}
+
 
 void chooseRandomKabadiwala() {
   //chooses from big list of 199 kabadiwalas. May not show up on the small Bandra map for every run. 
@@ -375,6 +398,7 @@ void displayKabadiwala() {
   noStroke();
   polygon(randomKabadiwala.x, randomKabadiwala.y, 6, 4);
 }
+
 
 //now determine a random Source point from collectionOfCollections
 void chooseRandomSource() {
