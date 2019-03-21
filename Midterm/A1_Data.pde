@@ -306,7 +306,7 @@ void parseKabadiwala() {
     lon_k = float(kData.getString(m, 3));
 
     //only for Bandra kabadiwalas, can add the others once the GeoJSON full merge on all street networks is operational
-    if (ward.equals("HW")) {
+    if (ward.equals("HW") || ward.equals("N") || ward.equals("RN")){ 
       int k_id = int(kData.getString(m, 0));
       if (k_id != previd_k) {
         if (kcoords.size() > 0) { //create constructor for kcoords
@@ -367,6 +367,7 @@ void chooseAllKabadiwalas(){
   int index = q;
   kabadiwala = (PVector)collection_kcoords.get(index);
   kabadiwala = map.getScreenLocation(kabadiwala);
+  println("choosing all kabadiwalas");
  }
 }
 
@@ -399,6 +400,14 @@ void displayKabadiwala() {
   polygon(randomKabadiwala.x, randomKabadiwala.y, 6, 4);
 }
 
+void displayAllKabadiwala(){
+  fill(color(128,128,255));
+  noStroke();
+  for(int k = 0; k<collection_kcoords.size(); k++){
+      polygon(kabadiwala.x, kabadiwala.y, 6, 4);
+  }
+}
+
 
 //now determine a random Source point from collectionOfCollections
 void chooseRandomSource() {
@@ -416,8 +425,6 @@ void chooseRandomSource() {
   PVector pt1 = (PVector)randomSegment.get(0);
   PVector pt2 = (PVector)randomSegment.get(1);
 
-  //map.intermediate(pt1, pt2,0.5);
-  //println(map.intermediate(pt1, pt2,0.5));
   //generate intermediate points
   PVector intermediates = map.intermediate(pt1, pt2, 0.5);
   randomSource = map.getScreenLocation(intermediates);

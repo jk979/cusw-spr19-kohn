@@ -43,6 +43,8 @@ void initModel(){
   //initialize origin and destinations
   //choose random kabadiwala
   chooseRandomKabadiwala();
+  //make all kabadiwalas
+  //chooseAllKabadiwalas();
   
   //draw random source for kabadiwala
   chooseRandomSource();
@@ -128,6 +130,7 @@ void draw(){
   
   
   displayKabadiwala();
+  //displayAllKabadiwala();
   displaySource();
   displayPaper();
   

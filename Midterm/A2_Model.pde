@@ -159,6 +159,9 @@ void kPath() {
       //Path p = new Path(randomKabadiwala, randomSource);
       Path p = new Path(randomKabadiwala, randomSource);
       println("using randomK and randomSource");
+
+      //Path p = new Path(kabadiwala, randomSource);
+      //println("using all kabadiwalas and randomSource");
       p.solve(finder);
       
       if(p.waypoints.size() > 1) {
