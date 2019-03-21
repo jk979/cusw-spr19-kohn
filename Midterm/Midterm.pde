@@ -54,6 +54,8 @@ void initModel(){
   //3. initialize population
   //initPopulation(30*paths.size());
   initPopulation(1*paths.size());
+  
+  
 }
 
 void setup(){
@@ -68,10 +70,10 @@ void setup(){
   
   pushMatrix();
   //bandra only
-  map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0);
+  //map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0);
   
   //mumbai
-  //map = new MercatorMap(width_map+150, height_map, 19.2904, 18.8835,72.7364,73.0570, 0);
+  map = new MercatorMap(width_map+150, height_map, 19.2904, 18.8835,72.7364,73.0570, 0);
   popMatrix();
   
   polygons = new ArrayList<Polygon>();
@@ -80,14 +82,12 @@ void setup(){
   
   //load and parse data in setup
   loadData();
-  parseData();
-  
+  //parseData();
+  parseDataMumbai();
+  //parseMRF();
+  //parseKabadiwala();
   //initialize model and simulation
-  initModel();
-  
-  
-  
-  
+  //initModel();
   
   /*
   hs = new HScrollbar(width - int(height*MARGIN) - int(0.3*height), int((1-1.5*MARGIN)*height), int(0.3*height), int(MARGIN*height), 5);
@@ -101,33 +101,44 @@ void draw(){
   //camera(70.0,-35.0, 1200.0, 450.0, -50, 0, 0, 1, 0);
   
   background(0);
-  drawGISObjects();
+  //drawGISObjects(); //make this into PGraphic
+  //try to get framerate to 60, don't do calculations every frame
+  
  
   //draw mrfs
   for(int i=0; i<mrfData.getRowCount()-1; i++){
      mrf_array.get(i).draw();
   }
-  
+ 
   //draw kabadiwalas
   for(int i=0; i<kData.getRowCount()-1; i++){
      k_array.get(i).draw();
   }
-  
+  /*
   //draw path
   for (Path p: paths) {
     p.display(100,100);
   }
   
+  displayKabadiwala();
+  displaySource();
+  displayPaper();
+  
   boolean collisionDetection = true;
   for (Agent p: people) {
     p.update(personLocations(people), collisionDetection);
     p.display(#FFFFFF, 255);
-  }
- 
   
-  displayKabadiwala();
-  displaySource();
-  displayPaper();
+  //test pickup of garbage
+   euclidean = parseInt(dist(paper.x, paper.y, p.location.x, p.location.y));
+    if (euclidean < (5) ) {
+      //paper position = Agent position
+      paper.x = p.location.x; 
+      paper.y = p.location.y;
+    }
+  }
+  */
+  text(frameRate, 25, 25);
   
   //draw title box
   int bgColor = 230;
