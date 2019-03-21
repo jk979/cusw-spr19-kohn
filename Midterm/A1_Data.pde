@@ -12,8 +12,24 @@ PVector randomKabadiwala = new PVector();
 PVector randomSource = new PVector();
 PVector kabadiwala = new PVector();
 PVector source = new PVector();
-PVector paper = new PVector();
-int euclidean;
+PVector bundle = new PVector();
+int euclideanAgentBundle;
+int euclideanOriginBundle;
+
+//costs and quantities (can change these dynamically)
+//paper
+int kabadiwala_pickup_cost_paper;
+int paperKBuy = 12;
+int paperQuantity = 1500;
+int kabadiwala_offload_cost_paper;
+int paperKSell = 15;
+
+//plastic
+int kabadiwala_pickup_cost_plastic;
+int plasticKBuy = 10; 
+int plasticQuantity = 100; 
+int kabadiwala_offload_cost_plastic;
+int plasticKSell = 20;
 
 //for pair-nodes
 import java.util.HashSet;
@@ -30,11 +46,11 @@ void loadData() {
   //background.resize(width, height);
 
   //load and resize Bandra JSON object with all the features in it
-  //bandra = loadJSONObject("data/bandra.json");
-  //features = bandra.getJSONArray("features");
+  bandra = loadJSONObject("data/bandra.json");
+  features = bandra.getJSONArray("features");
 
-  mumbai_geojson = loadJSONObject("data/mumbai_all.geojson");
-  geometries = mumbai_geojson.getJSONArray("geometries");
+  //mumbai_geojson = loadJSONObject("data/mumbai_all.geojson");
+  //geometries = mumbai_geojson.getJSONArray("geometries");
 
   //load kabadiwala points
   kData = loadTable("data/k_short.csv", "header");
@@ -306,7 +322,7 @@ void parseKabadiwala() {
     lon_k = float(kData.getString(m, 3));
 
     //only for Bandra kabadiwalas, can add the others once the GeoJSON full merge on all street networks is operational
-    if (ward.equals("HW") || ward.equals("N") || ward.equals("RN")){ 
+    if (ward.equals("HW")){ //|| ward.equals("N") || ward.equals("RN")){ 
       int k_id = int(kData.getString(m, 0));
       if (k_id != previd_k) {
         if (kcoords.size() > 0) { //create constructor for kcoords
@@ -395,9 +411,9 @@ void chooseRandomKabadiwala() {
 }
 
 void displayKabadiwala() {
-  fill(color(128, 128, 255));
-  noStroke();
-  polygon(randomKabadiwala.x, randomKabadiwala.y, 6, 4);
+  stroke(color(255, 255, 255));
+  noFill();
+  polygon(randomKabadiwala.x, randomKabadiwala.y, 3, 4);
 }
 
 void displayAllKabadiwala(){
@@ -428,7 +444,7 @@ void chooseRandomSource() {
   //generate intermediate points
   PVector intermediates = map.intermediate(pt1, pt2, 0.5);
   randomSource = map.getScreenLocation(intermediates);
-  paper = map.getScreenLocation(intermediates);
+  bundle = map.getScreenLocation(intermediates);
 }
 
 void displaySource() {
@@ -437,10 +453,10 @@ void displaySource() {
   polygon(randomSource.x, randomSource.y, 6, 3);
 }
 
-void displayPaper() {
+void displayBundle() {
   stroke(color(255, 255, 0));
   noFill();
-  ellipse(paper.x, paper.y, 13, 13);
+  ellipse(bundle.x, bundle.y, 13, 13);
 }
 
 void drawGISObjects() {

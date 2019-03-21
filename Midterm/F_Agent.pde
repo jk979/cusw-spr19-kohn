@@ -1,3 +1,6 @@
+int laps = 0;
+
+
 class Agent {
   PVector location;
   PVector velocity;
@@ -9,9 +12,11 @@ class Agent {
   ArrayList<PVector> path;
   int pathIndex, pathLength; // Index and Amount of Nodes in a Path
   int pathDirection; // -1 or +1 to specific directionality
-  int laps = 0;
+  
+  boolean isAlive;
 
   Agent(float x, float y, int rad, float maxS, ArrayList<PVector> path) {
+    isAlive = true;
     r = rad;
     tolerance *= r;
     maxspeed = maxS;
@@ -125,10 +130,12 @@ class Agent {
       if (pathDirection == 1 && pathIndex == pathLength-1 || pathDirection == -1 && pathIndex == 0) {
         pathDirection *= -1;
         //checkLaps();
-        //laps +=1;
+        laps +=1;
+        println(laps);
       }
       pathIndex += pathDirection;
     }
+    
   }
   
   void getCumulativeDistance(){

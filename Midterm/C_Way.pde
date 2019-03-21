@@ -40,9 +40,9 @@ class Way{
         //ellipse(screenInt.x, screenInt.y, 3, 3);
         
         //make street network
-        strokeWeight(2);
-        stroke(colorStreet);
-        line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
+        pg.strokeWeight(2);
+        pg.stroke(colorStreet);
+        pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
     }
     }
     
@@ -51,37 +51,37 @@ class Way{
     
     //draw coastline
     if(Coastline){
-      strokeWeight(3);
-      stroke(colorCoastline);
+      pg.strokeWeight(3);
+      pg.stroke(colorCoastline);
     for(int i = 0; i<coordinates.size()-1; i++){
         //iterate through the coordinates and draw lines
         PVector screenStart = map.getScreenLocation(coordinates.get(i));
         PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
-        line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
+        pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
     }
  }
  
  //draw rail
      else if(Rail){
-       strokeWeight(0.5);
-       stroke(colorRail);
+       pg.strokeWeight(0.5);
+       pg.stroke(colorRail);
        for(int i = 0; i<coordinates.size()-1; i++){
             //iterate through the coordinates and draw lines
             PVector screenStart = map.getScreenLocation(coordinates.get(i));
             PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
-            line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
+            pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
         }
      }
      
 //draw waterway
      else if(Waterway){
-       strokeWeight(1);
-       stroke(colorWaterway);
+       pg.strokeWeight(1);
+       pg.stroke(colorWaterway);
        for(int i = 0; i<coordinates.size()-1; i++){
             //iterate through the coordinates and draw lines
             PVector screenStart = map.getScreenLocation(coordinates.get(i));
             PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
-            line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
+            pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
         }
      }
 
