@@ -45,6 +45,12 @@ int metalQuantity = 10;
 int kabadiwala_offload_cost_metal;
 int metalKSell = 100;
 
+//misc
+int misc = 3000;
+
+//profit
+int totalKPickupCost;
+
 //distance calculation
 float HavD;
 int roundtripKM;

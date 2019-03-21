@@ -140,18 +140,30 @@ void draw(){
     p.display(#FFFFFF, 255);
     }
   
-  //test pickup of bundle of materials
-   euclideanAgentBundle = parseInt(dist(bundle.x, bundle.y, p.location.x, p.location.y));
+  //initialize 0 for each variable
    roundtripKM = 0;
-    if (euclideanAgentBundle < (2) ) {
+   totalKPickupCost = 0;
+   kabadiwala_pickup_cost_paper = 0;
+   kabadiwala_pickup_cost_plastic = 0;
+   kabadiwala_pickup_cost_glass = 0;
+   kabadiwala_pickup_cost_metal = 0;
+   misc = 0;
+   
+   euclideanAgentBundle = parseInt(dist(bundle.x, bundle.y, p.location.x, p.location.y));
+   //upon source pickup
+    if (euclideanAgentBundle < (4) ) {
       //bundle position = Agent position
       bundle.x = p.location.x; 
       bundle.y = p.location.y;
       kabadiwala_pickup_cost_paper = paperKBuy*paperQuantity;
       kabadiwala_pickup_cost_plastic = plasticKBuy*plasticQuantity;
+      kabadiwala_pickup_cost_glass = glassKBuy*glassQuantity;
+      kabadiwala_pickup_cost_metal = metalKBuy*metalQuantity;
+      misc = 3000;
+      totalKPickupCost = (kabadiwala_pickup_cost_paper+kabadiwala_pickup_cost_plastic+kabadiwala_pickup_cost_glass+kabadiwala_pickup_cost_metal+misc);
     }
     
-    //if it's on the second lap and it's next to the origin
+    //upon returning to shop origin
     euclideanOriginBundle = parseInt(dist(bundle.x, bundle.y, randomKabadiwala.x, randomKabadiwala.y));
     if(laps>=2 && euclideanOriginBundle < (4)){
       //drop off the bundle
@@ -190,26 +202,32 @@ void draw(){
   textSize(16);
   rect(520,150,300,50,10);
   fill(139,0,0);
-  text("Inputs",640,180);
+  text("Inputs (Weekly Average)",640,180);
   fill(255,255,255);
   //draw input content
   textSize(12);
+  //quantities
   text("Paper Quantity: "+ paperQuantity + " KG",525,220);
-  text("Paper Sale Price to Kabadiwala: "+paperKBuy + " INR",525,240);
-  text("Kabadiwala's Total Cost of Buying Paper: "+kabadiwala_pickup_cost_paper,525,260);
-  text("--------------------------------------", 525,280);
-  text("Plastic Quantity: " + plasticQuantity + " KG",525,300);
-  text("Plastic Sale Price to Kabadiwala: "+plasticKBuy + " INR",525,320);
-  text("Kabadiwala's Total Cost of Buying Paper: "+kabadiwala_pickup_cost_plastic,525,340);
-  text("--------------------------------------", 525,360);
-  text("Glass Quantity: " + glassQuantity + " KG",525,380);
-  text("Glass Sale Price to Kabadiwala: "+glassKBuy + " INR",525,400);
-  text("Kabadiwala's Total Cost of Buying Glass: "+kabadiwala_pickup_cost_glass,525,420);
-  text("--------------------------------------", 525,440);
-  text("Glass Quantity: " + metalQuantity + " KG",525,460);
-  text("Glass Sale Price to Kabadiwala: "+metalKBuy + " INR",525,480);
-  text("Kabadiwala's Total Cost of Buying Glass: "+kabadiwala_pickup_cost_metal,525,500);
-  
+  text("Plastic Quantity: " + plasticQuantity + " KG",525,240);
+  text("Glass Quantity: " + glassQuantity + " KG",525,260);
+  text("Metal Quantity: " + metalQuantity + " KG",525,280);
+  text("--------------------------------------", 525,300);
+  //buying prices
+  text("Paper Sale Price to Kabadiwala: "+paperKBuy + " INR",525,320);
+  text("Plastic Sale Price to Kabadiwala: "+plasticKBuy + " INR",525,340);
+  text("Glass Sale Price to Kabadiwala: "+glassKBuy + " INR",525,360);
+  text("Metal Sale Price to Kabadiwala: "+metalKBuy + " INR",525,380);
+  //selling prices
+  //total cost of buying
+  text("--------------------------------------", 525,400);
+  text("Kabadiwala's Total Cost of Buying:",525,420);
+  text("Paper: "+kabadiwala_pickup_cost_paper,525,440);
+  text("Plastic: "+kabadiwala_pickup_cost_plastic,525,460);
+  text("Glass: "+kabadiwala_pickup_cost_glass,525,480);
+  text("Metal: "+kabadiwala_pickup_cost_metal,525,500);
+  text("Miscellaneous Items: "+ misc + " INR",525,520);
+
+
   //draw output box
   fill(bgColor, 2*baseAlpha);
   rect(920, 150, 300, 500, 10);
@@ -221,7 +239,7 @@ void draw(){
   //draw output content
   fill(255,255,255);
   textSize(12);
-  text("Kabadiwala's Gross Profit: "+ (kabadiwala_offload_cost_paper - kabadiwala_pickup_cost_paper)+ " INR",925,220);
+  text("Kabadiwala's Gross Profit: "+ (kabadiwala_offload_cost_paper - totalKPickupCost)+ " INR",925,220);
   text("Kabadiwala's Roundtrip Distance: "+ roundtripKM + " KM", 925, 240);
   
   //noLoop();
