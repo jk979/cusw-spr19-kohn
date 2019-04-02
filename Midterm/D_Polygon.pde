@@ -7,7 +7,6 @@ class Polygon{
     
     //buildings: properties/tags/building/residential
     boolean BuildingResidential;
-    
 
   //Empty constructor
   Polygon(){

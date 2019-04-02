@@ -1,8 +1,5 @@
 //midterm assignment
 
-//done: base map and kabadiwala points
-//to do: agent movements between kabadiwala points and random sources + kabadiwala and mrf
-
 //Background 
 
 //make Bandra map
@@ -31,7 +28,6 @@ boolean showUI = true;
 
 /////////////////////////
 
-
 //contain the model initialization
 void initModel(){
 
@@ -43,6 +39,7 @@ void initModel(){
   //initialize origin and destinations
   //choose random kabadiwala
   chooseRandomKabadiwala();
+  
   //make all kabadiwalas
   //chooseAllKabadiwalas();
   
@@ -84,6 +81,7 @@ void setup(){
   //load map and data for bandra only
   map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0);
   parseData();
+  //parseOSMNX();
   
   
   //load map and data for all of mumbai
@@ -98,7 +96,6 @@ void setup(){
   //initialize model and simulation
   initModel();
   
-  
   /*
   hs = new HScrollbar(width - int(height*MARGIN) - int(0.3*height), int((1-1.5*MARGIN)*height), int(0.3*height), int(MARGIN*height), 5);
   camRotation = hs.getPosPI(); // (0 - 2*PI)
@@ -107,6 +104,7 @@ void setup(){
 }
 
 void draw(){
+  //includes drawing backgound, MRFs, kabadiwalas, path, bundle of materials, agents, testing if the agent has reached or dropped off the bundle, and wholesalers
   
   //camera(70.0,-35.0, 1200.0, 450.0, -50, 0, 0, 1, 0);
   background(0);
@@ -117,22 +115,22 @@ void draw(){
      mrf_array.get(i).draw();
   }
  
-  //draw kabadiwalas
+  //draw kabadiwala shops
   for(int i=0; i<kData.getRowCount()-1; i++){
      k_array.get(i).draw();
   }
  
- //draw path here...
-   //draw path
+  //draw path
   for (Path b: paths) {
     b.display(100,100);
   }
  
   //displayAllKabadiwala();
 
+//display the yellow circle signifying the bundle of materials
   displayBundle();
   
-  
+  //test if agent is alive; agent stops upon returning to shop
   boolean collisionDetection = true;
   for (Agent p: people) {
     if(p.isAlive){
@@ -202,7 +200,7 @@ void draw(){
   textSize(16);
   rect(520,150,300,50,10);
   fill(139,0,0);
-  text("Inputs (Weekly Average)",640,180);
+  text("Inputs (Weekly Average)",580,180);
   fill(255,255,255);
   //draw input content
   textSize(12);
@@ -282,8 +280,7 @@ for each agent:
 - limit appearance of Sources to less than 2km network distance in any direction from the kabadiwala ***DONE***
 -----------------------------------
 In Progress: 
-- simplify your code, take out what you don't need
-- convert OSMNX simplified road network to a GeoJSON and add it here
+- convert OSMNX simplified road network to a GeoJSON and add it here -- need to convert from the annoying 7 digit format to decimal degree first, then export to GeoJSON
 - draw all kabadiwalas and paths at once, to get aggregate for system
 - add up aggregate Profit and aggregate Distance
 class of Wholesalers: 

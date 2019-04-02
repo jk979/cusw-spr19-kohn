@@ -37,7 +37,6 @@ class Path {
   
   void display(int col, int alpha) {
     // Draw Shortest Path
-    //
     noFill();
     strokeWeight(2);
     stroke(#00FF00, alpha); // Green
@@ -49,7 +48,6 @@ class Path {
     }
     
     // Draw Origin (Green) and Destination (Blue)
-    //
     fill(#00FF00); // Green
     ellipse(randomKabadiwala.x, randomKabadiwala.y, diameter, diameter);
     //ellipse(origin.x, origin.y, diameter, diameter);

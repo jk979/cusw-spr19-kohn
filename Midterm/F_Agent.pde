@@ -1,6 +1,5 @@
 int laps = 0;
 
-
 class Agent {
   PVector location;
   PVector velocity;
@@ -137,25 +136,6 @@ class Agent {
     }
     
   }
-  
-  void getCumulativeDistance(){
-    //get real-time distance kabadiwala agent has traveled so far
-    //print it in the Outputs section
-  }
-  
-  /*
-  void checkLaps(){
-    //if it intersects with the Garbage, make it 1
-     if(laps==0){
-        println("I'm moving!");
-        }
-        if(laps==1){
-          println("I'm coming back...");
-        } else if(laps>1){
-          println("I've completed.");
-        }
-  }
-  */
   
   void display(color col, int alpha) { //agent color
     fill(col, alpha);

@@ -18,10 +18,6 @@ class Way{
   
   //Draw the road
   void draw(){
-    
-    //ArrayList<HashSet<PVector>> collectionOfCollections = new ArrayList<HashSet<PVector>>();
-    //concatenate all collectionOfPairs
-    //HashSet collectionOfPairs = new HashSet<PVector>();
 
     if(Street){
     
@@ -35,9 +31,6 @@ class Way{
         //generate intermediate points
         PVector intermediates = map.intermediate(coordinates.get(i),coordinates.get(i+1), 0.5);
         PVector screenInt = map.getScreenLocation(intermediates);
-        //fill(color(255,0,0));
-        //noStroke();
-        //ellipse(screenInt.x, screenInt.y, 3, 3);
         
         //make street network
         pg.strokeWeight(2);
@@ -45,9 +38,6 @@ class Way{
         pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
     }
     }
-    
-     //println("now let's start building the collection of collections");
-     //println("collection of collections size: " +collectionOfCollections.size());  
     
     //draw coastline
     if(Coastline){
