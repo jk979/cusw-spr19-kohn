@@ -10,123 +10,16 @@ ArrayList<Path> paths;
 //  Objects to define agents that navigate our environment
 ArrayList<Agent> people;
 
-void randomNetwork(float cull) {
-  //  An example gridded network of width x height (pixels) and node resolution (pixels)
-  //
-  int nodeResolution = 10;  // pixels
-  int graphWidth = width;   // pixels
-  int graphHeight = height; // pixels
-  network = new Graph(graphWidth, graphHeight, nodeResolution);
-  network.cullRandom(cull); // Randomly eliminates a fraction of the nodes in the network (0.0 - 1.0)
-}
-
-void randomNetworkMinusBuildings(float cull, ArrayList<Polygon> poly) {
-  //  An example gridded network of width x height (pixels) and node resolution (pixels)
-  //
-  int nodeResolution = 10;  // pixels
-  int graphWidth = width;   // pixels
-  int graphHeight = height; // pixels
-  network = new Graph(graphWidth, graphHeight, nodeResolution);
-  
-  // An obstacle Course Based Upon Building Footprints
-  //
-  course = new ObstacleCourse();
-  for (Polygon p: poly) {
-    int numCorners = p.coordinates.size();
-    PVector[] corners = new PVector[numCorners];
-    for (int i=0; i<numCorners; i++) {
-      PVector screenLocation = map.getScreenLocation(p.coordinates.get(i));
-      corners[i] = new PVector(screenLocation.x, screenLocation.y);
-    }
-    Obstacle o = new Obstacle(corners);
-    course.addObstacle(o);
-  }
-  
-  // Subtract Building Footprints from Network
-  //
-  network.cullRandom(cull); // Randomly eliminates a fraction of the nodes in the network (0.0 - 1.0)
-  network.applyObstacleCourse(course);
-  
-}
-
+//ways network using roads as ways
 void waysNetwork(ArrayList<Way> w) {
   //  An example gridded network of width x height (pixels) and node resolution (pixels)
-  //
   int nodeResolution = 10;  // pixels
   int graphWidth = width;   // pixels
   int graphHeight = height; // pixels
   network = new Graph(graphWidth, graphHeight, nodeResolution, w);
 }
 
-void randomPaths(int numPaths) {
-  /*  An pathfinder object used to derive the shortest path. */
-  finder = new Pathfinder(network);
-  
-  /*  Generate List of Shortest Paths through our network
-   *  FORMAT 1: Path(float x, float y, float l, float w) <- defines 2 random points inside a rectangle
-   *  FORMAT 2: Path(PVector o, PVector d) <- defined by two specific coordinates
-   */
-   
-  paths = new ArrayList<Path>();
-  for (int i=0; i<numPaths; i++) {
-    //  An example Origin and Desination between which we want to know the shortest path
-    //
-    PVector orig = new PVector(random(1.0)*width, random(1.0)*height);
-    PVector dest = new PVector(random(1.0)*width, random(1.0)*height);
-    Path p = new Path(orig, dest);
-    //Path p = new Path(randomKabadiwala, randomSource);
-    p.solve(finder);
-    paths.add(p);
-  }
-  
-}
-
-
-
-void poiPaths(int numPaths) {
-  /*  An pathfinder object used to derive the shortest path. */
-  finder = new Pathfinder(network);
-  
-  /*  Generate List of Shortest Paths through our network
-   *  FORMAT 1: Path(float x, float y, float l, float w) <- defines 2 random points inside a rectangle
-   *  FORMAT 2: Path(PVector o, PVector d) <- defined by two specific coordinates
-   */
-   
-  paths = new ArrayList<Path>();
-  for (int i=0; i<numPaths; i++) {
-    
-    
-    // Searches for valid paths only
-    boolean notFound = true;
-    while(notFound) {
-      //  An example Origin and Desination between which we want to know the shortest path
-      //
-      // Origin is Random POI *need to change this to make Origin  from B2_KPoints*
-      int orig_index = int(random(pois.size()));
-      PVector orig = pois.get(orig_index).coord;
-      orig = map.getScreenLocation(orig);
-      
-      // Destination is Random POI
-      int dest_index = int(random(pois.size()));
-      PVector dest = pois.get(dest_index).coord;
-      dest = map.getScreenLocation(dest);
-      
-      //Path p = new Path(randomKabadiwala, randomSource);
-      Path p = new Path(orig, dest);
-      println("solving...not found...");
-      p.solve(finder);
-      
-      if(p.waypoints.size() > 1) {
-        notFound = false;
-        paths.add(p);
-      }
-      
-    }
-    
-  }
-  
-}
-
+//draw a shortest path between the kabadiwala and the source
 void kPath() {
   /*  An pathfinder object used to derive the shortest path. */
   finder = new Pathfinder(network);
@@ -137,49 +30,61 @@ void kPath() {
    */
    
   paths = new ArrayList<Path>();
-  int numPaths = 1;
+  int numPaths = 1; //draw only one shortest path 
   for (int i=0; i<numPaths; i++) {
     
     // Searches for valid paths only
     boolean notFound = true;
     
     while(notFound) {
-      //  An example Origin and Desination between which we want to know the shortest path
-      //
-      // Origin is Random POI *need to change this to make Origin  from B2_KPoints*
-      /*int orig_index = int(random(pois.size()));
-      PVector orig = pois.get(orig_index).coord;
-      orig = map.getScreenLocation(orig);
       
-      // Destination is Random POI
-      int dest_index = int(random(pois.size()));
-      PVector dest = pois.get(dest_index).coord;
-      dest = map.getScreenLocation(dest);
-      */
-      chooseRandomKabadiwala();
-      chooseRandomSource();
+      //1. choose the points for the kabadiwala and for the source
+      //println("using randomK and randomSource");
+      //chooseRandomKabadiwala();
+      //chooseRandomSource();
       
-      //Path p = new Path(randomKabadiwala, randomSource);
-      Path p = new Path(randomKabadiwala, randomSource);
-      println("using randomK and randomSource");
+      println("using a kabadiwala-source path for each of the kabadiwalas");
+      //for each kabadiwala in the list, assign a path between that kabadiwala and the source
+      //for(int q = 0; q<2; q++){ //sets the number of kabadiwalas to with collection_kcoords index as upper limit; set to 50 here so it ends eventually
+        chooseRandomKabadiwala(); //gets "kabadiwala"
+        chooseRandomSource(); //gets "source"
+      //chooseAllSources();
       
-      //Path p = new Path(kabadiwala, randomSource);
-      //println("using all kabadiwalas and randomSource");
-      p.solve(finder);
+      //2. identify the path between these two points
+        Path p = new Path(kabadiwala, source);
+      
+      //3. solve the path
+        p.solve(finder);
       
       if(p.waypoints.size() > 2) {
         notFound = false;
         paths.add(p);
       }
       
-      displayKabadiwala();
-      displaySource();
-    }
-    
+     //display the kpoints and sources 
+      //displayKabadiwala();
+      //displaySource();
+    //}
+   }
   }
-  
 }
 
+//draws a path that hits 10 kabadiwalas using the shortest distance between them and the Wholesaler/MRF
+void WholesalerPath(){ 
+//option 1. wholesaler is picking up
+//origin = wholesaler point on map
+
+//option 2. MRF is picking up
+//origin = MRF point on map
+
+//from the list of kabadiwalas, divide them into groups of 3
+//for each group: 
+//check if all of them have bundles in their shops
+//get the shortest distance linking all of them with Wholesaler point as origin and destination
+//run the path using an agent and pick up all the materials
+//stop when you reach the Wholesaler point again
+
+}
 
 void initPopulation(int count) {
   /*  An example population that traverses along various paths

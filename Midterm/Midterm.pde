@@ -162,11 +162,11 @@ void draw(){
     }
     
     //upon returning to shop origin
-    euclideanOriginBundle = parseInt(dist(bundle.x, bundle.y, randomKabadiwala.x, randomKabadiwala.y));
+    euclideanOriginBundle = parseInt(dist(bundle.x, bundle.y, kabadiwala.x, kabadiwala.y));
     if(laps>=2 && euclideanOriginBundle < (4)){
       //drop off the bundle
-      bundle.x = randomKabadiwala.x;
-      bundle.y = randomKabadiwala.y;
+      bundle.x = kabadiwala.x;
+      bundle.y = kabadiwala.y;
       //KILL THE AGENT
       p.isAlive = false;
       roundtripKM = parseInt((2*HavD)/1000);

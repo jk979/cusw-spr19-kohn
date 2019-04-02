@@ -351,9 +351,10 @@ void parseData() {
 void parseKabadiwala() {
   //parse CSV for k
   int previd_k = 0; 
-  ArrayList<PVector> kcoords = new ArrayList<PVector>();
   float lat_k, lon_k;
   String ward; 
+  ArrayList<PVector> kcoords = new ArrayList<PVector>();
+
   for (int m = 0; m<kData.getRowCount(); m++) {
     ward = kData.getString(m, 1);
     lat_k = float(kData.getString(m, 2));
@@ -383,7 +384,6 @@ void parseKabadiwala() {
     }
   }
 }
-
 
 void parseMRF() {
   //parse CSV for MRF

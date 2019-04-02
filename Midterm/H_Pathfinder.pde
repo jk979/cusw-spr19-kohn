@@ -49,10 +49,10 @@ class Path {
     
     // Draw Origin (Green) and Destination (Blue)
     fill(#00FF00); // Green
-    ellipse(randomKabadiwala.x, randomKabadiwala.y, diameter, diameter);
+    ellipse(kabadiwala.x, kabadiwala.y, diameter, diameter);
     //ellipse(origin.x, origin.y, diameter, diameter);
     fill(#0000FF); // Blue
-    ellipse(randomSource.x, randomSource.y, diameter, diameter);
+    ellipse(source.x, source.y, diameter, diameter);
     //ellipse(destination.x, destination.y, diameter, diameter);
     
     strokeWeight(1);
