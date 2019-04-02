@@ -1,5 +1,12 @@
 //midterm assignment
 
+
+/*
+Bugs left: 
+initModel -- is the ways network changing? Do you have to re-chose any data structures?
+while loop exit condition/choosing -- are there options that shouldn't be chosen together, etc? 
+*/
+
 //Background 
 
 //make Bandra map
@@ -38,13 +45,10 @@ void initModel(){
   
   //initialize origin and destinations
   //choose random kabadiwala
-  chooseRandomKabadiwala();
-  
-  //make all kabadiwalas
-  //chooseAllKabadiwalas();
+  //chooseRandomKabadiwala();
   
   //draw random source for kabadiwala
-  chooseRandomSource();
+  //chooseRandomSource();
   
   //2. initialize paths using one of these methods
   //randomPaths(3);
