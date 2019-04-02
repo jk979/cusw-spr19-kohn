@@ -115,9 +115,8 @@ void draw(){
      mrf_array.get(i).draw();
   }
  
-  //draw kabadiwala shops
-  for(int i=0; i<kData.getRowCount()-1; i++){
-     k_array.get(i).draw();
+  for(int i =0 ; i<k_array.size(); i++){
+    k_array.get(i).draw();
   }
  
   //draw path

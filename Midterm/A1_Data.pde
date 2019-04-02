@@ -210,6 +210,7 @@ void parseOSMNX() {
 } //end parseOSMNX function
 
 void parseData() {
+  println("CALLING PARSE DATA");
   //parse the JSON object
   JSONObject feature = features.getJSONObject(0);
   println("feature loaded");
@@ -259,9 +260,7 @@ void parseData() {
       pois.add(poi);
     }
     
-    parseMRF(); //read in MRF CSV
-    parseKabadiwala(); //read in Kabadiwala CSV
-
+    
     //make Polygons if polygon
     if (type.equals("Polygon")) {
       ArrayList<PVector> coords = new ArrayList<PVector>();
@@ -341,14 +340,20 @@ void parseData() {
       } //end if way Street == true
     } //end if type equals LineString
   } //end parseData's 3-way sorting
-
+  
+  //Don't call in for loop
+    parseMRF(); //read in MRF CSV
+    parseKabadiwala(); //read in Kabadiwala CSV
+    
   //checking to see if this is correct structure
   println("Total segment pairs in this road file: "+collectionOfCollections.size());
+    println("ENDING CALLING PARSE DATA");
 } //end parseData function
 
-////////////////////////// parse Kabadiwalas and MRFs ///////////////////////////////////////////////////////////////////////////////////
+////////////////////////// parse Kabadiwalas and MRFs //////////////////////////////////////////////////////////////////////////////////
 
 void parseKabadiwala() {
+  println("PARSE KABADIWALA");
   //parse CSV for k
   int previd_k = 0; 
   float lat_k, lon_k;
