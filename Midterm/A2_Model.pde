@@ -31,6 +31,8 @@ void kPath() {
    
   paths = new ArrayList<Path>();
   int numPaths = 1; //draw only one shortest path 
+  int agentsWanted = 3;
+  for(int j = 0; j<agentsWanted; j++){
   for (int i=0; i<numPaths; i++) {
     
     // Searches for valid paths only
@@ -42,12 +44,8 @@ void kPath() {
       //println("using randomK and randomSource");
       //chooseRandomKabadiwala();
       //chooseRandomSource();
-      
-      println("using a kabadiwala-source path for each of the kabadiwalas");
-      //for each kabadiwala in the list, assign a path between that kabadiwala and the source
-      //for(int q = 0; q<2; q++){ //sets the number of kabadiwalas to with collection_kcoords index as upper limit; set to 50 here so it ends eventually
-        chooseRandomKabadiwala(); //gets "kabadiwala"
-        chooseRandomSource(); //gets "source"
+        chooseRandomKabadiwala(); //gets "kabadiwala" <-- origin 
+        chooseRandomSource(); //gets "source" <-- destination
       //chooseAllSources();
       
       //2. identify the path between these two points
@@ -64,9 +62,10 @@ void kPath() {
      //display the kpoints and sources 
       //displayKabadiwala();
       //displaySource();
-    //}
    }
   }
+  }
+  println("paths: ", paths.size());
 }
 
 //draws a path that hits 10 kabadiwalas using the shortest distance between them and the Wholesaler/MRF

@@ -52,10 +52,10 @@ void chooseAllSources(){
 void chooseRandomKabadiwala() {
   boolean foundPoint = false;
   while(!foundPoint){
-    println("Random kabadiwala chosen from: "+collection_kcoords.size()); //kcoords is global
+  //  println("Random kabadiwala chosen from: "+collection_kcoords.size()); //kcoords is global
     //get a random index from the list of kabadiwalas
     randomKIndex = parseInt(random(0, collection_kcoords.size()));
-    println("the random KIndex is "+randomKIndex); 
+  //  println("the random KIndex is "+randomKIndex); 
     //choose the kabadiwala corresponding with that index
     kabadiwala = (PVector)collection_kcoords.get(randomKIndex);
     kabadiwala = map.getScreenLocation(kabadiwala);
