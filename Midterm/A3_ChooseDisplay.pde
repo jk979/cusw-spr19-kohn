@@ -12,49 +12,16 @@ int randomKIndex;
 ///////////////////////// Choose Functions //////////////////////////////
 /* These functions choose Kabadiwalas as the start points of the path, and Sources (of material) as the end points of the path. */
 
-//build all the kabadiwala origins instead of one random kabadiwala
-void chooseAllKabadiwalas() {
-  boolean foundPoint = false;
-  while(!foundPoint){
-    println("All kabadiwalas chosen from: "+collection_kcoords.size()); //kcoords is global
-    println("KCOORDS SIZE IS "+collection_kcoords.size());
-    for(int q = 0; q<50; q++){ //sets the number of kabadiwalas to with collection_kcoords index as upper limit; set to 50 here so it ends eventually
-      //get index of each row
-      int index = q;
-      println("chose kabadiwala from index " + q);
-    //choose the kabadiwala corresponding with that index
-    kabadiwala = (PVector)collection_kcoords.get(index);
-    kabadiwala = map.getScreenLocation(kabadiwala);
-        
-    //get the distance between the random Kabadiwala and the random Source
-    HavD = (map.Haversine(map.getGeo(kabadiwala), map.getGeo(source)));
-    if(HavD <= dist_from_shop){ //ensures distance is <= 3km from the kabadiwala shop
-        //println("Kabadiwala to Source distance is: ", (map.Haversine(map.getGeo(kabadiwala), map.getGeo(source)))/1000," km");
-        foundPoint = true;
-    }
-    //displayKabadiwala();
-  }
-  }
-}
+//build kabadiwala origin
 
-//build all sources at once
-void chooseAllSources(){
-  //get same number of sources as kabadiwalas
-  for(int r = 0; r<collection_kcoords.size()-1; r++){
-    int index = r; 
-  //choose random sources within 3km network distance of these kabadiwala points
-  
-  }
-}
-
-//build a random kabadiwala origin
 //chooses from big list of 199 kabadiwalas. May not show up on the small Bandra map for every run. 
-void chooseRandomKabadiwala() {
+void chooseKabadiwala() {
   boolean foundPoint = false;
   while(!foundPoint){
   //  println("Random kabadiwala chosen from: "+collection_kcoords.size()); //kcoords is global
     //get a random index from the list of kabadiwalas
-    randomKIndex = parseInt(random(0, collection_kcoords.size()));
+    //randomKIndex = parseInt(random(0, collection_kcoords.size()));
+    randomKIndex = 64;  
   //  println("the random KIndex is "+randomKIndex); 
     //choose the kabadiwala corresponding with that index
     kabadiwala = (PVector)collection_kcoords.get(randomKIndex);
@@ -71,7 +38,7 @@ void chooseRandomKabadiwala() {
 }
 
 //now determine a random Source point from collectionOfCollections
-void chooseRandomSource() {
+void chooseSource() {
   //show size of the complete list of two-node segments
   println("Random source chosen from: "+collectionOfCollections.size());
   //get a random index from that list

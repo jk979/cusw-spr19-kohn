@@ -181,7 +181,7 @@ void parseOSMNX() {
       //create Way with coordinate PVectors
       Way way = new Way(coords);
 
-      if (street.equals("unclassified") || street.equals("motorway") || street.equals("trunk") || street.equals("secondary") || street.equals("residential") || street.equals("tertiary") || street.equals("motorway_link")) {
+      if (street.equals("unclassified") || street.equals("motorway") || street.equals("trunk") || street.equals("primary") || street.equals("secondary") || street.equals("residential") || street.equals("tertiary") || street.equals("motorway_link")) {
         way.Street = true;
       }
 
@@ -298,7 +298,7 @@ void parseData() {
       //create Way with coordinate PVectors
       Way way = new Way(coords);
 
-      if (street.equals("unclassified") || street.equals("motorway") || street.equals("trunk") || street.equals("secondary") || street.equals("residential") || street.equals("tertiary") || street.equals("motorway_link")) {
+      if (street.equals("unclassified") || street.equals("motorway") || street.equals("trunk") || street.equals("primary") || street.equals("secondary") || street.equals("residential") || street.equals("tertiary") || street.equals("motorway_link")) {
         way.Street = true;
       }
       if (natural.equals("coastline")) {

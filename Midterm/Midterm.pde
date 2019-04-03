@@ -19,6 +19,8 @@ ArrayList<POI> pois;
 ArrayList<Way> ways;
 ArrayList<Polygon> polygons;
 
+int bundlesCollected;
+
 ///////////////////////
 
 //set up GUI
@@ -43,16 +45,7 @@ void initModel(){
   waysNetwork(ways);
   //randomNetworkMinusBuildings(0.1, polygons);
   
-  //initialize origin and destinations
-  //choose random kabadiwala
-  //chooseRandomKabadiwala();
-  
-  //draw random source for kabadiwala
-  //chooseRandomSource();
-  
-  //2. initialize paths using one of these methods
-  //randomPaths(3);
-  //poiPaths(1);
+  //2. initialize origin/destination and paths for kabadiwalas using kPath() method
   kPath();
   
   //3. initialize population
@@ -108,7 +101,7 @@ void setup(){
 }
 
 void draw(){
-  //includes drawing backgound, MRFs, kabadiwalas, path, bundle of materials, agents, testing if the agent has reached or dropped off the bundle, and wholesalers
+  //includes drawing background, MRFs, kabadiwalas, path, bundle of materials, agents, testing if the agent has reached or dropped off the bundle, and wholesalers
   
   //camera(70.0,-35.0, 1200.0, 450.0, -50, 0, 0, 1, 0);
   background(0);
@@ -119,21 +112,25 @@ void draw(){
      mrf_array.get(i).draw();
   }
  
+ //draw each of the kabadiwalas
   for(int i =0 ; i<k_array.size(); i++){
     k_array.get(i).draw();
   }
  
-  //draw path
-  for (Path b: paths) {
-    b.display(100,100);
-  }
+ //insert paths?
+     //4. draw path origins and destinations
+      for (Path b: paths) {
+        b.display(100,100);
+      }
+    
+    //5. display the yellow circle signifying the bundle of materials
+      displayBundle();
+      
  
-  //displayAllKabadiwala();
-
-//display the yellow circle signifying the bundle of materials
-  displayBundle();
-  
-  //test if agent is alive; agent stops upon returning to shop
+ 
+    
+   //euclidean
+      //test if agent is alive; agent stops upon returning to shop
   boolean collisionDetection = true;
   for (Agent p: people) {
     if(p.isAlive){
@@ -171,15 +168,24 @@ void draw(){
       bundle.x = kabadiwala.x;
       bundle.y = kabadiwala.y;
       //KILL THE AGENT
-      p.isAlive = false;
+      //p.isAlive = false;
       roundtripKM = parseInt((2*HavD)/1000);
+      //repeat the process by resetting the source and sending the kabadiwala out again
+      //add up bundles collected
+      //bundlesCollected++;
+      //println("bundles collected: ",bundlesCollected);
+      
     }
 
-//when wholesaler picks up, revenue is earned!
-//kabadiwala_offload_cost_paper = paperKSell*paperQuantity;
-//paperWBuy = paperKSell;
-  }
-  
+    //when wholesaler picks up, revenue is earned!
+    //kabadiwala_offload_cost_paper = paperKSell*paperQuantity;
+    //paperWBuy = paperKSell;
+  }  
+    
+    
+    
+    
+    
   text(frameRate, 25, 25);
   
   //draw title box
@@ -249,6 +255,16 @@ void draw(){
 void keyPressed(){
   initModel();
 }
+
+//each day: 10 routes for each kabadiwala
+
+//if 1 pressed: Monday
+//if 2 pressed: Tuesday (+plastic picked up)
+//if 3 pressed: Wednesday
+//if 4 pressed: Thursday (+plastic picked up)
+//if 5 pressed: Friday
+//if 6 pressed: Saturday
+
 ////////////////////////////////////
 
 /*

@@ -31,7 +31,7 @@ void kPath() {
    
   paths = new ArrayList<Path>();
   int numPaths = 1; //draw only one shortest path 
-  int agentsWanted = 3;
+  int agentsWanted = 1;
   for(int j = 0; j<agentsWanted; j++){
   for (int i=0; i<numPaths; i++) {
     
@@ -41,30 +41,33 @@ void kPath() {
     while(notFound) {
 
       //1. choose the points for the kabadiwala and for the source
-      //println("using randomK and randomSource");
-      //chooseRandomKabadiwala();
-      //chooseRandomSource();
-        chooseRandomKabadiwala(); //gets "kabadiwala" <-- origin 
-        chooseRandomSource(); //gets "source" <-- destination
-      //chooseAllSources();
+        chooseKabadiwala(); //gets "kabadiwala" <-- origin 
+        chooseSource(); //gets "source" <-- destination
       
       //2. identify the path between these two points
-        Path p = new Path(kabadiwala, source);
+        Path a = new Path(kabadiwala, source);
       
       //3. solve the path
-        p.solve(finder);
+        a.solve(finder);
       
-      if(p.waypoints.size() > 2) {
+      if(a.waypoints.size() > 2) {
         notFound = false;
-        paths.add(p);
+        paths.add(a);
       }
       
-     //display the kpoints and sources 
-      //displayKabadiwala();
-      //displaySource();
-   }
+      //4. draw the bundle and origin/destination points
+      displayBundle();
+      
+      //5. release the agent to get the bundle
+      
+      //6. check if the agent brought the bundle back. if yes, advance the bundleCount, add up the profit, and repeat this loop
+  
+    }
+
   }
+
   }
+
   println("paths: ", paths.size());
 }
 
