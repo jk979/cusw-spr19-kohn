@@ -47,8 +47,8 @@ void initModel(){
   paths = new ArrayList<Path>();
   
   //2. initialize origin/destination and paths for kabadiwalas using kPath() method
-  int numGroups = 2;
-  int numPairings = 3;
+  int numGroups = 1;
+  int numPairings = 2;
   
   //Set special indices <== only wake these people up first 
   //only wake 0, 3 
@@ -57,7 +57,7 @@ void initModel(){
     for(int i = 0 ; i< numGroups; i++){
         chooseKabadiwala(); //get the shared origin for each group 
         for(int j = 0; j<numPairings; j++){
-            kPath();
+          kPath();
         }
     }
 

@@ -133,7 +133,7 @@ class Agent {
         pathDirection *= -1;
         //checkLaps();
         laps +=1;
-        println("on lap "+laps+ " for KIndex" + randomKIndex);
+        //println("on lap "+laps+ " for KIndex" + randomKIndex);
       }
       pathIndex += pathDirection;
     }

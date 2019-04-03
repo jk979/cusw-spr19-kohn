@@ -40,15 +40,18 @@ void kPath() {
 
       //1. choose the points for the kabadiwala and for the source
         chooseSource(); //gets "source" <-- destination
-      
+        println("chooseSource: " + source);
+        
       //2. identify the path between these two points
         Path a = new Path(kabadiwala, source);
+        println("pathSource: " + source);
         
       //3. solve the path
-        a.solve(finder);
+        //a.solve(finder);
+        a.straightPath();
 
-      if(a.waypoints.size() > 2 && a.waypoints.get(a.waypoints.size()-1) == source) {
-        println( a.waypoints.get(a.waypoints.size()-1), source);
+      if(a.waypoints.size() > 1 && a.waypoints.get(a.waypoints.size()-1) == source) {
+        //println( a.waypoints.get(a.waypoints.size()-1), source);
         notFound = false;
         paths.add(a);
       }
@@ -89,7 +92,7 @@ void initPopulation(int count) {
     int random_index = int(random(paths.size()));
     Path random_path = paths.get(random_index);
     if (random_path.waypoints.size() > 1) {
-      int random_waypoint = 1;//int(random(random_path.waypoints.size()));
+      int random_waypoint = 0;//int(random(random_path.waypoints.size()));
       //float random_speed = random(0.1, 0.3);
       float random_speed = 0.7;
       PVector loc = random_path.waypoints.get(random_waypoint);
