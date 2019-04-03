@@ -54,7 +54,6 @@ void kPath() {
       }
       
       //4. draw the bundle and origin/destination points
-      displayBundle();
       
       //5. release the agent to get the bundle
       

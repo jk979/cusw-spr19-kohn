@@ -158,11 +158,14 @@ void draw(){
    misc = 0;
    
    euclideanAgentBundle = parseInt(dist(bundle.x, bundle.y, p.location.x, p.location.y));
+   
    //upon source pickup
     if (euclideanAgentBundle < (4) ) {
       //bundle position = Agent position
       bundle.x = p.location.x; 
       bundle.y = p.location.y;
+      
+      //bundle picked up and transaction made
       kabadiwala_pickup_cost_paper = paperKBuy*paperQuantity;
       kabadiwala_pickup_cost_plastic = plasticKBuy*plasticQuantity;
       kabadiwala_pickup_cost_glass = glassKBuy*glassQuantity;
@@ -173,7 +176,8 @@ void draw(){
     
     //upon returning to shop origin
     euclideanOriginBundle = parseInt(dist(bundle.x, bundle.y, kabadiwala.x, kabadiwala.y));
-    if(laps>=2 && euclideanOriginBundle < (4)){
+    //if it's made a roundtrip and at the shop origin
+    if(laps>=2 && euclideanOriginBundle < 4){
       //drop off the bundle
       bundle.x = kabadiwala.x;
       bundle.y = kabadiwala.y;
@@ -183,8 +187,10 @@ void draw(){
       people.get(p.id+1).isAlive = true;
       }
       catch(Exception e){}
+      //add up the km traveled roundtrip
       roundtripKM = parseInt((2*HavD)/1000);
-       displayBundle();
+      //reset the lap count
+      laps = 0;
       //repeat the process by resetting the source and sending the kabadiwala out again
       //add up bundles collected
       //bundlesCollected++;
