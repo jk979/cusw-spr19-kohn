@@ -44,13 +44,30 @@ void initModel(){
   //randomNetwork(0.5);
   waysNetwork(ways);
   //randomNetworkMinusBuildings(0.1, polygons);
+  paths = new ArrayList<Path>();
   
   //2. initialize origin/destination and paths for kabadiwalas using kPath() method
-  kPath();
+  int numGroups = 2;
+  int numPairings = 3;
   
-  //3. initialize population
-  //initPopulation(30*paths.size());
-  initPopulation(1*paths.size());
+  //Set special indices <== only wake these people up first 
+  //only wake 0, 3 
+  
+  //Number of groups 
+    for(int i = 0 ; i< numGroups; i++){
+        chooseKabadiwala(); //get the shared origin for each group 
+        for(int j = 0; j<numPairings; j++){
+            kPath();
+        }
+    }
+
+  println(paths.size());
+
+  //kPath();
+  
+  ////3. initialize population
+
+  initPopulation(paths.size());
   
   
 }
@@ -116,17 +133,9 @@ void draw(){
   for(int i =0 ; i<k_array.size(); i++){
     k_array.get(i).draw();
   }
- 
- //insert paths?
-     //4. draw path origins and destinations
-      for (Path b: paths) {
-        b.display(100,100);
-      }
-    
+
     //5. display the yellow circle signifying the bundle of materials
-      //displayBundle();
-      
- 
+     displayBundle();
  
     
    //euclidean
@@ -136,6 +145,7 @@ void draw(){
     if(p.isAlive){
     p.update(personLocations(people), collisionDetection);
     p.display(#FFFFFF, 255);
+    p.pathToDraw.display(100, 100);
     }
   
   //initialize 0 for each variable
@@ -168,8 +178,13 @@ void draw(){
       bundle.x = kabadiwala.x;
       bundle.y = kabadiwala.y;
       //KILL THE AGENT
-      //p.isAlive = false;
+      p.isAlive = false;
+      try{
+      people.get(p.id+1).isAlive = true;
+      }
+      catch(Exception e){}
       roundtripKM = parseInt((2*HavD)/1000);
+       displayBundle();
       //repeat the process by resetting the source and sending the kabadiwala out again
       //add up bundles collected
       //bundlesCollected++;

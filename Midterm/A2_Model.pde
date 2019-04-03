@@ -4,11 +4,13 @@ ObstacleCourse course;
 Graph network;
 Pathfinder finder;
 
+import java.util.*;
+
 //  Object to define and capture a specific origin, destiantion, and path
-ArrayList<Path> paths;
+ArrayList<Path> paths = new ArrayList<Path>();
 
 //  Objects to define agents that navigate our environment
-ArrayList<Agent> people;
+ArrayList<Agent> people = new ArrayList<Agent>();
 
 //ways network using roads as ways
 void waysNetwork(ArrayList<Way> w) {
@@ -21,6 +23,7 @@ void waysNetwork(ArrayList<Way> w) {
 
 //draw a shortest path between the kabadiwala and the source
 void kPath() {
+  println("kPath is running");
   /*  An pathfinder object used to derive the shortest path. */
   finder = new Pathfinder(network);
   
@@ -28,29 +31,24 @@ void kPath() {
    *  FORMAT 1: Path(float x, float y, float l, float w) <- defines 2 random points inside a rectangle
    *  FORMAT 2: Path(PVector o, PVector d) <- defined by two specific coordinates
    */
-   
-  paths = new ArrayList<Path>();
-  int numPaths = 1; //draw only one shortest path 
-  int agentsWanted = 1;
-  for(int j = 0; j<agentsWanted; j++){
-  for (int i=0; i<numPaths; i++) {
-    
+
+          
     // Searches for valid paths only
     boolean notFound = true;
     
     while(notFound) {
 
       //1. choose the points for the kabadiwala and for the source
-        chooseKabadiwala(); //gets "kabadiwala" <-- origin 
         chooseSource(); //gets "source" <-- destination
       
       //2. identify the path between these two points
         Path a = new Path(kabadiwala, source);
-      
+        
       //3. solve the path
         a.solve(finder);
-      
-      if(a.waypoints.size() > 2) {
+
+      if(a.waypoints.size() > 2 && a.waypoints.get(a.waypoints.size()-1) == source) {
+        println( a.waypoints.get(a.waypoints.size()-1), source);
         notFound = false;
         paths.add(a);
       }
@@ -61,11 +59,6 @@ void kPath() {
       //5. release the agent to get the bundle
       
       //6. check if the agent brought the bundle back. if yes, advance the bundleCount, add up the profit, and repeat this loop
-  
-    }
-
-  }
-
   }
 
   println("paths: ", paths.size());
@@ -102,9 +95,16 @@ void initPopulation(int count) {
       float random_speed = 0.7;
       PVector loc = random_path.waypoints.get(random_waypoint);
       Agent person = new Agent(loc.x, loc.y, 7, random_speed, random_path.waypoints);
+      person.id = people.size();
       people.add(person);
+      person.pathToDraw = random_path;
+      //Only call the first person of each group to life 
+      if(people.size() == 1 || people.size() == 3) person.isAlive = true;
+      else person.isAlive= false;
     }
+    
   }
+  println("People in system: ", people.size());
 }
 
 ArrayList<PVector> personLocations(ArrayList<Agent> people) {

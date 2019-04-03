@@ -4,11 +4,13 @@ class Agent {
   PVector location;
   PVector velocity;
   PVector acceleration;
+  Path pathToDraw;
   float r;
   float maxforce;
   float maxspeed;
   float tolerance = 1;
   ArrayList<PVector> path;
+  int id; 
   int pathIndex, pathLength; // Index and Amount of Nodes in a Path
   int pathDirection; // -1 or +1 to specific directionality
   
@@ -120,6 +122,7 @@ class Agent {
     
     // Reset acceleration to 0 each cycle
     acceleration.mult(0);
+    
     
     // Checks if Agents reached current waypoint
     // If reaches endpoint, reverses direction

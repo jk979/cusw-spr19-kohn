@@ -5,7 +5,7 @@ class Path {
   PVector destination;
   ArrayList<PVector> waypoints;
   boolean enableFinder = true;
-  float diameter = 10;
+  float diameter = 1;
   
   // Constructs a random straight-line path within a specified rectangle
   //adapt agents to make Shop (the kData CSV points) the origin
@@ -48,10 +48,10 @@ class Path {
     }
     
     // Draw Origin (Green) and Destination (Blue)
-    fill(#00FF00); // Green
+    fill(#FF0000); // Green
     ellipse(kabadiwala.x, kabadiwala.y, diameter, diameter);
     //ellipse(origin.x, origin.y, diameter, diameter);
-    fill(#0000FF); // Blue
+    fill(#FFFF00); // Blue
     ellipse(source.x, source.y, diameter, diameter);
     //ellipse(destination.x, destination.y, diameter, diameter);
     
