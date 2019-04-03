@@ -124,7 +124,7 @@ void draw(){
       }
     
     //5. display the yellow circle signifying the bundle of materials
-      displayBundle();
+      //displayBundle();
       
  
  

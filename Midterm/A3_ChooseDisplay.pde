@@ -57,8 +57,8 @@ void chooseSource() {
   source = map.getScreenLocation(intermediates);
   bundle = map.getScreenLocation(intermediates);
   
+  displayBundle();
   //once chosen, display the source (not necessary because we have origin/destination points overlaid already)
-  //displaySource();
   
 }
 
