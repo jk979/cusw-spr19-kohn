@@ -1,9 +1,18 @@
 //drawing paths
 PVector kabadiwala = new PVector();
 PVector source = new PVector();
-//PVector each_kabadiwala = new PVector();
-//PVector each_source = new PVector();
-PVector bundle = new PVector();
+ArrayList<ArrayList<PVector>> bundles = new ArrayList<ArrayList<PVector>>();
+
+//paths
+PVector singleJourney = new PVector(); //K --> A
+ArrayList roundTrip = new ArrayList<PVector>(); //K --> A --> K
+ArrayList<ArrayList<PVector>> allTrips = new ArrayList<ArrayList<PVector>>(); //K <--> A, K <--> B, K <--> C
+
+//bundles
+PVector bundle = new PVector(); //one bundle
+ArrayList multi_bundles = new ArrayList<PVector>(); //all bundles belonging to a single kabadiwala
+ArrayList<ArrayList<PVector>> allBundles = new ArrayList<ArrayList<PVector>>(); //all bundles in the animation
+
 int euclideanAgentBundle;
 int euclideanOriginBundle;
 int randomKIndex;
@@ -17,28 +26,28 @@ int randomKIndex;
 //chooses from big list of 199 kabadiwalas. May not show up on the small Bandra map for every run. 
 void chooseKabadiwala() {
   boolean foundPoint = false;
-  while(!foundPoint){
-  //  println("Random kabadiwala chosen from: "+collection_kcoords.size()); //kcoords is global
+  while (!foundPoint) {
+    //  println("Random kabadiwala chosen from: "+collection_kcoords.size()); //kcoords is global
     //get a random index from the list of kabadiwalas
-   randomKIndex = parseInt(random(0, collection_kcoords.size()));
-   // randomKIndex = 64;  
-  //  println("the random KIndex is "+randomKIndex); 
+    randomKIndex = parseInt(random(0, collection_kcoords.size()));
+    // randomKIndex = 64;  
     //choose the kabadiwala corresponding with that index
     kabadiwala = (PVector)collection_kcoords.get(randomKIndex);
     kabadiwala = map.getScreenLocation(kabadiwala);
-        
-    //get the distance between the random Kabadiwala and the random Source
+
+    //get the distance between the random Kabadiwala and the random Source, make sure it's 3km or less
     HavD = (map.Haversine(map.getGeo(kabadiwala), map.getGeo(source)));
-    if(HavD <= dist_from_shop){ //ensures distance is <= 3km from the kabadiwala shop
-        println("Kabadiwala to Source distance is: ", (map.Haversine(map.getGeo(kabadiwala), map.getGeo(source)))/1000," km");
-        foundPoint = true;
+    if (HavD <= dist_from_shop) { //ensures distance is <= 3km from the kabadiwala shop
+      println("Kabadiwala to Source distance is: ", (map.Haversine(map.getGeo(kabadiwala), map.getGeo(source)))/1000, " km");
+      foundPoint = true;
     }
     //displayKabadiwala();
   }
 }
 
 //now determine a random Source point from collectionOfCollections
-void chooseSource() {
+PVector chooseSource() {
+  PVector temp; 
   //show size of the complete list of two-node segments
   println("Random source chosen from: "+collectionOfCollections.size());
   //get a random index from that list
@@ -55,12 +64,12 @@ void chooseSource() {
   //generate intermediate points and assign "source"
   PVector intermediates = map.intermediate(pt1, pt2, 0.5);
   source = map.getScreenLocation(intermediates);
-  bundle = map.getScreenLocation(intermediates);
-  
-  //displayBundle();
-  //displaySource();
+  temp = map.getScreenLocation(intermediates);
+
+  return temp; //creates temporary instance of the source point
+  //bundle = map.getScreenLocation(intermediates);
+
   //once chosen, display the source (not necessary because we have origin/destination points overlaid already)
-  
 }
 
 /////////////DISPLAY/////////////////
@@ -72,14 +81,5 @@ void displayKabadiwala() {
   polygon(kabadiwala.x, kabadiwala.y, 3, 4);
 }
 
-void displaySource() {
-  fill(color(255, 0, 0));
-  noStroke();
-  polygon(source.x, source.y, 6, 3);
-}
 
-void displayBundle() {
-  stroke(color(255, 255, 0));
-  noFill();
-  ellipse(bundle.x, bundle.y, 13, 13);
-}
+  

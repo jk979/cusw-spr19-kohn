@@ -1,4 +1,4 @@
-int laps = 0;
+int laps; 
 
 class Agent {
   PVector location;
@@ -131,9 +131,6 @@ class Agent {
     if (prox < 3 && path.size() > 1 ) {
       if (pathDirection == 1 && pathIndex == pathLength-1 || pathDirection == -1 && pathIndex == 0) {
         pathDirection *= -1;
-        //checkLaps();
-        laps +=1;
-        //println("on lap "+laps+ " for KIndex" + randomKIndex);
       }
       pathIndex += pathDirection;
     }

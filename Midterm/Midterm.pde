@@ -7,6 +7,8 @@ initModel -- is the ways network changing? Do you have to re-chose any data stru
 while loop exit condition/choosing -- are there options that shouldn't be chosen together, etc? 
 */
 
+//bundles and source must be linked
+
 //Background 
 
 //make Bandra map
@@ -20,6 +22,11 @@ ArrayList<Way> ways;
 ArrayList<Polygon> polygons;
 
 int bundlesCollected;
+int numKabadiwalas; 
+int numBundlesPerKabadiwala;
+
+boolean bundle_released;
+
 
 ///////////////////////
 
@@ -48,7 +55,7 @@ void initModel(){
   
   //2. initialize origin/destination and paths for kabadiwalas using kPath() method
   int numGroups = 1;
-  int numPairings = 2;
+  int numPairings = 1;
   
   //Set special indices <== only wake these people up first 
   //only wake 0, 3 
@@ -135,7 +142,8 @@ void draw(){
   }
 
     //5. display the yellow circle signifying the bundle of materials
-     displayBundle();
+     //display bundle location
+              
  
     
    //euclidean
@@ -146,6 +154,10 @@ void draw(){
     p.update(personLocations(people), collisionDetection);
     p.display(#FFFFFF, 255);
     p.pathToDraw.display(100, 100);
+    
+    stroke(color(#FF0000));
+    noFill();
+    polygon(bundle.x, bundle.y, 3, 4);
     }
   
   //initialize 0 for each variable
@@ -157,14 +169,17 @@ void draw(){
    kabadiwala_pickup_cost_metal = 0;
    misc = 0;
    
+   //checking for collisions between agent and bundle
    euclideanAgentBundle = parseInt(dist(bundle.x, bundle.y, p.location.x, p.location.y));
    
    //upon source pickup
     if (euclideanAgentBundle < (4) ) {
       //bundle position = Agent position
+
       bundle.x = p.location.x; 
       bundle.y = p.location.y;
-      
+      bundle_released = false;
+
       //bundle picked up and transaction made
       kabadiwala_pickup_cost_paper = paperKBuy*paperQuantity;
       kabadiwala_pickup_cost_plastic = plasticKBuy*plasticQuantity;
@@ -177,10 +192,11 @@ void draw(){
     //upon returning to shop origin
     euclideanOriginBundle = parseInt(dist(bundle.x, bundle.y, kabadiwala.x, kabadiwala.y));
     //if it's made a roundtrip and at the shop origin
-    if(laps>=2 && euclideanOriginBundle < 4){
+    if(euclideanOriginBundle < 4){
       //drop off the bundle
       bundle.x = kabadiwala.x;
       bundle.y = kabadiwala.y;
+      bundle_released = true;
       //KILL THE AGENT
       p.isAlive = false;
       try{
@@ -191,10 +207,6 @@ void draw(){
       roundtripKM = parseInt((2*HavD)/1000);
       //reset the lap count
       laps = 0;
-      //repeat the process by resetting the source and sending the kabadiwala out again
-      //add up bundles collected
-      //bundlesCollected++;
-      //println("bundles collected: ",bundlesCollected);
       
     }
 
