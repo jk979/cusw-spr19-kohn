@@ -171,9 +171,7 @@ void draw(){
    kabadiwala_pickup_cost_glass = 0;
    kabadiwala_pickup_cost_metal = 0;
    misc = 0;
-   
-   bundleWithAgent = false;
-   
+      
    //checking where the bundle is. Is it with the agent? Is it at the origin?
    euclideanAgentBundle = parseInt(dist(bundle.x, bundle.y, p.location.x, p.location.y));
    euclideanOriginBundle = parseInt(dist(bundle.x, bundle.y, kabadiwala.x, kabadiwala.y));
@@ -187,12 +185,21 @@ void draw(){
    
    if(euclideanAgentBundle < 2){ //agent got to the source && agent found the bundle
      bundleWithAgent = true;
+     println("now carrying bundle!");
      bundle.x = p.location.x; 
      bundle.y = p.location.y;
      
+     int collisionSource; 
      if(euclideanAgentSource < 2){ //the agent got to the destination, now the laps will increase
-       laps = laps + 0.5;
-       println("adding half a lap now...", laps);
+       collisionSource = 1;
+       if(collisionSource == 1){ //only count the lap if it's run into the source once
+         laps = laps + 0.5;
+       }
+       else if(collisionSource>=1){ //in case it runs into the source again by accident
+         laps = 0.5;
+         println("adding half a lap now...", laps);
+       }
+       collisionSource++;
        soldToKabadiwala = true;
      }
    }
@@ -208,6 +215,25 @@ void draw(){
      if(laps == 1){
        println("i completed roundtrip!");
      }
+     
+     //checks where the bundle is
+     if(bundleWithAgent == false) {
+        println("i don't have a bundle yet.");
+        println("i'm on lap ",laps);
+      }
+      
+      //6. is the bundle's position the same as the origin? 
+      //if yes, advance bundleCount and leave the bundle there
+      //check if bundle_released = true, means it's deposited the bundle
+      if(bundleWithAgent == true) {
+        println("on lap", laps);
+        println("i grabbed the bundle");
+        //laps = 1;
+        println("and i'm on lap ", laps);
+      //add up bundles collected
+      bundlesCollected++;
+      println("bundles collected so far: ", bundlesCollected);
+      }
      
       //KILL THE AGENT
       p.isAlive = true;
@@ -251,11 +277,12 @@ void draw(){
   //draw title text
   fill(255,255,255);
   textSize(24);
-  text("The Kabadiwala's Journey", 540, 60);
+  text("The Kabadiwala's Journey", 540, 50);
   //draw description
   fill(240,240,240);
   textSize(12);
-  text("This map shows kabadiwalas moving back and forth between their shop (green) and the source of material (red). \nPress SPACE to begin the work week!",540,100);
+  text("Kabadiwalas are the informal recycling heroes of Mumbai, India. \nThey collect recyclable plastic, paper, glass, and metal from households and sell it up the value chain.",540,70);
+  text("This map shows kabadiwalas between their shop (red) and the source of material (yellow). \n Bundle of Materials: red circle",540,110);
 
   //draw input box
   fill(bgColor, 2*baseAlpha);

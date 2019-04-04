@@ -80,30 +80,6 @@ void kPath() {
       //make bundle at kabadiwala
       //bundle.x = kabadiwala.x;
       //bundle.y = kabadiwala.y;
-      
-      
-      if(bundleWithAgent == false) {
-        //laps = 0.5; 
-        println("i don't have a bundle yet.");
-        println("i'm on lap ",laps);
-        //bundle.x = kabadiwala.x;
-        //bundle.y = kabadiwala.y;
-      }
-      
-      //6. is the bundle's position the same as the origin? 
-      //if yes, advance bundleCount and leave the bundle there
-      //check if bundle_released = true, means it's deposited the bundle
-      //if so, laps = 2
-      else if(bundleWithAgent == true) {
-        println("agent found the bundle!");
-        println("on lap", laps);
-        println("i grabbed the bundle");
-        //laps = 1;
-        println("and i'm on lap ", laps);
-      //add up bundles collected
-      bundlesCollected++;
-      println("bundles collected so far: ", bundlesCollected);
-      }
             
       
      
