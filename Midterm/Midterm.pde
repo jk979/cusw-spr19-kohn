@@ -25,7 +25,12 @@ int bundlesCollected;
 int numKabadiwalas; 
 int numBundlesPerKabadiwala;
 
-boolean bundle_released;
+//checks where the bundle is
+boolean bundleAtKabadiwala;
+boolean bundleWithAgent;
+boolean bundleAtSource;
+
+boolean soldToKabadiwala;
 
 
 ///////////////////////
@@ -46,7 +51,7 @@ boolean showUI = true;
 
 //contain the model initialization
 void initModel(){
-
+  soldToKabadiwala = false;
   //1. initialize the network using one of these methods
   //randomNetwork(0.5);
   waysNetwork(ways);
@@ -103,7 +108,7 @@ void setup(){
   map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0);
   parseData();
   //parseOSMNX();
-  
+  //parseDataMumbai();
   
   //load map and data for all of mumbai
   //map = new MercatorMap(width_map+150, height_map, 19.2904, 18.8835,72.7364,73.0570, 0);
@@ -144,8 +149,6 @@ void draw(){
     //5. display the yellow circle signifying the bundle of materials
      //display bundle location
               
- 
-    
    //euclidean
       //test if agent is alive; agent stops upon returning to shop
   boolean collisionDetection = true;
@@ -169,17 +172,63 @@ void draw(){
    kabadiwala_pickup_cost_metal = 0;
    misc = 0;
    
-   //checking for collisions between agent and bundle
-   euclideanAgentBundle = parseInt(dist(bundle.x, bundle.y, p.location.x, p.location.y));
+   bundleWithAgent = false;
    
-   //upon source pickup
-    if (euclideanAgentBundle < (4) ) {
-      //bundle position = Agent position
+   //checking where the bundle is. Is it with the agent? Is it at the origin?
+   euclideanAgentBundle = parseInt(dist(bundle.x, bundle.y, p.location.x, p.location.y));
+   euclideanOriginBundle = parseInt(dist(bundle.x, bundle.y, kabadiwala.x, kabadiwala.y));
+   euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
+   euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala.x, kabadiwala.y));
+   
+   //is the bundle at the source?
+   //is the bundle at the kabadiwala?
+   //is the bundle with the agent?
+   //initial conditions: bundle at source, agent in transit
+   
+   if(euclideanAgentBundle < 2){ //agent got to the source && agent found the bundle
+     bundleWithAgent = true;
+     bundle.x = p.location.x; 
+     bundle.y = p.location.y;
+     
+     if(euclideanAgentSource < 2){ //the agent got to the destination, now the laps will increase
+       laps = laps + 0.5;
+       println("adding half a lap now...", laps);
+       soldToKabadiwala = true;
+     }
+   }
+   
+   if(euclideanOriginBundle < 2){ //bundle brought to kabadiwala
+     bundleAtKabadiwala = true;
+     bundleWithAgent = false;
+     bundle.x = kabadiwala.x; 
+     bundle.y = kabadiwala.y;
+     laps = laps + 0.5; //laps increase
+     println("reached origin! laps = ", laps);
+     //when laps = 1, exit the loop
+     if(laps == 1){
+       println("i completed roundtrip!");
+     }
+     
+      //KILL THE AGENT
+      p.isAlive = true;
+      //people.get(p.id+1).isAlive = true;
+      
+      //catch(Exception e){}
+      //add up the km traveled roundtrip
+      roundtripKM = parseInt((2*HavD)/1000);
+      //reset the lap count
+      laps = 0;
+   }
+  
+      
+    }
 
-      bundle.x = p.location.x; 
-      bundle.y = p.location.y;
-      bundle_released = false;
-
+    //when wholesaler picks up, revenue is earned!
+    //kabadiwala_offload_cost_paper = paperKSell*paperQuantity;
+    //paperWBuy = paperKSell;
+  
+    
+    if (soldToKabadiwala == true){
       //bundle picked up and transaction made
       kabadiwala_pickup_cost_paper = paperKBuy*paperQuantity;
       kabadiwala_pickup_cost_plastic = plasticKBuy*plasticQuantity;
@@ -187,36 +236,9 @@ void draw(){
       kabadiwala_pickup_cost_metal = metalKBuy*metalQuantity;
       misc = 3000;
       totalKPickupCost = (kabadiwala_pickup_cost_paper+kabadiwala_pickup_cost_plastic+kabadiwala_pickup_cost_glass+kabadiwala_pickup_cost_metal+misc);
-    }
+}
     
-    //upon returning to shop origin
-    euclideanOriginBundle = parseInt(dist(bundle.x, bundle.y, kabadiwala.x, kabadiwala.y));
-    //if it's made a roundtrip and at the shop origin
-    if(euclideanOriginBundle < 4){
-      //drop off the bundle
-      bundle.x = kabadiwala.x;
-      bundle.y = kabadiwala.y;
-      bundle_released = true;
-      //KILL THE AGENT
-      p.isAlive = false;
-      try{
-      people.get(p.id+1).isAlive = true;
-      }
-      catch(Exception e){}
-      //add up the km traveled roundtrip
-      roundtripKM = parseInt((2*HavD)/1000);
-      //reset the lap count
-      laps = 0;
-      
-    }
 
-    //when wholesaler picks up, revenue is earned!
-    //kabadiwala_offload_cost_paper = paperKSell*paperQuantity;
-    //paperWBuy = paperKSell;
-  }  
-    
-    
-    
     
     
   text(frameRate, 25, 25);

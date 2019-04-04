@@ -5,6 +5,8 @@ Graph network;
 Pathfinder finder;
 
 import java.util.*;
+float laps; 
+
 
 //  Object to define and capture a specific origin, destiantion, and path
 ArrayList<Path> paths = new ArrayList<Path>();
@@ -72,27 +74,39 @@ void kPath() {
       //5. come back with the bundle
       //check if bundle_released = false, means it's grabbed the bundle
       //if so, laps = 1
-      if(bundle_released == false) {
-        laps = 1; 
-        println("i'm on my first lap!");
+      
+      //make bundle at source (done)
+      //make bundle with agent
+      //make bundle at kabadiwala
+      //bundle.x = kabadiwala.x;
+      //bundle.y = kabadiwala.y;
+      
+      
+      if(bundleWithAgent == false) {
+        //laps = 0.5; 
+        println("i don't have a bundle yet.");
+        println("i'm on lap ",laps);
+        //bundle.x = kabadiwala.x;
+        //bundle.y = kabadiwala.y;
       }
       
+      //6. is the bundle's position the same as the origin? 
+      //if yes, advance bundleCount and leave the bundle there
       //check if bundle_released = true, means it's deposited the bundle
       //if so, laps = 2
-      else if(bundle_released == true) {
-        println("i dropped off the bundle!");
-        laps = 2;
+      else if(bundleWithAgent == true) {
+        println("agent found the bundle!");
+        println("on lap", laps);
+        println("i grabbed the bundle");
+        //laps = 1;
+        println("and i'm on lap ", laps);
       //add up bundles collected
       bundlesCollected++;
       println("bundles collected so far: ", bundlesCollected);
       }
+            
       
-      println(laps);
-      
-      
-      //6. release it 
-      //is the bundle's position the same as the origin? 
-      //if yes, advance bundleCount and leave the bundle there
+     
       
       
       //next bundle!

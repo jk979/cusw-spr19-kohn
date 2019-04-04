@@ -1,7 +1,7 @@
 //set the costs and quantities (can change these dynamically)
 
 //only set Sources that are 1-3km from the shop
-int dist_from_shop = 8000;
+int dist_from_shop = 2000;
 
 //paper
 int kabadiwala_pickup_cost_paper;

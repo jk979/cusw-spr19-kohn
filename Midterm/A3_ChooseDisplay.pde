@@ -15,6 +15,8 @@ ArrayList<ArrayList<PVector>> allBundles = new ArrayList<ArrayList<PVector>>(); 
 
 int euclideanAgentBundle;
 int euclideanOriginBundle;
+int euclideanAgentSource;
+int euclideanAgentOrigin;
 int randomKIndex;
 
 
@@ -80,6 +82,3 @@ void displayKabadiwala() {
   noFill();
   polygon(kabadiwala.x, kabadiwala.y, 3, 4);
 }
-
-
-  

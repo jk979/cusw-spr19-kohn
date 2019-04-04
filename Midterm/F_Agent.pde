@@ -1,4 +1,3 @@
-int laps; 
 
 class Agent {
   PVector location;
