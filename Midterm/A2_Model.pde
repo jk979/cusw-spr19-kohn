@@ -91,6 +91,7 @@ void kPath() {
   println("paths: ", paths.size());
 } //end KPaths
 
+      
 //draws a path that hits 10 kabadiwalas using the shortest distance between them and the Wholesaler/MRF
 void WholesalerPath(){ 
 //option 1. wholesaler is picking up

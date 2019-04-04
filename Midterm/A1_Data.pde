@@ -24,7 +24,7 @@ void loadData() {
   features = bandra.getJSONArray("features");
   
   //1B. load OSMNX file of Mumbai simplified roads (roads are corrected)
-  //os_mumbai = loadJSONObject("data/osmnx_mumbai.geojson");
+ //os_mumbai = loadJSONObject("data/osmnx_mumbai.geojson");
   //features = os_mumbai.getJSONArray("features");
   
   //1C. load OSM file of Mumbai without simplified roads

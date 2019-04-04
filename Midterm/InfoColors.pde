@@ -1,5 +1,9 @@
 //19.0942, 19.0391, 72.8462, 72.8143
 
+float MARGIN = 0.03;
+int baseAlpha = 50;
+int lnColor = 255;
+
 color colorBuildingResidential = color(0,0,0);
 color colorCoastline = color(128,128,128);
 color colorRail = color(255,170,170);

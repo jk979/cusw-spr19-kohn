@@ -40,10 +40,6 @@ String title = "Kabadiwala Simulation";
 String project = "Description here";
 
 //scrollbars (horizontal and vertical)
-HScrollbar hs;
-
-// Drag Functions
-XYDrag drag;
 
 boolean showUI = true;
 
@@ -122,11 +118,7 @@ void setup(){
   //initialize model and simulation
   initModel();
   
-  /*
-  hs = new HScrollbar(width - int(height*MARGIN) - int(0.3*height), int((1-1.5*MARGIN)*height), int(0.3*height), int(MARGIN*height), 5);
-  camRotation = hs.getPosPI(); // (0 - 2*PI)
-  */
-  
+
 }
 
 void draw(){
@@ -171,31 +163,33 @@ void draw(){
    kabadiwala_pickup_cost_glass = 0;
    kabadiwala_pickup_cost_metal = 0;
    misc = 0;
-      
+   
+   //////////////////////////////////////////////////////
+   
    //checking where the bundle is. Is it with the agent? Is it at the origin?
+   //is the bundle at the source?
+   //is the bundle at the kabadiwala?
+   //is the bundle with the agent?
+   //initial conditions: bundle at source, agent in transit
    euclideanAgentBundle = parseInt(dist(bundle.x, bundle.y, p.location.x, p.location.y));
    euclideanOriginBundle = parseInt(dist(bundle.x, bundle.y, kabadiwala.x, kabadiwala.y));
    euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
    euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala.x, kabadiwala.y));
    
-   //is the bundle at the source?
-   //is the bundle at the kabadiwala?
-   //is the bundle with the agent?
-   //initial conditions: bundle at source, agent in transit
-   
-   if(euclideanAgentBundle < 2){ //agent got to the source && agent found the bundle
-     bundleWithAgent = true;
+   if(euclideanAgentBundle < 4){ //1. agent arrives at source and gets bundle
      println("now carrying bundle!");
      bundle.x = p.location.x; 
      bundle.y = p.location.y;
+     bundleWithAgent = true;
      
      int collisionSource; 
-     if(euclideanAgentSource < 2){ //the agent got to the destination, now the laps will increase
+     if(euclideanAgentSource < 4){ //lap is logged
        collisionSource = 1;
        if(collisionSource == 1){ //only count the lap if it's run into the source once
-         laps = laps + 0.5;
+         laps = laps + 0.5; //first time is 0.5
+         println("laps: ",laps);
        }
-       else if(collisionSource>=1){ //in case it runs into the source again by accident
+       else if(collisionSource>=1){ //in case it runs into the source again by accident, make sure laps stays at 0.5
          laps = 0.5;
          println("adding half a lap now...", laps);
        }
@@ -205,11 +199,15 @@ void draw(){
    }
    
    if(euclideanOriginBundle < 2){ //bundle brought to kabadiwala
-     bundleAtKabadiwala = true;
-     bundleWithAgent = false;
+     println("bundle brought to kabadiwala");
      bundle.x = kabadiwala.x; 
      bundle.y = kabadiwala.y;
+     bundleAtKabadiwala = true;
+  
      laps = laps + 0.5; //laps increase
+     //add up bundles collected
+     bundlesCollected = 1;
+     
      println("reached origin! laps = ", laps);
      //when laps = 1, exit the loop
      if(laps == 1){
@@ -222,18 +220,16 @@ void draw(){
         println("i'm on lap ",laps);
       }
       
+      if(bundleWithAgent == true){
       //6. is the bundle's position the same as the origin? 
       //if yes, advance bundleCount and leave the bundle there
       //check if bundle_released = true, means it's deposited the bundle
-      if(bundleWithAgent == true) {
-        println("on lap", laps);
         println("i grabbed the bundle");
-        //laps = 1;
         println("and i'm on lap ", laps);
-      //add up bundles collected
-      bundlesCollected++;
-      println("bundles collected so far: ", bundlesCollected);
+        
       }
+
+
      
       //KILL THE AGENT
       p.isAlive = true;
@@ -283,7 +279,7 @@ void draw(){
   textSize(12);
   text("Kabadiwalas are the informal recycling heroes of Mumbai, India. \nThey collect recyclable plastic, paper, glass, and metal from households and sell it up the value chain.",540,70);
   text("This map shows kabadiwalas between their shop (red) and the source of material (yellow). \n Bundle of Materials: red circle",540,110);
-
+  text("By Jacob Kohn", 1100,50);
   //draw input box
   fill(bgColor, 2*baseAlpha);
   rect(520, 150, 300, 500, 10);
@@ -357,6 +353,7 @@ Classes Contained:
   Obstacle() - 2D polygon that detects overlap events
   Graph() - Network of nodes and weighted edges
   Node() - Fundamental building block of Graph()
+  Bundle() - Fundamental building block which contains paper, plastic, glass, and metal for pickup
   
 Standard GIS shapes: 
   POI() - Points
