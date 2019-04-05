@@ -41,21 +41,19 @@ void kPath() {
     while(notFound) {
 
       //1. choose the points for the kabadiwala and for the source
-        numKabadiwalas = 1;
-        numBundlesPerKabadiwala = 2; 
-        for (int i = 0; i<numKabadiwalas; i++){ //for one kabadiwala...
           chooseKabadiwala();
-          //initially, hasn't collected any yet
-          bundlesCollected = 0;
-          for (int j = 0; j<numBundlesPerKabadiwala; j++){ //there is one bundle...
-            //println(bundles.get(i).get(j)); //bundles should be an arraylist of arraylist
-            bundle = chooseSource(); //gets "source" <-- destination
-            println("destination location: " + source);
-            println("bundle location: " + bundle);
-            
-      //2. identify the path between these two points
-            Path a = new Path(kabadiwala, source);
-            println("pathSource: " + source);
+          
+          PVector sourceLocation = new PVector();
+          sourceLocation = chooseSource();
+          println("source Location: ",sourceLocation);
+          
+      //2. initialize the Bundle and place it at source location    
+          Bundle b = new Bundle(sourceLocation);
+          println("bundle's location is",b.loc);
+          
+      //3. identify the path between kabadiwala and source
+          Path a = new Path(kabadiwala, source);
+          println("pathSource: " + source);
         
       //3. solve the path
         a.solve(finder);
@@ -66,27 +64,6 @@ void kPath() {
               notFound = false;
               paths.add(a);
             }
-          }
-        }
-        
-      //midterm: send the agent out and do the following: 
-      
-      //5. come back with the bundle
-      //check if bundle_released = false, means it's grabbed the bundle
-      //if so, laps = 1
-      
-      //make bundle at source (done)
-      //make bundle with agent
-      //make bundle at kabadiwala
-      //bundle.x = kabadiwala.x;
-      //bundle.y = kabadiwala.y;
-            
-      
-     
-      
-      
-      //next bundle!
-      
   } //end 
   println("paths: ", paths.size());
 } //end KPaths

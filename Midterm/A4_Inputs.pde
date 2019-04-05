@@ -3,6 +3,12 @@
 //only set Sources that are 1-3km from the shop
 int dist_from_shop = 2000;
 
+//set global quantities generated per household
+float wt_plastic = 6; //6kg per household
+float wt_paper = 25; //25kg per household
+float wt_glass = 1; //1kg per household
+float wt_metal = 0.17; //0.17kg per household
+
 //paper
 int kabadiwala_pickup_cost_paper;
 int paperKBuy = 10;

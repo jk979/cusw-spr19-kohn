@@ -25,12 +25,9 @@ int bundlesCollected;
 int numKabadiwalas; 
 int numBundlesPerKabadiwala;
 
-//checks where the bundle is
-boolean bundleAtKabadiwala;
-boolean bundleWithAgent;
-boolean bundleAtSource;
-
 boolean soldToKabadiwala;
+
+Bundle b;
 
 
 ///////////////////////
@@ -56,23 +53,21 @@ void initModel(){
   paths = new ArrayList<Path>();
   
   //2. initialize origin/destination and paths for kabadiwalas using kPath() method
-  int numGroups = 1;
-  int numPairings = 1;
+  int numKabadiwalas = 1;
+  int numBundlesPerKabadiwala = 1;
   
   //Set special indices <== only wake these people up first 
   //only wake 0, 3 
   
   //Number of groups 
-    for(int i = 0 ; i< numGroups; i++){
+    for(int i = 0 ; i< numKabadiwalas; i++){
         chooseKabadiwala(); //get the shared origin for each group 
-        for(int j = 0; j<numPairings; j++){
+        for(int j = 0; j<numBundlesPerKabadiwala; j++){
           kPath();
         }
     }
 
   println(paths.size());
-
-  //kPath();
   
   ////3. initialize population
 
@@ -139,7 +134,7 @@ void draw(){
     k_array.get(i).draw();
   }
 
-  drawBlock();
+  //drawBlock();
   
   
     //5. display the yellow circle signifying the bundle of materials
@@ -151,12 +146,13 @@ void draw(){
   for (Agent p: people) {
     if(p.isAlive){
     p.update(personLocations(people), collisionDetection);
-    p.display(#FFFFFF, 255);
     p.pathToDraw.display(100, 100);
+    p.display(#FF00FF, 255);
+    //b.display();
     
     stroke(color(#FF0000));
     noFill();
-    polygon(bundle.x, bundle.y, 3, 4);
+    polygon(bundle.x, bundle.y, 3, 10);
     }
   
   //initialize 0 for each variable
@@ -184,7 +180,7 @@ void draw(){
      println("now carrying bundle!");
      bundle.x = p.location.x; 
      bundle.y = p.location.y;
-     bundleWithAgent = true;
+     //bundleWithAgent = true;
      
      int collisionSource; 
      if(euclideanAgentSource < 4){ //lap is logged
@@ -206,7 +202,7 @@ void draw(){
      println("bundle brought to kabadiwala");
      bundle.x = kabadiwala.x; 
      bundle.y = kabadiwala.y;
-     bundleAtKabadiwala = true;
+     
   
      laps = laps + 0.5; //laps increase
      //add up bundles collected
@@ -219,10 +215,12 @@ void draw(){
      }
      
      //checks where the bundle is
+     /*
      if(bundleWithAgent == false) {
         println("i don't have a bundle yet.");
         println("i'm on lap ",laps);
       }
+     
       
       if(bundleWithAgent == true){
       //6. is the bundle's position the same as the origin? 
@@ -232,6 +230,7 @@ void draw(){
         println("and i'm on lap ", laps);
         
       }
+      */
 
 
      
@@ -342,6 +341,7 @@ day.add("Wednesday");
 day.add("Thursday");
 day.add("Friday");
 day.add("Saturday");
+println(day);
 }
 
 void keyPressed(){
@@ -349,7 +349,7 @@ void keyPressed(){
       initModel();
   }
   else if(key=='1'){
-    text("Day: "+day.get(0), 1100, 70);
+    //text("Day: "+day.get(0), 1100, 70);
   }
   else if(key=='2'){
     text("Day: Tuesday",1100,70);

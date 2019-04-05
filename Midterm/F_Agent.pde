@@ -1,5 +1,9 @@
+///two types of Agents: kAgents and wAgents. 
+//kAgents have type "k" and they collect from Sources. They can only move back and forth from Kabadiwala Shop to Source. 
+//wAgents have type "w" and they collect from Kabadiwala shops. They can only move in a circular path from shop to shop. 
 
 class Agent {
+  //movement properties
   PVector location;
   PVector velocity;
   PVector acceleration;
@@ -12,6 +16,15 @@ class Agent {
   int id; 
   int pathIndex, pathLength; // Index and Amount of Nodes in a Path
   int pathDirection; // -1 or +1 to specific directionality
+  
+  //pickup properties
+  boolean isCarrying; //is it carrying a Bundle?
+  boolean atSource; //is it at the Source?
+  boolean atKabadiwala; //is it at the Kabadiwala Shop?
+  String type; //is it type k or w?
+  int collectFrom; //how many stops does it take before returning to the origin? kAgents = 1, wAgents = 10
+  ArrayList<String> daysCollected = new ArrayList<String>(); //which days does it do this?
+  
   
   boolean isAlive;
 
