@@ -47,6 +47,7 @@ boolean showUI = true;
 
 //contain the model initialization
 void initModel(){
+  addDays();
   soldToKabadiwala = false;
   //1. initialize the network using one of these methods
   //randomNetwork(0.5);
@@ -138,6 +139,9 @@ void draw(){
     k_array.get(i).draw();
   }
 
+  drawBlock();
+  
+  
     //5. display the yellow circle signifying the bundle of materials
      //display bundle location
               
@@ -330,8 +334,26 @@ void draw(){
   //noLoop();
 }
 
+void addDays(){
+ArrayList<String> day = new ArrayList<String>();
+day.add("Monday");
+day.add("Tuesday");
+day.add("Wednesday");
+day.add("Thursday");
+day.add("Friday");
+day.add("Saturday");
+}
+
 void keyPressed(){
-  initModel();
+    if(key==ENTER || key==RETURN){
+      initModel();
+  }
+  else if(key=='1'){
+    text("Day: "+day.get(0), 1100, 70);
+  }
+  else if(key=='2'){
+    text("Day: Tuesday",1100,70);
+  }
 }
 
 //each day: 10 routes for each kabadiwala
