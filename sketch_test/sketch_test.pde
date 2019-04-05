@@ -24,7 +24,7 @@ void draw(){
   bundle1.display();
   bundle2.display();
   bundle3.display();  
-  println(bundle1.w,bundle1.h);
+  //println(bundle1.w,bundle1.h);
   //must access the locations of each individual material
   //println(bundle1.plastic.display(w,h));
   
