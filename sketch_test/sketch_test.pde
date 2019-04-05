@@ -1,7 +1,7 @@
 //Main display
 Block plastic, glass, metal, paper;
 Bundle bundle1, bundle2, bundle3;
-boolean square;
+boolean square; //hit a key to change the shape/size of the bundle
 
 //global quantities
 int wt_plastic = 50;
@@ -51,7 +51,13 @@ void mousePressed() {
 }
 
 void keyPressed() {
+  if(key=='f'){
   bundle2.timesCollected++;
-  bundle3.pickedUp = false;
-  square = true;
+  }
+  else if(key=='g'){
+  bundle3.pickedUp = !bundle3.pickedUp;
+  }
+  else if(key=='z'){
+  square = !square;
+  }
 }
