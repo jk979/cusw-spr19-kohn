@@ -41,30 +41,21 @@ void kPath() {
     while(notFound) {
 
       //1. choose the points for the kabadiwala and for the source
-          chooseKabadiwala();
-          
-          PVector sourceLocation = new PVector();
-          sourceLocation = chooseSource();
-          println("source Location: ",sourceLocation);
-          
       //2. initialize the Bundle and place it at source location    
-          Bundle b = new Bundle(sourceLocation);
-          println("bundle's location is",b.loc);
-          
+          chooseSource();
       //3. identify the path between kabadiwala and source
           Path a = new Path(kabadiwala, source);
-          println("pathSource: " + source);
         
       //3. solve the path
         a.solve(finder);
             //a.straightPath();
-
             if(a.waypoints.size() > 1 && a.waypoints.get(a.waypoints.size()-1) == source) {
-              //println( a.waypoints.get(a.waypoints.size()-1), source);
+              //println("path is like ",  a.waypoints.get(a.waypoints.size()-1), source);
               notFound = false;
               paths.add(a);
             }
   } //end 
+
   println("paths: ", paths.size());
 } //end KPaths
 

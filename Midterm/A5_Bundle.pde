@@ -3,19 +3,30 @@ boolean square; //hit a key to change the shape/size of the bundle
 
  //a Block can be plastic, paper, glass, or metal. 
 class Block { 
-  //define variables:
-  float x, y;
   //PVector location; //it has a location (x,y)
+  //basic properties
+  float x, y;
+  PVector location, loc;
   float kg;   //it has a weight
   String type;  //it has a type
+  
+  //transit properties
   boolean pickedUp; //if true, it's picked up by the agent; if false, it's sitting stationary somewhere
   int timesCollected;   //it remembers how many times it's been collected and where it's visited
-  //it senses if it's picked up
   
+  //tracking movement time through system
+  int timePlaced; //time placed at source
+  int timeTransit1; //time in transit from source to kabadiwala (stage 1)
+  int timeK; //time waiting at kabadiwala
+  int timeTransit2; //time in transit from kabadiwala to MRF or kabadiwala to Wholesaler (stage 2)
+  int timeMRF; //time waiting at MRF
+  int timeW; //time waiting at wholesaler
+    
   //constructor
   Block(String t, float weight){
     type = t;
     kg = weight;
+    loc = location;
   }
   
   void display(float x,float y){ //give block shape/color
@@ -44,14 +55,25 @@ class Block {
 
  //a Bundle is a collection of 4 blocks: plastic, paper, glass, metal. 
  class Bundle {
+    //basic properties
     float w, h;
     PVector location,loc;
     Block block, plastic, paper, glass, metal; //there are four blocks inside
     Block item; //for materials_inventory arraylist
     float total_kg;
-    boolean pickedUp; //has it been picked up by the Agent, or is it sitting?
-    int timesCollected; //remembers how many times it's been collected
     
+    //transit properties
+    boolean pickedUp; //if true, it's picked up by the agent; if false, it's sitting stationary somewhere
+    int timesCollected;   //it remembers how many times it's been collected and where it's visited
+    
+    //tracking movement time through system
+    int timePlaced; //time placed at source
+    int timeTransit1; //time in transit from source to kabadiwala (stage 1)
+    int timeK; //time waiting at kabadiwala
+    int timeTransit2; //time in transit from kabadiwala to MRF or kabadiwala to Wholesaler (stage 2)
+    int timeMRF; //time waiting at MRF
+    int timeW; //time waiting at wholesaler
+      
     //constructor
     Bundle(PVector location){
      w = location.x;

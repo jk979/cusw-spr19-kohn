@@ -173,7 +173,7 @@ class Graph {
       nodes.get(i).clearNeighbors();
       for (int j=0; j<nodes.size(); j++) {
         dist = sqrt(sq(nodes.get(i).loc.x - nodes.get(j).loc.x) + sq(nodes.get(i).loc.y - nodes.get(j).loc.y));
-        println(dist);
+        //println(dist);
         if (dist < 2*SCALE && dist != 0) {
           nodes.get(i).addNeighbor(j, dist);
         }
@@ -710,8 +710,8 @@ class Path {
     fill(#FF0000); // Green
     ellipse(kabadiwala.x, kabadiwala.y, diameter, diameter);
     //ellipse(origin.x, origin.y, diameter, diameter);
-    fill(#FFFF00); // Blue
-    ellipse(source.x, source.y, diameter, diameter);
+    fill(#d3d3d3); // Blue
+    ellipse(source.x, source.y, 15, 15);
     //ellipse(destination.x, destination.y, diameter, diameter);
     
     strokeWeight(1);

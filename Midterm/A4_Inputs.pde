@@ -9,39 +9,44 @@ float wt_paper = 25; //25kg per household
 float wt_glass = 1; //1kg per household
 float wt_metal = 0.17; //0.17kg per household
 
-//paper
-int kabadiwala_pickup_cost_paper;
-int paperKBuy = 10;
+//weekly quantities
 int paperQuantity = 1500;
-int kabadiwala_offload_cost_paper;
-int paperKSell = 12;
+int plasticQuantity = 120; 
+int glassQuantity = 60; 
+int metalQuantity = 10; 
+
+//paper
+float kabadiwala_pickup_cost_paper;
+float paperKBuy = 10;
+
+float kabadiwala_offload_cost_paper;
+float paperKSell = 12;
 
 //plastic
-int kabadiwala_pickup_cost_plastic;
-int plasticKBuy = 12; 
-int plasticQuantity = 120; 
-int kabadiwala_offload_cost_plastic;
-int plasticKSell = 20;
+float kabadiwala_pickup_cost_plastic;
+float plasticKBuy = 12; 
+
+float kabadiwala_offload_cost_plastic;
+float plasticKSell = 20;
 
 //glass
-int kabadiwala_pickup_cost_glass;
-int glassKBuy = 1; 
-int glassQuantity = 60; 
-int kabadiwala_offload_cost_glass;
-int glassKSell = 4;
+float kabadiwala_pickup_cost_glass;
+float glassKBuy = 1; 
+
+float kabadiwala_offload_cost_glass;
+float glassKSell = 4;
 
 //metal
-int kabadiwala_pickup_cost_metal;
-int metalKBuy = 80; 
-int metalQuantity = 10; 
-int kabadiwala_offload_cost_metal;
-int metalKSell = 100;
+float kabadiwala_pickup_cost_metal;
+float metalKBuy = 80; 
+float kabadiwala_offload_cost_metal;
+float metalKSell = 100;
 
 //misc
 int misc = 3000;
 
 //profit
-int totalKPickupCost;
+float totalKPickupCost;
 
 //distance calculation
 float HavD;

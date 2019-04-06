@@ -29,7 +29,6 @@ boolean soldToKabadiwala;
 
 Bundle b;
 
-
 ///////////////////////
 
 //set up GUI
@@ -54,23 +53,46 @@ void initModel(){
   
   //2. initialize origin/destination and paths for kabadiwalas using kPath() method
   int numKabadiwalas = 1;
-  int numBundlesPerKabadiwala = 1;
+  int numBundlesPerKabadiwala = 2;
   
   //Set special indices <== only wake these people up first 
   //only wake 0, 3 
   
   //Number of groups 
     for(int i = 0 ; i< numKabadiwalas; i++){
-        chooseKabadiwala(); //get the shared origin for each group 
-        for(int j = 0; j<numBundlesPerKabadiwala; j++){
-          kPath();
+        chooseKabadiwala(); //choose the kabadiwala agent from the random list; returns "kabadiwala"
+        //initialize 0 for each variable
+           roundtripKM = 0;
+           totalKPickupCost = 0;
+           kabadiwala_pickup_cost_paper = 0;
+           kabadiwala_pickup_cost_plastic = 0;
+           kabadiwala_pickup_cost_glass = 0;
+           kabadiwala_pickup_cost_metal = 0;
+           misc = 0;
+        
+        for(int j = 0; j<numBundlesPerKabadiwala; j++){ //how many bundles one kabadiwala should get
+          kPath(); //choose Source; make a path between "kabadiwala" and "source"
+          
+          PVector sourceLocation = new PVector();
+          sourceLocation = chooseSource();
+          println("source Location: ",sourceLocation);
+          
+          b = new Bundle(sourceLocation);
+          if(b.pickedUp==true){
+            println("i've been picked up.");
+          }
+          else if(b.pickedUp = false){
+            println("i'm not picked up.");
+          }
+          println("bundle's location is",b.loc);
+          println("bundle x is ", b.w);
+          println("bundle y is ", b.h);
         }
     }
 
-  println(paths.size());
+  println("path size is",paths.size());
   
   ////3. initialize population
-
   initPopulation(paths.size());
   
   
@@ -133,36 +155,24 @@ void draw(){
   for(int i =0 ; i<k_array.size(); i++){
     k_array.get(i).draw();
   }
-
-  //drawBlock();
-  
-  
-    //5. display the yellow circle signifying the bundle of materials
-     //display bundle location
               
    //euclidean
       //test if agent is alive; agent stops upon returning to shop
   boolean collisionDetection = true;
   for (Agent p: people) {
     if(p.isAlive){
-    p.update(personLocations(people), collisionDetection);
-    p.pathToDraw.display(100, 100);
-    p.display(#FF00FF, 255);
-    //b.display();
     
-    stroke(color(#FF0000));
-    noFill();
-    polygon(bundle.x, bundle.y, 3, 10);
+    p.update(personLocations(people), collisionDetection);
+    p.pathToDraw.display(100, 100); //draw path for agent to follow
+    p.display(#FF00FF, 255); //draw agent
+    b.display();
+
+    //stroke(color(#FF0000));
+    //noFill();
+    //polygon(bundle.x, bundle.y, 5, 10);
     }
   
-  //initialize 0 for each variable
-   roundtripKM = 0;
-   totalKPickupCost = 0;
-   kabadiwala_pickup_cost_paper = 0;
-   kabadiwala_pickup_cost_plastic = 0;
-   kabadiwala_pickup_cost_glass = 0;
-   kabadiwala_pickup_cost_metal = 0;
-   misc = 0;
+  
    
    //////////////////////////////////////////////////////
    
@@ -171,16 +181,16 @@ void draw(){
    //is the bundle at the kabadiwala?
    //is the bundle with the agent?
    //initial conditions: bundle at source, agent in transit
-   euclideanAgentBundle = parseInt(dist(bundle.x, bundle.y, p.location.x, p.location.y));
-   euclideanOriginBundle = parseInt(dist(bundle.x, bundle.y, kabadiwala.x, kabadiwala.y));
+   euclideanAgentBundle = parseInt(dist(b.w, b.h, p.location.x, p.location.y));
+   euclideanOriginBundle = parseInt(dist(b.w, b.h, kabadiwala.x, kabadiwala.y));
    euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
    euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala.x, kabadiwala.y));
    
    if(euclideanAgentBundle < 4){ //1. agent arrives at source and gets bundle
-     println("now carrying bundle!");
-     bundle.x = p.location.x; 
-     bundle.y = p.location.y;
-     //bundleWithAgent = true;
+     b.w = p.location.x; 
+     b.h = p.location.y;
+     b.pickedUp = true;
+     b.timesCollected = 1;
      
      int collisionSource; 
      if(euclideanAgentSource < 4){ //lap is logged
@@ -200,13 +210,17 @@ void draw(){
    
    if(euclideanOriginBundle < 2){ //bundle brought to kabadiwala
      println("bundle brought to kabadiwala");
-     bundle.x = kabadiwala.x; 
-     bundle.y = kabadiwala.y;
+     b.w = kabadiwala.x; 
+     b.w = kabadiwala.y;
+     b.pickedUp = false;
+     b.timesCollected++;
      
+     //chooseSource();
+     //kPath();
   
      laps = laps + 0.5; //laps increase
      //add up bundles collected
-     bundlesCollected = 1;
+     //bundlesCollected = 1;
      
      println("reached origin! laps = ", laps);
      //when laps = 1, exit the loop
@@ -255,10 +269,10 @@ void draw(){
     
     if (soldToKabadiwala == true){
       //bundle picked up and transaction made
-      kabadiwala_pickup_cost_paper = paperKBuy*paperQuantity;
-      kabadiwala_pickup_cost_plastic = plasticKBuy*plasticQuantity;
-      kabadiwala_pickup_cost_glass = glassKBuy*glassQuantity;
-      kabadiwala_pickup_cost_metal = metalKBuy*metalQuantity;
+      kabadiwala_pickup_cost_paper = paperKBuy * wt_paper;
+      kabadiwala_pickup_cost_plastic = plasticKBuy * wt_plastic;
+      kabadiwala_pickup_cost_glass = glassKBuy * wt_glass;
+      kabadiwala_pickup_cost_metal = metalKBuy * wt_metal;
       misc = 3000;
       totalKPickupCost = (kabadiwala_pickup_cost_paper+kabadiwala_pickup_cost_plastic+kabadiwala_pickup_cost_glass+kabadiwala_pickup_cost_metal+misc);
 }
@@ -295,10 +309,10 @@ void draw(){
   //draw input content
   textSize(12);
   //quantities
-  text("Paper Quantity: "+ paperQuantity + " KG",525,220);
-  text("Plastic Quantity: " + plasticQuantity + " KG",525,240);
-  text("Glass Quantity: " + glassQuantity + " KG",525,260);
-  text("Metal Quantity: " + metalQuantity + " KG",525,280);
+  text("Paper/Household: "+ wt_paper + " KG",525,220);
+  text("Plastic/Household: " + wt_plastic + " KG",525,240);
+  text("Glass/Household: " + wt_glass + " KG",525,260);
+  text("Metal/Household: " + wt_metal + " KG",525,280);
   text("--------------------------------------", 525,300);
   //buying prices
   text("Paper Sale Price to Kabadiwala: "+paperKBuy + " INR",525,320);
@@ -329,6 +343,11 @@ void draw(){
   textSize(12);
   text("Kabadiwala's Gross Profit: "+ (kabadiwala_offload_cost_paper - totalKPickupCost)+ " INR",925,220);
   text("Kabadiwala's Roundtrip Distance: "+ roundtripKM + " KM", 925, 240);
+  text("bundle times collected: "+b.timesCollected,925,260);
+  text("bundle is picked up? "+b.pickedUp,925,280);
+  text("# kabadiwalas: "+numKabadiwalas,925,300);
+  text("# bundles per kabadiwala: "+numBundlesPerKabadiwala,925,320);
+  
   
   //noLoop();
 }
@@ -341,7 +360,7 @@ day.add("Wednesday");
 day.add("Thursday");
 day.add("Friday");
 day.add("Saturday");
-println(day);
+//println(day);
 }
 
 void keyPressed(){
