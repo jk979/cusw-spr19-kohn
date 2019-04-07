@@ -218,14 +218,15 @@ void draw(){
      //chooseSource();
      //kPath();
   
-     laps = laps + 0.5; //laps increase
+     laps = laps + 0.5; //laps increasedis
      //add up bundles collected
      //bundlesCollected = 1;
      
      println("reached origin! laps = ", laps);
      //when laps = 1, exit the loop
-     if(laps == 1){
+     if(b.timesCollected == 1){
        println("i completed roundtrip!");
+       b.pickedUp = false;
      }
      
      //checks where the bundle is
@@ -304,30 +305,32 @@ void draw(){
   textSize(16);
   rect(520,150,300,50,10);
   fill(139,0,0);
-  text("Inputs (Weekly Average)",580,180);
+  text("Inputs",600,180);
   fill(255,255,255);
   //draw input content
   textSize(12);
+  text("# kabadiwalas: "+numKabadiwalas,525,220);
+  text("# bundles per kabadiwala: "+numBundlesPerKabadiwala,525,240);
   //quantities
-  text("Paper/Household: "+ wt_paper + " KG",525,220);
-  text("Plastic/Household: " + wt_plastic + " KG",525,240);
-  text("Glass/Household: " + wt_glass + " KG",525,260);
-  text("Metal/Household: " + wt_metal + " KG",525,280);
-  text("--------------------------------------", 525,300);
+  text("---------Quantities-------------------", 525,260);
+  text("Paper: "+ wt_paper + " KG",525,280);
+  text("Plastic : " + wt_plastic + " KG",525,300);
+  text("Glass: " + wt_glass + " KG",525,320);
+  text("Metal: " + wt_metal + " KG",525,340);
+  text("----------Buying Prices---------------", 525,360);
   //buying prices
-  text("Paper Sale Price to Kabadiwala: "+paperKBuy + " INR",525,320);
-  text("Plastic Sale Price to Kabadiwala: "+plasticKBuy + " INR",525,340);
-  text("Glass Sale Price to Kabadiwala: "+glassKBuy + " INR",525,360);
-  text("Metal Sale Price to Kabadiwala: "+metalKBuy + " INR",525,380);
+  text("Paper Sale Price to Kabadiwala: "+paperKBuy + " INR",525,380);
+  text("Plastic Sale Price to Kabadiwala: "+plasticKBuy + " INR",525,400);
+  text("Glass Sale Price to Kabadiwala: "+glassKBuy + " INR",525,420);
+  text("Metal Sale Price to Kabadiwala: "+metalKBuy + " INR",525,440);
   //selling prices
   //total cost of buying
-  text("--------------------------------------", 525,400);
-  text("Kabadiwala's Total Cost of Buying:",525,420);
-  text("Paper: "+kabadiwala_pickup_cost_paper,525,440);
-  text("Plastic: "+kabadiwala_pickup_cost_plastic,525,460);
-  text("Glass: "+kabadiwala_pickup_cost_glass,525,480);
-  text("Metal: "+kabadiwala_pickup_cost_metal,525,500);
-  text("Miscellaneous Items: "+ misc + " INR",525,520);
+  text("----Kabadiwala Total Cost of Buying---", 525,460);
+  text("Paper: "+kabadiwala_pickup_cost_paper,525,480);
+  text("Plastic: "+kabadiwala_pickup_cost_plastic,525,500);
+  text("Glass: "+kabadiwala_pickup_cost_glass,525,520);
+  text("Metal: "+kabadiwala_pickup_cost_metal,525,540);
+  text("Miscellaneous Items: "+ misc + " INR",525,560);
 
 
   //draw output box
@@ -343,10 +346,11 @@ void draw(){
   textSize(12);
   text("Kabadiwala's Gross Profit: "+ (kabadiwala_offload_cost_paper - totalKPickupCost)+ " INR",925,220);
   text("Kabadiwala's Roundtrip Distance: "+ roundtripKM + " KM", 925, 240);
-  text("bundle times collected: "+b.timesCollected,925,260);
-  text("bundle is picked up? "+b.pickedUp,925,280);
-  text("# kabadiwalas: "+numKabadiwalas,925,300);
-  text("# bundles per kabadiwala: "+numBundlesPerKabadiwala,925,320);
+  text("---------Bundle Status----------------", 925,260);
+  text("bundle times collected: "+b.timesCollected,925,280);
+  text("bundle is picked up? "+b.pickedUp,925,300);
+  text("---------Wholesalers----------------", 925,320);
+  
   
   
   //noLoop();
