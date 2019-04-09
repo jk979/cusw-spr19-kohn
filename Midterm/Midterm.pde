@@ -105,7 +105,6 @@ void setup(){
   
   //initialize data structures
   
-  
   //draw the map with given dimensions
   int width_map = 450;
   int height_map = height;
@@ -120,8 +119,9 @@ void setup(){
   
   //load map and data for bandra only
   map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0);
-  parseData();
-  //parseOSMNX();
+  //parseData();
+  parseSpeeds();
+  //parseOSMNX(); if you activate this, also activate 1b in a1_data
   //parseDataMumbai();
   
   //load map and data for all of mumbai

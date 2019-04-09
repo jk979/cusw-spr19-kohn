@@ -5,6 +5,7 @@ JSONArray geometries;
 JSONObject bandra;
 Table kData, mrfData;
 JSONObject mumbai_geojson;
+JSONObject speeds;
 JSONObject os_mumbai;
 JSONObject featureCollection;
 
@@ -20,11 +21,12 @@ void loadData() {
  //background.resize(width, height);
 
   //1A. load Bandra JSON object with all the features in it
-  bandra = loadJSONObject("data/bandra.json");
-  features = bandra.getJSONArray("features");
-  
+  //bandra = loadJSONObject("data/bandra.json");
+  //features = bandra.getJSONArray("features");
+  speeds = loadJSONObject("data/mumbai_speeds.geojson");
+  features = speeds.getJSONArray("features");
   //1B. load OSMNX file of Mumbai simplified roads (roads are corrected)
- //os_mumbai = loadJSONObject("data/osmnx_mumbai.geojson");
+  //os_mumbai = loadJSONObject("data/osmnx_mumbai.geojson");
   //features = os_mumbai.getJSONArray("features");
   
   //1C. load OSM file of Mumbai without simplified roads
@@ -41,6 +43,47 @@ void loadData() {
 }
 
 ///////////////////////////////////////////////////////
+
+void parseSpeeds(){
+    JSONObject geometry = features.getJSONObject(2);
+    println("Geometry are: ",geometry);
+    
+      ArrayList<PVector> coords = new ArrayList<PVector>();
+      //get coordinates and iterate through them
+      JSONArray coordinates = geometry.getJSONArray("coordinates");
+      for (int j = 0; j<coordinates.size(); j++) {
+        float lat = coordinates.getJSONArray(j).getFloat(1);
+        float lon = coordinates.getJSONArray(j).getFloat(0);
+        //make PVector and add it
+        PVector coordinate = new PVector(lat, lon);
+        coords.add(coordinate);
+      }
+      //create Way with coordinate PVectors
+      Way way = new Way(coords);
+      
+      ways.add(way);
+      
+      //make pair-nodes
+        PVector firstElement = new PVector();
+        PVector secondElement = new PVector();
+
+        //for each element in the single road array:
+        for (int a = 0; a < coords.size()-1; a++) {
+          ArrayList singlePair = new ArrayList<PVector>();
+          firstElement = coords.get(a);
+          secondElement = coords.get(a+1);
+          //add 1 and 2 to singlePair
+          singlePair.add(firstElement);
+          singlePair.add(secondElement);
+          //add singlePair to the collection for that road
+          collectionOfPairs.add(singlePair);
+          collectionOfCollections.add(singlePair);
+        } //end make singlePairs
+
+  //Don't call in for loop
+    parseMRF(); //read in MRF CSV
+    parseKabadiwala(); //read in Kabadiwala CSV
+}
 
 void parseDataMumbai() {
   //loop through each of the feature sets in Mumbai
@@ -153,12 +196,21 @@ void parseOSMNX() {
   //get the lines within this road file
   for (int i = 0; i<features.size(); i++) {
     String type = features.getJSONObject(i).getJSONObject("geometry").getString("type");
+    println("type: ",type);
     JSONObject geometry = features.getJSONObject(i).getJSONObject("geometry");
+    println("geometry: ",geometry);
     JSONObject properties = features.getJSONObject(i).getJSONObject("properties");
+    println("properties: ", properties);
 
     //add just the simplified road network of Ways
     //street lines
-    String dataStreet = properties.getString("highway");
+    String dataStreet;
+    try{
+    dataStreet = properties.getString("highway"); 
+    }
+    catch (Exception e){
+    dataStreet = properties.getJSONArray("highway").getString(0); //if it's an array, just get the first one
+    }
     String street = "";
     if (dataStreet!=null) street = dataStreet;
     else street = "";
@@ -171,12 +223,15 @@ void parseOSMNX() {
       ArrayList<PVector> coords = new ArrayList<PVector>();
       //get coordinates and iterate through them
       JSONArray coordinates = geometry.getJSONArray("coordinates");
+      println("coordinates are: ",coordinates);
       for (int j = 0; j<coordinates.size(); j++) {
-        float lat = coordinates.getJSONArray(j).getFloat(1); //need to fix and convert these to decimal
-        float lon = coordinates.getJSONArray(j).getFloat(0);
-        //make PVector and add it
-        PVector coordinate = new PVector(lat, lon);
-        coords.add(coordinate);
+        for (int c = 0; c<2; c++){
+           float lat = coordinates.getJSONArray(j).getJSONArray(c).getFloat(1); //need to fix and convert these to decimal
+           float lon = coordinates.getJSONArray(j).getJSONArray(c).getFloat(0);
+           //make PVector and add it
+           PVector coordinate = new PVector(lat, lon);
+           coords.add(coordinate);
+        }
       }
       //create Way with coordinate PVectors
       Way way = new Way(coords);
