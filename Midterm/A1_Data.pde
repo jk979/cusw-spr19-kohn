@@ -15,54 +15,61 @@ ArrayList collectionOfPairs = new ArrayList<PVector>(); //array of road segments
 ArrayList collection_kcoords = new ArrayList<PVector>(); //array of kabadiwalas
 ArrayList all_fclasses = new ArrayList(); //array of feature classes
 
-void loadData() {
+void loadDataBandra() {
  //load and resize background image map if you want to include one
  //background = loadImage("data/ImageMap.png");
  //background.resize(width, height);
 
-  //1A. load Bandra JSON object with all the features in it
-  //bandra = loadJSONObject("data/bandra.json");
-  //features = bandra.getJSONArray("features");
+  bandra = loadJSONObject("data/bandra.json");
+  features = bandra.getJSONArray("features");
+}
+void loadDataOSMNX(){ //OSMNX file of Mumbai simplified roads
+  os_mumbai = loadJSONObject("data/osmnx_mumbai.geojson");
+  features = os_mumbai.getJSONArray("features");
+}
+
+void loadDataSpeeds(){ //most granular roads data with speeds in metadata
   speeds = loadJSONObject("data/mumbai_speeds.geojson");
   features = speeds.getJSONArray("features");
-  //1B. load OSMNX file of Mumbai simplified roads (roads are corrected)
-  //os_mumbai = loadJSONObject("data/osmnx_mumbai.geojson");
-  //features = os_mumbai.getJSONArray("features");
-  
-  //1C. load OSM file of Mumbai without simplified roads
-  //mumbai_geojson = loadJSONObject("data/mumbai_all.geojson");
-  //geometries = mumbai_geojson.getJSONArray("geometries");
+}
 
-  //load kabadiwala points
+void loadDataMumbai(){ //load OSM file of Mumbai without simplified roads
+  mumbai_geojson = loadJSONObject("data/mumbai_all.geojson");
+  geometries = mumbai_geojson.getJSONArray("geometries");
+}
+
+void load_k_mrf(){ //load kabadiwala and MRF points
   kData = loadTable("data/k_short.csv", "header");
-  //load MRF points
   mrfData = loadTable("data/mrf_formatted.csv", "header");
-
-  //println("there are: ", features.size(), "features.");
   println("data loaded!");
 }
 
 ///////////////////////////////////////////////////////
 
 void parseSpeeds(){
-    JSONObject geometry = features.getJSONObject(2);
-    println("Geometry are: ",geometry);
-    
-      ArrayList<PVector> coords = new ArrayList<PVector>();
-      //get coordinates and iterate through them
-      JSONArray coordinates = geometry.getJSONArray("coordinates");
-      for (int j = 0; j<coordinates.size(); j++) {
-        float lat = coordinates.getJSONArray(j).getFloat(1);
-        float lon = coordinates.getJSONArray(j).getFloat(0);
+  for (int t = 0; t < 3; t++){
+        JSONObject geometry = features.getJSONObject(1);
+        for (int u = 0; u < geometry.size(); u++){
+          ArrayList<PVector> coords = new ArrayList<PVector>();
+          JSONArray coordinates = geometry.getJSONObject("geometry").getJSONArray("coordinates").getJSONArray(0);
+ 
+          for(int v = 0; v < coordinates.size(); v++){
+            float lat = coordinates.getJSONArray(v).getFloat(1);
+            float lon = coordinates.getJSONArray(v).getFloat(0);
+
         //make PVector and add it
         PVector coordinate = new PVector(lat, lon);
         coords.add(coordinate);
       }
       //create Way with coordinate PVectors
       Way way = new Way(coords);
-      
+    
+      way.Street = true;
+            
       ways.add(way);
+      println("ways added");
       
+      if(way.Street==true){
       //make pair-nodes
         PVector firstElement = new PVector();
         PVector secondElement = new PVector();
@@ -79,10 +86,15 @@ void parseSpeeds(){
           collectionOfPairs.add(singlePair);
           collectionOfCollections.add(singlePair);
         } //end make singlePairs
-
-  //Don't call in for loop
+        } //end if statement
+        }
+      }
+    
     parseMRF(); //read in MRF CSV
     parseKabadiwala(); //read in Kabadiwala CSV
+      println("Total segment pairs in this road file: "+collectionOfCollections.size());
+    println("ENDING CALLING PARSE DATA");
+
 }
 
 void parseDataMumbai() {

@@ -109,24 +109,52 @@ void setup(){
   int width_map = 450;
   int height_map = height;
   
-  //first, load the base data
-  loadData();
+  //map extents
+  map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0); //bandra
+  //map = new MercatorMap(width_map, height_map, 19.2729, 19.2322, 72.8309, 72.8989, 0); //dahisar
+  //map = new MercatorMap(width_map, height_map, 19.1213, 19.0545, 72.8787, 72.9612, 0); //ghatkopar
+  //map = new MercatorMap(width_map+150, height_map, 19.2904, 18.8835,72.7364,73.0570, 0); //mumbai complete
   
-  //initialize attributes
-  polygons = new ArrayList<Polygon>();
-  ways = new ArrayList<Way>();
-  pois = new ArrayList<POI>();
+  String whichMap;
   
-  //load map and data for bandra only
-  map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0);
-  //parseData();
-  parseSpeeds();
-  //parseOSMNX(); if you activate this, also activate 1b in a1_data
-  //parseDataMumbai();
+  whichMap = "speeds";
   
-  //load map and data for all of mumbai
-  //map = new MercatorMap(width_map+150, height_map, 19.2904, 18.8835,72.7364,73.0570, 0);
-  //parseDataMumbai();
+  if(whichMap == "bandra"){
+    loadDataBandra();
+    //initialize attributes
+    polygons = new ArrayList<Polygon>();
+    ways = new ArrayList<Way>();
+    pois = new ArrayList<POI>();
+    load_k_mrf();
+    parseData();
+  }
+  else if(whichMap == "OSMNX"){
+    loadDataOSMNX();
+    //initialize attributes
+    polygons = new ArrayList<Polygon>();
+    ways = new ArrayList<Way>();
+    pois = new ArrayList<POI>();
+    load_k_mrf();
+    parseOSMNX();
+  }
+  else if(whichMap == "DataMumbai"){
+    loadDataMumbai();
+    //initialize attributes
+    polygons = new ArrayList<Polygon>();
+    ways = new ArrayList<Way>();
+    pois = new ArrayList<POI>();
+    load_k_mrf();
+    parseDataMumbai();
+  }
+  else if(whichMap == "speeds"){
+    loadDataSpeeds();
+    //initialize attributes
+    polygons = new ArrayList<Polygon>();
+    ways = new ArrayList<Way>();
+    pois = new ArrayList<POI>();
+    load_k_mrf();
+    parseSpeeds();
+  }
   
   pg.beginDraw();
   pg.background(0);
@@ -135,7 +163,6 @@ void setup(){
   
   //initialize model and simulation
   initModel();
-  
 
 }
 
