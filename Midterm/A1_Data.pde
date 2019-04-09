@@ -89,7 +89,7 @@ void parseSpeeds(){
         } //end if statement
         }
       }
-    
+   // println(collectionOfPairs.size());
     parseMRF(); //read in MRF CSV
     parseKabadiwala(); //read in Kabadiwala CSV
       println("Total segment pairs in this road file: "+collectionOfCollections.size());

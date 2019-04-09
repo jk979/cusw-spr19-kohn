@@ -716,6 +716,30 @@ class Path {
     
     strokeWeight(1);
   }
+
+
+  void displayDebug(int col, int alpha) {
+    // Draw Shortest Path
+    noFill();
+    strokeWeight(2);
+    stroke(#00FF00); // Green
+    PVector n1, n2;
+    for (int i=1; i<waypoints.size(); i++) {
+      n1 = waypoints.get(i-1);
+      n2 = waypoints.get(i);
+      line(n1.x, n1.y, n2.x, n2.y);
+    }
+    
+    // Draw Origin (Green) and Destination (Blue)
+    fill(#FF0000); // RED
+    ellipse(kabadiwala.x, kabadiwala.y, diameter, diameter);
+    //ellipse(origin.x, origin.y, diameter, diameter);
+    fill(#0000FF); // Blue
+    ellipse(source.x, source.y, 15, 15);
+    //ellipse(destination.x, destination.y, diameter, diameter);
+    
+    strokeWeight(1);
+  }
 }
 
 // The Pathfinder class allows one to the retreive a path (ArrayList<PVector>) that

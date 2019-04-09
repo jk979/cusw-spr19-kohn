@@ -110,3 +110,128 @@ ArrayList<PVector> personLocations(ArrayList<Agent> people) {
   }
   return l;
 }
+
+void checkAgentBehavior(){
+   //euclidean
+      //test if agent is alive; agent stops upon returning to shop
+  boolean collisionDetection = true;
+  for (Agent p: people) {
+    if(p.isAlive){
+    
+    p.update(personLocations(people), collisionDetection);
+    p.pathToDraw.display(100, 100); //draw path for agent to follow
+    p.display(#FF00FF, 255); //draw agent
+    b.display();
+
+    //stroke(color(#FF0000));
+    //noFill();
+    //polygon(bundle.x, bundle.y, 5, 10);
+    }
+  
+  
+   
+   //////////////////////////////////////////////////////
+   
+   //checking where the bundle is. Is it with the agent? Is it at the origin?
+   //is the bundle at the source?
+   //is the bundle at the kabadiwala?
+   //is the bundle with the agent?
+   //initial conditions: bundle at source, agent in transit
+   euclideanAgentBundle = parseInt(dist(b.w, b.h, p.location.x, p.location.y));
+   euclideanOriginBundle = parseInt(dist(b.w, b.h, kabadiwala.x, kabadiwala.y));
+   euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
+   euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala.x, kabadiwala.y));
+   
+   if(euclideanAgentBundle < 4){ //1. agent arrives at source and gets bundle
+     b.w = p.location.x; 
+     b.h = p.location.y;
+     b.pickedUp = true;
+     b.timesCollected = 1;
+     
+     int collisionSource; 
+     if(euclideanAgentSource < 4){ //lap is logged
+       collisionSource = 1;
+       if(collisionSource == 1){ //only count the lap if it's run into the source once
+         laps = laps + 0.5; //first time is 0.5
+         println("laps: ",laps);
+       }
+       else if(collisionSource>=1){ //in case it runs into the source again by accident, make sure laps stays at 0.5
+         laps = 0.5;
+         println("adding half a lap now...", laps);
+       }
+       collisionSource++;
+       soldToKabadiwala = true;
+     }
+   }
+   
+   if(euclideanOriginBundle < 2){ //bundle brought to kabadiwala
+     println("bundle brought to kabadiwala");
+     b.w = kabadiwala.x; 
+     b.w = kabadiwala.y;
+     b.pickedUp = false;
+     b.timesCollected++;
+     
+     //chooseSource();
+     //kPath();
+  
+     laps = laps + 0.5; //laps increasedis
+     //add up bundles collected
+     //bundlesCollected = 1;
+     
+     println("reached origin! laps = ", laps);
+     //when laps = 1, exit the loop
+     if(b.timesCollected == 1){
+       println("i completed roundtrip!");
+       b.pickedUp = false;
+     }
+     
+     //checks where the bundle is
+     /*
+     if(bundleWithAgent == false) {
+        println("i don't have a bundle yet.");
+        println("i'm on lap ",laps);
+      }
+     
+      
+      if(bundleWithAgent == true){
+      //6. is the bundle's position the same as the origin? 
+      //if yes, advance bundleCount and leave the bundle there
+      //check if bundle_released = true, means it's deposited the bundle
+        println("i grabbed the bundle");
+        println("and i'm on lap ", laps);
+        
+      }
+      */
+
+
+     
+      //KILL THE AGENT
+      p.isAlive = true;
+      //people.get(p.id+1).isAlive = true;
+      
+      //catch(Exception e){}
+      //add up the km traveled roundtrip
+      roundtripKM = parseInt((2*HavD)/1000);
+      //reset the lap count
+      laps = 0;
+   }
+  
+      
+    }
+    }
+    
+void checkSaleBehavior(){
+    //when wholesaler picks up, revenue is earned!
+    //kabadiwala_offload_cost_paper = paperKSell*paperQuantity;
+    //paperWBuy = paperKSell;
+  
+    
+    if (soldToKabadiwala == true){
+      //bundle picked up and transaction made
+      kabadiwala_pickup_cost_paper = paperKBuy * wt_paper;
+      kabadiwala_pickup_cost_plastic = plasticKBuy * wt_plastic;
+      kabadiwala_pickup_cost_glass = glassKBuy * wt_glass;
+      kabadiwala_pickup_cost_metal = metalKBuy * wt_metal;
+      misc = 3000;
+      totalKPickupCost = (kabadiwala_pickup_cost_paper+kabadiwala_pickup_cost_plastic+kabadiwala_pickup_cost_glass+kabadiwala_pickup_cost_metal+misc);
+}}

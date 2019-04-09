@@ -115,6 +115,8 @@ class Way{
         pg.strokeWeight(2);
         pg.stroke(colorStreet);
         pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
+        
+    
     }
     }
     
