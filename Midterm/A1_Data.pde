@@ -23,6 +23,7 @@ void loadDataBandra() {
   bandra = loadJSONObject("data/bandra.json");
   features = bandra.getJSONArray("features");
 }
+
 void loadDataOSMNX(){ //OSMNX file of Mumbai simplified roads
   os_mumbai = loadJSONObject("data/osmnx_mumbai.geojson");
   features = os_mumbai.getJSONArray("features");
@@ -89,10 +90,10 @@ void parseSpeeds(){
         } //end if statement
         }
       }
-   // println(collectionOfPairs.size());
     parseMRF(); //read in MRF CSV
     parseKabadiwala(); //read in Kabadiwala CSV
       println("Total segment pairs in this road file: "+collectionOfCollections.size());
+      println("CC: ", collectionOfCollections);
     println("ENDING CALLING PARSE DATA");
 
 }

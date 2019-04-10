@@ -1,6 +1,5 @@
 //midterm assignment
 
-
 /*
 Bugs left: 
 initModel -- is the ways network changing? Do you have to re-chose any data structures?
@@ -8,8 +7,6 @@ while loop exit condition/choosing -- are there options that shouldn't be chosen
 */
 
 //bundles and source must be linked
-
-//Background 
 
 //make Bandra map
 MercatorMap map; 
