@@ -56,6 +56,7 @@ class Block {
  //a Bundle is a collection of 4 blocks: plastic, paper, glass, metal. 
  class Bundle {
     //basic properties
+    int id;
     float w, h;
     PVector location,loc;
     Block block, plastic, paper, glass, metal; //there are four blocks inside
@@ -79,7 +80,7 @@ class Block {
      w = location.x;
      h = location.y;
      loc = location;
-     println("overall location",location);
+     id = id;
      
      plastic = new Block("plastic", wt_plastic);
      paper = new Block("paper", wt_paper);

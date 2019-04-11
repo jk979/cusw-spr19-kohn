@@ -49,16 +49,17 @@ void chooseKabadiwala() {
 
 //now determine a random Source point from collectionOfCollections
 PVector chooseSource() {
-  PVector temp; 
   //show size of the complete list of two-node segments
-  println("Random source chosen from: "+collectionOfCollections.size());
+  //println("Random source chosen from: "+collectionOfCollections.size());
+  
   //get a random index from that list
   int randomIndex = parseInt(random(0, collectionOfCollections.size()));
-  println("the random Index is "+ randomIndex); 
+  //println("Source Index is "+ randomIndex); 
+  
   //get the segment coordinates of that index
   ArrayList randomSegment = new ArrayList<PVector>();
   randomSegment = collectionOfCollections.get(randomIndex);
-  println("the random Segment is "+randomSegment);
+  //println("Source Segment is "+randomSegment);
   //get the intermediate point between those two points
   PVector pt1 = (PVector)randomSegment.get(0);
   PVector pt2 = (PVector)randomSegment.get(1);
@@ -66,12 +67,7 @@ PVector chooseSource() {
   //generate intermediate points and assign "source"
   PVector intermediates = map.intermediate(pt1, pt2, 0.5);
   source = map.getScreenLocation(intermediates);
-  temp = map.getScreenLocation(intermediates);
-
-  return temp; //creates temporary instance of the source point
-  //bundle = map.getScreenLocation(intermediates);
-
-  //once chosen, display the source (not necessary because we have origin/destination points overlaid already)
+  return source;
 }
 
 /////////////DISPLAY/////////////////

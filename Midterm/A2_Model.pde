@@ -39,18 +39,13 @@ void kPath() {
     boolean notFound = true;
     
     while(notFound) {
-
-      //1. choose the points for the kabadiwala and for the source
-      //2. initialize the Bundle and place it at source location    
-          chooseSource();
-      //3. identify the path between kabadiwala and source
+      //identify the path between kabadiwala and source
           Path a = new Path(kabadiwala, source);
         
       //3. solve the path
         a.solve(finder);
             //a.straightPath();
             if(a.waypoints.size() > 1 && a.waypoints.get(a.waypoints.size()-1) == source) {
-              //println("path is like ",  a.waypoints.get(a.waypoints.size()-1), source);
               notFound = false;
               paths.add(a);
             }
@@ -127,62 +122,35 @@ void checkAgentBehavior(){
     //noFill();
     //polygon(bundle.x, bundle.y, 5, 10);
     }
-  
-  
-   
-   //////////////////////////////////////////////////////
    
    //checking where the bundle is. Is it with the agent? Is it at the origin?
-   //is the bundle at the source?
-   //is the bundle at the kabadiwala?
-   //is the bundle with the agent?
+   //is the bundle at the source? at kabadiwala? with agent?
+
    //initial conditions: bundle at source, agent in transit
    euclideanAgentBundle = parseInt(dist(b.w, b.h, p.location.x, p.location.y));
    euclideanOriginBundle = parseInt(dist(b.w, b.h, kabadiwala.x, kabadiwala.y));
    euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
    euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala.x, kabadiwala.y));
    
-   if(euclideanAgentBundle < 4){ //1. agent arrives at source and gets bundle
+   //1. agent arrives at source and gets bundle
+   if(euclideanAgentBundle < 4){ 
      b.w = p.location.x; 
      b.h = p.location.y;
      b.pickedUp = true;
      b.timesCollected = 1;
-     
-     int collisionSource; 
-     if(euclideanAgentSource < 4){ //lap is logged
-       collisionSource = 1;
-       if(collisionSource == 1){ //only count the lap if it's run into the source once
-         laps = laps + 0.5; //first time is 0.5
-         println("laps: ",laps);
-       }
-       else if(collisionSource>=1){ //in case it runs into the source again by accident, make sure laps stays at 0.5
-         laps = 0.5;
-         println("adding half a lap now...", laps);
-       }
-       collisionSource++;
-       soldToKabadiwala = true;
-     }
+     soldToKabadiwala = true;
    }
    
-   if(euclideanOriginBundle < 2){ //bundle brought to kabadiwala
+   //2. bundle brought to kabadiwala
+   if(euclideanOriginBundle < 2){ 
      println("bundle brought to kabadiwala");
      b.w = kabadiwala.x; 
      b.w = kabadiwala.y;
      b.pickedUp = false;
      b.timesCollected++;
-     
-     //chooseSource();
-     //kPath();
-  
-     laps = laps + 0.5; //laps increasedis
-     //add up bundles collected
-     //bundlesCollected = 1;
-     
-     println("reached origin! laps = ", laps);
-     //when laps = 1, exit the loop
-     if(b.timesCollected == 1){
+
+    if(b.timesCollected == 1){
        println("i completed roundtrip!");
-       b.pickedUp = false;
      }
      
      //checks where the bundle is

@@ -42,18 +42,14 @@ boolean showUI = true;
 void initModel(){
   addDays();
   soldToKabadiwala = false;
-  //1. initialize the network using one of these methods
-  //randomNetwork(0.5);
-  waysNetwork(ways);
-  //randomNetworkMinusBuildings(0.1, polygons);
-  paths = new ArrayList<Path>();
+
+  //1. Initialize the network
+  waysNetwork(ways); //initialize the Ways network (roads)
+  paths = new ArrayList<Path>(); //initialize a path along that network
   
-  //2. initialize origin/destination and paths for kabadiwalas using kPath() method
+  //2. Initialize origin/destination and paths for kabadiwalas using kPath() method
   int numKabadiwalas = 1;
-  int numBundlesPerKabadiwala = 2;
-  
-  //Set special indices <== only wake these people up first 
-  //only wake 0, 3 
+  int numBundlesPerKabadiwala = 1;
   
   //Number of groups 
     for(int i = 0 ; i< numKabadiwalas; i++){
@@ -67,23 +63,24 @@ void initModel(){
            kabadiwala_pickup_cost_metal = 0;
            misc = 0;
         
+        //repeat below 
         for(int j = 0; j<numBundlesPerKabadiwala; j++){ //how many bundles one kabadiwala should get
-          kPath(); //choose Source; make a path between "kabadiwala" and "source"
-          
+          //1. Choose source; make path between kabadiwala and source
           PVector sourceLocation = new PVector();
-          sourceLocation = chooseSource();
-          println("source Location: ",sourceLocation);
+          sourceLocation = chooseSource(); //returns source
+          println("Source Location: ",sourceLocation);
+
+          //2. Make path between kabadiwala and source
+          kPath();
+          println("drawing path now");
           
+          //3. Place bundle at source
           b = new Bundle(sourceLocation);
-          if(b.pickedUp==true){
-            println("i've been picked up.");
-          }
-          else if(b.pickedUp = false){
-            println("i'm not picked up.");
-          }
-          println("bundle's location is",b.loc);
-          println("bundle x is ", b.w);
-          println("bundle y is ", b.h);
+          b.id = j;
+          println("attaching bundle id #"+b.id+" to source location");
+          println("Bundle Current Location: ",b.loc); //b.loc gets the location of the whole bundle
+          
+          //Let go of the bundle 
         }
     }
 
@@ -92,8 +89,9 @@ void initModel(){
   ////3. initialize population
   initPopulation(paths.size());
   
-  
 }
+
+//////////////////////////////////// setup /////////////////////////////////////
 
 void setup(){
   size(1250,750); //add ,P3D to make it 3D
@@ -114,7 +112,7 @@ void setup(){
   
   String whichMap;
   
-  whichMap = "speeds";
+  whichMap = "bandra";
   
   if(whichMap == "bandra"){
     loadDataBandra();
@@ -160,8 +158,12 @@ void setup(){
   
   //initialize model and simulation
   initModel();
+  
+ 
 
 }
+
+////////////////////////////////draw////////////////////////////////////
 
 void draw(){
   //includes drawing background, MRFs, kabadiwalas, path, bundle of materials, agents, testing if the agent has reached or dropped off the bundle, and wholesalers
@@ -178,14 +180,15 @@ void draw(){
   for(int i =0 ; i<k_array.size(); i++){
     k_array.get(i).draw();
   }
-              
-  //checkAgentBehavior();
-  //checkSaleBehavior();
+  
   drawInfo();
   
   for(Path p : paths){
      p.displayDebug(255, 0);
   }
+  
+  checkAgentBehavior();
+  checkSaleBehavior();
   
   //noLoop();
 }

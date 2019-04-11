@@ -99,24 +99,14 @@ class Way{
   void draw(){
 
     if(Street){
-    
+        pg.strokeWeight(2);
+        pg.stroke(colorStreet);
     //draw road nodes
     for(int i = 0; i<coordinates.size()-1; i++){
         //iterate through the coordinates and draw lines
         PVector screenStart = map.getScreenLocation(coordinates.get(i));
         PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
-        //get each of the elements inside this array
-        
-        //generate intermediate points
-        PVector intermediates = map.intermediate(coordinates.get(i),coordinates.get(i+1), 0.5);
-        PVector screenInt = map.getScreenLocation(intermediates);
-        
-        //make street network
-        pg.strokeWeight(2);
-        pg.stroke(colorStreet);
         pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
-        
-    
     }
     }
     
