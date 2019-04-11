@@ -58,11 +58,13 @@ PVector chooseSource() {
 
   //get the distance between the random Kabadiwala and the random Source, make sure it's 3km or less
     HavD = (map.Haversine(map.getGeo(kabadiwala), map.getGeo(source)));
-    println("here are the possible distances between kabadiwala and source: ",HavD);
     if (HavD <= dist_from_shop) { //ensures distance is <= 3km from the kabadiwala shop
       println("Kabadiwala to Source distance is: ", (map.Haversine(map.getGeo(kabadiwala), map.getGeo(source)))/1000, " km");
       foundPoint = true;
     }
+    //else{
+      //println("didn't find a 3km or less path with "+HavD+", trying again...");
+    //}
 
 //foundPoint = true;
 }

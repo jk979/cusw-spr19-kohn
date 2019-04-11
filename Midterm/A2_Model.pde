@@ -31,8 +31,7 @@ void kPath() {
   println("initialized finder");
   
   /*  Generate List of Shortest Paths through our network
-   *  FORMAT 1: Path(float x, float y, float l, float w) <- defines 2 random points inside a rectangle
-   *  FORMAT 2: Path(PVector o, PVector d) <- defined by two specific coordinates
+   *  FORMAT: Path(PVector o, PVector d) <- defined by two specific coordinates
    */
 
     // Searches for valid paths only
@@ -41,9 +40,9 @@ void kPath() {
     
     while(notFound) {
       //identify the path between kabadiwala and source
-          Path a = new Path(kabadiwala, source);
-      //3. solve the path
+        Path a = new Path(kabadiwala, source);
       
+      //solve the path
         a.solve(finder);
         println("solving command");
             //a.straightPath();
@@ -53,7 +52,6 @@ void kPath() {
               paths.add(a);
             }
   } //end 
-
   println("paths: ", paths.size());
 } //end KPaths
 

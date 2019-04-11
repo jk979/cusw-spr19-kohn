@@ -68,9 +68,8 @@ void initModel(){
            kabadiwala_pickup_cost_glass = 0;
            kabadiwala_pickup_cost_metal = 0;
            misc = 0;
-        
         //repeat below 
-        //for(int j = 0; j<numBundlesPerKabadiwala; j++){ //how many bundles one kabadiwala should get
+        for(int j = 0; j<numBundlesPerKabadiwala; j++){ //how many bundles one kabadiwala should get
           
           //1. Choose source; make path between kabadiwala and source
           PVector sourceLocation = new PVector();
@@ -84,19 +83,17 @@ void initModel(){
           
           //3. Place bundle at source
           b = new Bundle(sourceLocation);
-          b.id = 0; //was j
+          b.id = j; //was j
           println("attaching bundle id #"+b.id+" to source location");
           println("Bundle Current Location: ",b.loc); //b.loc gets the location of the whole bundle
-          
-          //Let go of the bundle 
-        //}
-    //}
 
-  println("path size is",paths.size());
-  
-  ////3. initialize population
-  initPopulation(paths.size());
-  
+          //4. initialize population
+          println("path size is",paths.size());
+          initPopulation(paths.size());
+          //Let go of the bundle 
+          //make Paths blank? 
+          
+        }
 }
 
 //////////////////////////////////// setup /////////////////////////////////////
