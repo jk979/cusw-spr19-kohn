@@ -116,23 +116,21 @@ void checkAgentBehavior(){
     p.update(personLocations(people), collisionDetection);
     p.pathToDraw.display(100, 100); //draw path for agent to follow
     p.display(#FF00FF, 255); //draw agent
-    b.display();
-
-    //stroke(color(#FF0000));
-    //noFill();
-    //polygon(bundle.x, bundle.y, 5, 10);
+    b.display(); //draw bundle
     }
    
    //checking where the bundle is. Is it with the agent? Is it at the origin?
-   //is the bundle at the source? at kabadiwala? with agent?
-
+   //is the bundle at the source?
+   //is the bundle at the kabadiwala?
+   //is the bundle with the agent?
+   
    //initial conditions: bundle at source, agent in transit
    euclideanAgentBundle = parseInt(dist(b.w, b.h, p.location.x, p.location.y));
    euclideanOriginBundle = parseInt(dist(b.w, b.h, kabadiwala.x, kabadiwala.y));
    euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
    euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala.x, kabadiwala.y));
    
-   //1. agent arrives at source and gets bundle
+   //1. when agent encounters bundle
    if(euclideanAgentBundle < 4){ 
      b.w = p.location.x; 
      b.h = p.location.y;
@@ -147,11 +145,13 @@ void checkAgentBehavior(){
      b.w = kabadiwala.x; 
      b.w = kabadiwala.y;
      b.pickedUp = false;
+     
+     println("the bundle #" +b.id+" has been touched by a collector " +b.timesCollected+" times");
+     //try making each bundle and material have an ID:{times collected, picked Up, location, etc} value
+     
      b.timesCollected++;
 
-    if(b.timesCollected == 1){
-       println("i completed roundtrip!");
-     }
+    
      
      //checks where the bundle is
      /*

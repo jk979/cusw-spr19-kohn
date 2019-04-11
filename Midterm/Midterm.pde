@@ -26,6 +26,7 @@ boolean soldToKabadiwala;
 
 Bundle b;
 
+
 ///////////////////////
 
 //set up GUI
@@ -65,7 +66,8 @@ void initModel(){
         
         //repeat below 
         for(int j = 0; j<numBundlesPerKabadiwala; j++){ //how many bundles one kabadiwala should get
-          //1. Choose source; make path between kabadiwala and source
+          
+          //1. Choose source; make path between kabadiwala and sourcer
           PVector sourceLocation = new PVector();
           sourceLocation = chooseSource(); //returns source
           println("Source Location: ",sourceLocation);
