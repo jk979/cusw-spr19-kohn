@@ -48,6 +48,7 @@ void kPath() {
         println("solving command");
             //a.straightPath();
             if(a.waypoints.size() > 1 && a.waypoints.get(a.waypoints.size()-1) == source) {
+              println("found valid path");
               notFound = false;
               paths.add(a);
             }

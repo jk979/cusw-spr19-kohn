@@ -37,6 +37,7 @@ void chooseKabadiwala() {
 
 //now determine a random Source point from collectionOfCollections
 PVector chooseSource() {
+  println("entered chooseSource()");
   boolean foundPoint = false;
   while (!foundPoint){
   //get a random index from that list
@@ -52,14 +53,19 @@ PVector chooseSource() {
   //generate intermediate points and assign "source"
   PVector intermediates = map.intermediate(pt1, pt2, 0.5);
   source = map.getScreenLocation(intermediates);
+  println("choosing from possible sources");
+
 
   //get the distance between the random Kabadiwala and the random Source, make sure it's 3km or less
     HavD = (map.Haversine(map.getGeo(kabadiwala), map.getGeo(source)));
+    println("here are the possible distances between kabadiwala and source: ",HavD);
     if (HavD <= dist_from_shop) { //ensures distance is <= 3km from the kabadiwala shop
       println("Kabadiwala to Source distance is: ", (map.Haversine(map.getGeo(kabadiwala), map.getGeo(source)))/1000, " km");
       foundPoint = true;
     }
-  }
+
+//foundPoint = true;
+}
   if(foundPoint ==true) return source;
   else
   {

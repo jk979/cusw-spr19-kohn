@@ -57,8 +57,9 @@ void initModel(){
   
   //Number of groups 
   println("entering group for loop");
-    for(int i = 0 ; i< numKabadiwalas; i++){
+    //for(int i = 0 ; i< numKabadiwalas; i++){
         chooseKabadiwala(); //choose the kabadiwala agent from the random list; returns "kabadiwala"
+        println("chose kabadiwala; initializing 0");
         //initialize 0 for each variable
            roundtripKM = 0;
            totalKPickupCost = 0;
@@ -69,10 +70,11 @@ void initModel(){
            misc = 0;
         
         //repeat below 
-        for(int j = 0; j<numBundlesPerKabadiwala; j++){ //how many bundles one kabadiwala should get
+        //for(int j = 0; j<numBundlesPerKabadiwala; j++){ //how many bundles one kabadiwala should get
           
-          //1. Choose source; make path between kabadiwala and sourcer
+          //1. Choose source; make path between kabadiwala and source
           PVector sourceLocation = new PVector();
+          println("now choosing source...");
           sourceLocation = chooseSource(); //returns source
           println("Source Location: ",sourceLocation);
 
@@ -82,13 +84,13 @@ void initModel(){
           
           //3. Place bundle at source
           b = new Bundle(sourceLocation);
-          b.id = j;
+          b.id = 0; //was j
           println("attaching bundle id #"+b.id+" to source location");
           println("Bundle Current Location: ",b.loc); //b.loc gets the location of the whole bundle
           
           //Let go of the bundle 
-        }
-    }
+        //}
+    //}
 
   println("path size is",paths.size());
   
@@ -108,8 +110,6 @@ void setup(){
   //draw the map with given dimensions
   int width_map = 450;
   int height_map = height;
-  
-  
   
   //map extents
   String whichBackground;
