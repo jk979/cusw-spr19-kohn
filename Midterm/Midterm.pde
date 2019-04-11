@@ -41,18 +41,22 @@ boolean showUI = true;
 
 //contain the model initialization
 void initModel(){
-  addDays();
+  //addDays();
   soldToKabadiwala = false;
 
   //1. Initialize the network
+  println("now initializing ways network");
   waysNetwork(ways); //initialize the Ways network (roads)
+  println("now making a blank path");
   paths = new ArrayList<Path>(); //initialize a path along that network
   
   //2. Initialize origin/destination and paths for kabadiwalas using kPath() method
   int numKabadiwalas = 1;
   int numBundlesPerKabadiwala = 1;
+  println("NK = "+numKabadiwalas+ " and NB = "+numBundlesPerKabadiwala);
   
   //Number of groups 
+  println("entering group for loop");
     for(int i = 0 ; i< numKabadiwalas; i++){
         chooseKabadiwala(); //choose the kabadiwala agent from the random list; returns "kabadiwala"
         //initialize 0 for each variable
@@ -165,10 +169,12 @@ void setup(){
     parseSpeeds();
   }
   
+  println("now beginning to draw gis objects...");
   pg.beginDraw();
   pg.background(0);
   drawGISObjects(); //make this into PGraphic
   pg.endDraw();
+  println("ended drawing gis objects");
   
 
   

@@ -49,7 +49,7 @@ void load_k_mrf() { //load kabadiwala and MRF points
 ///////////////////////////////////////////////////////
 
 void parseData() {
-  println("CALLING PARSE DATA");
+  println("Calling parseData()");
   //parse the JSON object
   JSONObject feature = features.getJSONObject(0);
 
@@ -179,7 +179,7 @@ void parseData() {
   parseKabadiwala(); //read in Kabadiwala CSV
 
   println("Total segment pairs in this road file: "+collectionOfCollections.size());
-  println("ENDING CALLING PARSE DATA");
+  println("Completed Parsing");
 } //end parseData function
 
 

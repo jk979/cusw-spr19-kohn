@@ -28,6 +28,7 @@ void kPath() {
   println("kPath is running");
   /*  An pathfinder object used to derive the shortest path. */
   finder = new Pathfinder(network);
+  println("initialized finder");
   
   /*  Generate List of Shortest Paths through our network
    *  FORMAT 1: Path(float x, float y, float l, float w) <- defines 2 random points inside a rectangle
@@ -36,13 +37,15 @@ void kPath() {
 
     // Searches for valid paths only
     boolean notFound = true;
+    println("not found status is", notFound);
     
     while(notFound) {
       //identify the path between kabadiwala and source
           Path a = new Path(kabadiwala, source);
-        
       //3. solve the path
+      
         a.solve(finder);
+        println("solving command");
             //a.straightPath();
             if(a.waypoints.size() > 1 && a.waypoints.get(a.waypoints.size()-1) == source) {
               notFound = false;
