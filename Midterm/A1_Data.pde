@@ -258,7 +258,7 @@ void parseKabadiwala() {
     lon_k = float(kData.getString(m, 3));
 
     //only for Bandra kabadiwalas, can add the others once the GeoJSON full merge on all street networks is operational
-    if (ward.equals("HW")) { //|| ward.equals("N") || ward.equals("RN")){ 
+    if (ward.equals("HW")|| ward.equals("N") || ward.equals("RN")){ 
       int k_id = int(kData.getString(m, 0));
       if (k_id != previd_k) {
         if (kcoords.size() > 0) { //create constructor for kcoords

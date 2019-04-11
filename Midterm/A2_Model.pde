@@ -34,7 +34,6 @@ void kPath() {
    *  FORMAT 2: Path(PVector o, PVector d) <- defined by two specific coordinates
    */
 
-          
     // Searches for valid paths only
     boolean notFound = true;
     

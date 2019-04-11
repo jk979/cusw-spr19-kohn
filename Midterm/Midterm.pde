@@ -97,20 +97,32 @@ void initModel(){
 
 void setup(){
   size(1250,750); //add ,P3D to make it 3D
-  //createGraphics(x, y, width, height);
+
+  //add background graphic to place GIS objects on
   pg = createGraphics(width, height);
-  
-  //initialize data structures
-  
+    
   //draw the map with given dimensions
   int width_map = 450;
   int height_map = height;
   
+  
+  
   //map extents
-  map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0); //bandra
-  //map = new MercatorMap(width_map, height_map, 19.2729, 19.2322, 72.8309, 72.8989, 0); //dahisar
-  //map = new MercatorMap(width_map, height_map, 19.1213, 19.0545, 72.8787, 72.9612, 0); //ghatkopar
-  //map = new MercatorMap(width_map+150, height_map, 19.2904, 18.8835,72.7364,73.0570, 0); //mumbai complete
+  String whichBackground;
+  whichBackground = "HW";
+  
+  if(whichBackground == "HW"){
+    map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0); //bandra
+  }
+  else if(whichBackground == "RN"){
+    map = new MercatorMap(width_map+500, height_map, 19.2729, 19.2322, 72.8309, 72.8989, 0); //dahisar
+  }
+  else if(whichBackground == "N"){
+    map = new MercatorMap(width_map, height_map, 19.1213, 19.0545, 72.8787, 72.9612, 0); //ghatkopar
+  }
+  else if(whichBackground == "0"){
+    map = new MercatorMap(width_map+150, height_map, 19.2904, 18.8835,72.7364,73.0570, 0); //mumbai complete
+  }
   
   String whichMap;
   
@@ -158,11 +170,11 @@ void setup(){
   drawGISObjects(); //make this into PGraphic
   pg.endDraw();
   
+
+  
   //initialize model and simulation
   initModel();
   
- 
-
 }
 
 ////////////////////////////////draw////////////////////////////////////
@@ -172,8 +184,8 @@ void draw(){
   
   //camera(70.0,-35.0, 1200.0, 450.0, -50, 0, 0, 1, 0);
   background(0);
- 
-  //draw mrfs
+  
+ //draw mrfs
   for(int i=0; i<mrfData.getRowCount()-1; i++){
      mrf_array.get(i).draw();
   }

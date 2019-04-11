@@ -61,7 +61,11 @@ PVector chooseSource() {
     }
   }
   if(foundPoint ==true) return source;
-  else return null;
+  else
+  {
+    print("no points within 3km found");
+    return null;
+  }
 }
 
 /////////////DISPLAY/////////////////
