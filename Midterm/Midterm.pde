@@ -88,7 +88,7 @@ void initModel(){
 
           //4. initialize population
           println("path size is",paths.size());
-          initPopulation(5);
+          initPopulation(1);
           //Let go of the bundle 
           //make Paths blank? 
           
@@ -109,7 +109,7 @@ void setup(){
   
   //map extents
   String whichBackground;
-  whichBackground = "0";
+  whichBackground = "HW";
   
   if(whichBackground == "HW"){
     map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0); //bandra

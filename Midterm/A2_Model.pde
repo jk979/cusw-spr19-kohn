@@ -37,16 +37,16 @@ void kPath() {
     boolean notFound = true;    
     while(notFound) {
       //identify the path between kabadiwala and source
-      println("building path between kabadiwala and source");
+      println("1. building path between kabadiwala and source");
         Path a = new Path(kabadiwala, source);
-        println("checking if havD is suitable distance");
+        println("2. checking if havD is suitable distance");
         //if(HavD<=dist_from_shop){
       //solve the path only if HavD<=3km
           a.solve(finder);
-          println("solving...");
+          println("3. solving to find valid path...");
             //a.straightPath();
             if(a.waypoints.size() > 1 && a.waypoints.get(a.waypoints.size()-1) == source) {
-              println("found valid path");
+              println("found valid path!");
               notFound = false;
               paths.add(a);
             }

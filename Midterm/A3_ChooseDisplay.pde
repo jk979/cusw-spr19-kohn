@@ -25,7 +25,8 @@ and Sources (of material) as destinations of the path.
 void chooseKabadiwala() {
     println("number of kabadiwalas is: ", collection_kcoords.size());
     //random index parses for #3, but not for many within the coordinates.
-    //may be that the points are not on the roads
+    //made new points that are snapped to the "speeds" roads, but haven't been able 
+    //to try yet on "speeds" network
     //randomKIndex = parseInt(random(0, collection_kcoords.size()));
     randomKIndex = 3;  
     //choose the kabadiwala corresponding with that index

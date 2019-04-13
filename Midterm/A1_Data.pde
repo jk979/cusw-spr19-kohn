@@ -41,7 +41,7 @@ void loadDataMumbai() { //load OSM file of Mumbai without simplified roads
 }
 
 void load_k_mrf() { //load kabadiwala and MRF points
-  kData = loadTable("data/k_short.csv", "header");
+  kData = loadTable("data/k_short_snapped.csv", "header");
   mrfData = loadTable("data/mrf_formatted.csv", "header");
   println("data loaded!");
 }
