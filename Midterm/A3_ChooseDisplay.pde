@@ -13,23 +13,21 @@ PVector bundle = new PVector(); //one bundle
 ArrayList multi_bundles = new ArrayList<PVector>(); //all bundles belonging to a single kabadiwala
 ArrayList<ArrayList<PVector>> allBundles = new ArrayList<ArrayList<PVector>>(); //all bundles in the animation
 
-int euclideanAgentBundle;
-int euclideanOriginBundle;
-int euclideanAgentSource;
-int euclideanAgentOrigin;
 int randomKIndex;
 
-
 ///////////////////////// Choose Functions //////////////////////////////
-/* These functions choose Kabadiwalas as the start points of the path, and Sources (of material) as the end points of the path. */
+/* 
+These functions choose Kabadiwalas as the origins of the path, 
+and Sources (of material) as destinations of the path. 
+*/
 
-//build kabadiwala origin
-
-//chooses from big list of 199 kabadiwalas. May not show up on the small Bandra map for every run. 
+//choose from list of kabadiwalas
 void chooseKabadiwala() {
-    //get a random index from the list of kabadiwalas
-    randomKIndex = parseInt(random(0, collection_kcoords.size()));
-    // randomKIndex = 64;  
+    println("number of kabadiwalas is: ", collection_kcoords.size());
+    //random index parses for #3, but not for many within the coordinates.
+    //may be that the points are not on the roads
+    //randomKIndex = parseInt(random(0, collection_kcoords.size()));
+    randomKIndex = 3;  
     //choose the kabadiwala corresponding with that index
     kabadiwala = (PVector)collection_kcoords.get(randomKIndex);
     kabadiwala = map.getScreenLocation(kabadiwala);
@@ -45,7 +43,6 @@ PVector chooseSource() {
   //get the segment coordinates of that index
   ArrayList randomSegment = new ArrayList<PVector>();
   randomSegment = collectionOfCollections.get(randomIndex);
-  //println("Source Segment is "+randomSegment);
   //get the intermediate point between those two points
   PVector pt1 = (PVector)randomSegment.get(0);
   PVector pt2 = (PVector)randomSegment.get(1);
@@ -53,20 +50,9 @@ PVector chooseSource() {
   //generate intermediate points and assign "source"
   PVector intermediates = map.intermediate(pt1, pt2, 0.5);
   source = map.getScreenLocation(intermediates);
-  println("choosing from possible sources");
-
-
-  //get the distance between the random Kabadiwala and the random Source, make sure it's 3km or less
-    HavD = (map.Haversine(map.getGeo(kabadiwala), map.getGeo(source)));
-    if (HavD <= dist_from_shop) { //ensures distance is <= 3km from the kabadiwala shop
-      println("Kabadiwala to Source distance is: ", (map.Haversine(map.getGeo(kabadiwala), map.getGeo(source)))/1000, " km");
-      foundPoint = true;
-    }
-    //else{
-      //println("didn't find a 3km or less path with "+HavD+", trying again...");
-    //}
-
-//foundPoint = true;
+  println("found one source");
+  HavD = (map.Haversine(map.getGeo(kabadiwala), map.getGeo(source)));
+  foundPoint = true;
 }
   if(foundPoint ==true) return source;
   else

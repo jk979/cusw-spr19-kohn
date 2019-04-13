@@ -41,18 +41,16 @@ boolean showUI = true;
 
 //contain the model initialization
 void initModel(){
-  //addDays();
   soldToKabadiwala = false;
 
   //1. Initialize the network
   println("now initializing ways network");
   waysNetwork(ways); //initialize the Ways network (roads)
   println("now making a blank path");
-  paths = new ArrayList<Path>(); //initialize a path along that network
   
   //2. Initialize origin/destination and paths for kabadiwalas using kPath() method
   int numKabadiwalas = 1;
-  int numBundlesPerKabadiwala = 1;
+  int numBundlesPerKabadiwala = 2;
   println("NK = "+numKabadiwalas+ " and NB = "+numBundlesPerKabadiwala);
   
   //Number of groups 
@@ -70,7 +68,8 @@ void initModel(){
            misc = 0;
         //repeat below 
         for(int j = 0; j<numBundlesPerKabadiwala; j++){ //how many bundles one kabadiwala should get
-          
+          paths = new ArrayList<Path>(); //initialize a path along that network
+
           //1. Choose source; make path between kabadiwala and source
           PVector sourceLocation = new PVector();
           println("now choosing source...");
@@ -89,7 +88,7 @@ void initModel(){
 
           //4. initialize population
           println("path size is",paths.size());
-          initPopulation(paths.size());
+          initPopulation(5);
           //Let go of the bundle 
           //make Paths blank? 
           
@@ -110,7 +109,7 @@ void setup(){
   
   //map extents
   String whichBackground;
-  whichBackground = "HW";
+  whichBackground = "0";
   
   if(whichBackground == "HW"){
     map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0); //bandra
@@ -127,7 +126,7 @@ void setup(){
   
   String whichMap;
   
-  whichMap = "bandra";
+  whichMap = "speeds";
   
   if(whichMap == "bandra"){
     loadDataBandra();
@@ -172,8 +171,6 @@ void setup(){
   drawGISObjects(); //make this into PGraphic
   pg.endDraw();
   println("ended drawing gis objects");
-  
-
   
   //initialize model and simulation
   initModel();

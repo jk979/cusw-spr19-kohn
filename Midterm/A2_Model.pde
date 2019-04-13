@@ -7,7 +7,6 @@ Pathfinder finder;
 import java.util.*;
 float laps; 
 
-
 //  Object to define and capture a specific origin, destiantion, and path
 ArrayList<Path> paths = new ArrayList<Path>();
 
@@ -35,16 +34,16 @@ void kPath() {
    */
 
     // Searches for valid paths only
-    boolean notFound = true;
-    println("not found status is", notFound);
-    
+    boolean notFound = true;    
     while(notFound) {
       //identify the path between kabadiwala and source
+      println("building path between kabadiwala and source");
         Path a = new Path(kabadiwala, source);
-      
-      //solve the path
-        a.solve(finder);
-        println("solving command");
+        println("checking if havD is suitable distance");
+        //if(HavD<=dist_from_shop){
+      //solve the path only if HavD<=3km
+          a.solve(finder);
+          println("solving...");
             //a.straightPath();
             if(a.waypoints.size() > 1 && a.waypoints.get(a.waypoints.size()-1) == source) {
               println("found valid path");
@@ -77,6 +76,7 @@ void initPopulation(int count) {
   /*  An example population that traverses along various paths
   *  FORMAT: Agent(x, y, radius, speed, path);
   */
+  
   people = new ArrayList<Agent>();
   for (int i=0; i<count; i++) {
     int random_index = int(random(paths.size()));
@@ -121,15 +121,12 @@ void checkAgentBehavior(){
     }
    
    //checking where the bundle is. Is it with the agent? Is it at the origin?
-   //is the bundle at the source?
-   //is the bundle at the kabadiwala?
-   //is the bundle with the agent?
    
    //initial conditions: bundle at source, agent in transit
-   euclideanAgentBundle = parseInt(dist(b.w, b.h, p.location.x, p.location.y));
-   euclideanOriginBundle = parseInt(dist(b.w, b.h, kabadiwala.x, kabadiwala.y));
-   euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
-   euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala.x, kabadiwala.y));
+   int euclideanAgentBundle = parseInt(dist(b.w, b.h, p.location.x, p.location.y));
+   int euclideanOriginBundle = parseInt(dist(b.w, b.h, kabadiwala.x, kabadiwala.y));
+   int euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
+   int euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala.x, kabadiwala.y));
    
    //1. when agent encounters bundle
    if(euclideanAgentBundle < 4){ 
@@ -141,7 +138,7 @@ void checkAgentBehavior(){
    }
    
    //2. bundle brought to kabadiwala
-   if(euclideanOriginBundle < 2){ 
+   if(euclideanOriginBundle < 3){ 
      println("bundle brought to kabadiwala");
      b.w = kabadiwala.x; 
      b.w = kabadiwala.y;
@@ -152,31 +149,13 @@ void checkAgentBehavior(){
      
      b.timesCollected++;
 
-    
-     
-     //checks where the bundle is
-     /*
-     if(bundleWithAgent == false) {
-        println("i don't have a bundle yet.");
-        println("i'm on lap ",laps);
-      }
-     
-      
-      if(bundleWithAgent == true){
-      //6. is the bundle's position the same as the origin? 
-      //if yes, advance bundleCount and leave the bundle there
-      //check if bundle_released = true, means it's deposited the bundle
-        println("i grabbed the bundle");
-        println("and i'm on lap ", laps);
-        
-      }
-      */
-
-
-     
       //KILL THE AGENT
-      p.isAlive = true;
-      //people.get(p.id+1).isAlive = true;
+      p.isAlive = false;
+      println("killed person");
+      if(people.size()>1){
+        people.get(p.id+1).isAlive = true;
+        println("resurrected agent");
+      }
       
       //catch(Exception e){}
       //add up the km traveled roundtrip

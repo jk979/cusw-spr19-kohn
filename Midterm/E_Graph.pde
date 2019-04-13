@@ -684,10 +684,8 @@ class Path {
   }
   
   void solve(Pathfinder finder) {
-    if(HavD<=dist_from_shop){
       waypoints = finder.findPath(origin, destination, enableFinder);
       diameter = finder.network.SCALE;
-    }
   }
   
   void straightPath() {
