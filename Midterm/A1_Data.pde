@@ -151,6 +151,10 @@ void parseData() {
       }
 
       ways.add(way);
+      
+      println("ways added: ", ways.size()); //<-- this seems low
+      println("coords added: ", coords.size()); //<-- this seems low
+      
 
       //make pair-nodes
       if (way.Street == true) {
@@ -203,6 +207,7 @@ void parseSpeeds() {
         //make PVector and add it
         PVector coordinate = new PVector(lat, lon);
         coords.add(coordinate);
+        //println(coordinate);
       }
       //create Way with coordinate PVectors
       Way way = new Way(coords);
@@ -210,8 +215,9 @@ void parseSpeeds() {
       way.Street = true;
 
       ways.add(way);
-      println("ways added");
-
+      println("ways added: ", ways.size()); //<-- this seems low
+      println("coords added: ", coords.size()); //<-- this seems low
+      
       if (way.Street==true) {
         //make pair-nodes
         PVector firstElement = new PVector();

@@ -106,6 +106,7 @@ class Way{
         //iterate through the coordinates and draw lines
         PVector screenStart = map.getScreenLocation(coordinates.get(i));
         PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
+        //println(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
         pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
     }
     }

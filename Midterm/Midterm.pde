@@ -126,7 +126,7 @@ void setup(){
   
   String whichMap;
   
-  whichMap = "speeds";
+  whichMap = "bandra";
   
   if(whichMap == "bandra"){
     loadDataBandra();
@@ -167,10 +167,11 @@ void setup(){
   
   println("now beginning to draw gis objects...");
   pg.beginDraw();
-  pg.background(0);
+  //pg.background(0);
   drawGISObjects(); //make this into PGraphic
   pg.endDraw();
   println("ended drawing gis objects");
+  
   
   //initialize model and simulation
   initModel();
@@ -184,7 +185,7 @@ void draw(){
   
   //camera(70.0,-35.0, 1200.0, 450.0, -50, 0, 0, 1, 0);
   background(0);
-  
+  image(pg, 0, 0);
  //draw mrfs
   for(int i=0; i<mrfData.getRowCount()-1; i++){
      mrf_array.get(i).draw();
@@ -203,7 +204,7 @@ void draw(){
   
   checkAgentBehavior();
   checkSaleBehavior();
-  
+    
   //noLoop();
 }
 

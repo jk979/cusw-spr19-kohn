@@ -53,6 +53,8 @@ PVector chooseSource() {
   source = map.getScreenLocation(intermediates);
   println("found one source");
   HavD = (map.Haversine(map.getGeo(kabadiwala), map.getGeo(source)));
+  println("POINTS FOR HAVERSINE: ", map.getGeo(kabadiwala),  map.getGeo(source));
+  println("HAVERSINE: ", HavD);
   foundPoint = true;
 }
   if(foundPoint ==true) return source;
