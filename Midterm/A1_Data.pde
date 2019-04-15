@@ -189,16 +189,14 @@ void parseData() {
 
 
 //////////////////////////////////////////////////// parse others
-
-
-
-
 void parseSpeeds() {
-  for (int t = 0; t < 3; t++) {
-    JSONObject geometry = features.getJSONObject(1);
+  for (int t = 50000; t < 70000; t++) {
+    JSONObject geometry = features.getJSONObject(t);
+    //println("geometry looks like",geometry);
     for (int u = 0; u < geometry.size(); u++) {
       ArrayList<PVector> coords = new ArrayList<PVector>();
       JSONArray coordinates = geometry.getJSONObject("geometry").getJSONArray("coordinates").getJSONArray(0);
+      //println("coordinates are: ",coordinates);
 
       for (int v = 0; v < coordinates.size(); v++) {
         float lat = coordinates.getJSONArray(v).getFloat(1);
@@ -207,7 +205,6 @@ void parseSpeeds() {
         //make PVector and add it
         PVector coordinate = new PVector(lat, lon);
         coords.add(coordinate);
-        //println(coordinate);
       }
       //create Way with coordinate PVectors
       Way way = new Way(coords);
@@ -241,7 +238,7 @@ void parseSpeeds() {
   parseMRF(); //read in MRF CSV
   parseKabadiwala(); //read in Kabadiwala CSV
   println("Total segment pairs in this road file: "+collectionOfCollections.size());
-  println("CC: ", collectionOfCollections);
+  //println("CC: ", collectionOfCollections);
   println("ENDING CALLING PARSE DATA");
 }
 

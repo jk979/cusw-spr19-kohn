@@ -53,6 +53,7 @@ void initModel(){
   int numBundlesPerKabadiwala = 2;
   println("NK = "+numKabadiwalas+ " and NB = "+numBundlesPerKabadiwala);
   
+  
   //Number of groups 
   println("entering group for loop");
     //for(int i = 0 ; i< numKabadiwalas; i++){
@@ -93,6 +94,7 @@ void initModel(){
           //make Paths blank? 
           
         }
+        
 }
 
 //////////////////////////////////// setup /////////////////////////////////////
@@ -172,7 +174,7 @@ void setup(){
   pg.endDraw();
   println("ended drawing gis objects");
   
-  
+
   //initialize model and simulation
   initModel();
   
