@@ -23,8 +23,9 @@ int numKabadiwalas;
 int numBundlesPerKabadiwala;
 
 boolean soldToKabadiwala;
+boolean roundtripCompleted;
+int j;
 
-Bundle b;
 
 
 ///////////////////////
@@ -46,13 +47,11 @@ void initModel(){
   //1. Initialize the network
   println("now initializing ways network");
   waysNetwork(ways); //initialize the Ways network (roads)
-  println("now making a blank path");
   
   //2. Initialize origin/destination and paths for kabadiwalas using kPath() method
   int numKabadiwalas = 1;
-  int numBundlesPerKabadiwala = 2;
+  int numBundlesPerKabadiwala = 3;
   println("NK = "+numKabadiwalas+ " and NB = "+numBundlesPerKabadiwala);
-  
   
   //Number of groups 
   println("entering group for loop");
@@ -69,32 +68,20 @@ void initModel(){
            misc = 0;
         //repeat below 
         for(int j = 0; j<numBundlesPerKabadiwala; j++){ //how many bundles one kabadiwala should get
-          paths = new ArrayList<Path>(); //initialize a path along that network
-
-          //1. Choose source; make path between kabadiwala and source
-          PVector sourceLocation = new PVector();
-          println("now choosing source...");
-          sourceLocation = chooseSource(); //returns source
-          println("Source Location: ",sourceLocation);
-
-          //2. Make path between kabadiwala and source
-          kPath();
-          println("drawing path now");
+        println("J IS: ",j);
+          roundtripCompleted = false;
+          //make a kPath for kabadiwala, mutable Source, and bundle
+          makeCompletePathFromKabadiwala();
           
-          //3. Place bundle at source
-          b = new Bundle(sourceLocation);
-          b.id = j; //was j
+          //set bundle id 
+          b.id = j;
           println("attaching bundle id #"+b.id+" to source location");
-          println("Bundle Current Location: ",b.loc); //b.loc gets the location of the whole bundle
-
-          //4. initialize population
+         
+          //initialize population
           println("path size is",paths.size());
           initPopulation(1);
           //Let go of the bundle 
-          //make Paths blank? 
-          
         }
-        
 }
 
 //////////////////////////////////// setup /////////////////////////////////////

@@ -3,11 +3,13 @@
 ObstacleCourse course;
 Graph network;
 Pathfinder finder;
+boolean pathNotFound; //pathNotFound is a global variable
+Bundle b;
 
 import java.util.*;
 float laps; 
 
-//  Object to define and capture a specific origin, destiantion, and path
+//  Object to define and capture a specific origin, destination, and path
 ArrayList<Path> paths = new ArrayList<Path>();
 
 //  Objects to define agents that navigate our environment
@@ -22,45 +24,67 @@ void waysNetwork(ArrayList<Way> w) {
   network = new Graph(graphWidth, graphHeight, nodeResolution, w);
 }
 
-//draw a shortest path between the kabadiwala and the source
+//draw a shortest path between the kabadiwala and the source; Path defined by two coordinates "origin" and "destination"
 void kPath() {
+  
   println("kPath is running");
   /*  An pathfinder object used to derive the shortest path. */
   finder = new Pathfinder(network);
   println("initialized finder");
-  
-  /*  Generate List of Shortest Paths through our network
-   *  FORMAT: Path(PVector o, PVector d) <- defined by two specific coordinates
-   */
 
-    // Searches for valid paths only
-    boolean notFound = true;    
-    while(notFound) {
-      //identify the path between kabadiwala and source
-     // println("1. building path between kabadiwala and source");
-        Path a = new Path(kabadiwala, source);
-       // println("2. checking if havD is suitable distance");
-       if(HavD<=3500){
-      //solve the path only if HavD<=3km
-          a.solve(finder);
-          //println(a.waypoints.size());
-          //println("3. solving to find valid path...");
-            //a.straightPath();
-            if(a.waypoints.size() > 1 && a.waypoints.get(a.waypoints.size()-1) == source) {
-              println("found valid path!");
-              notFound = false;
-              paths.add(a);
-            }
-            else{
-              //are you resetting your source, etc? 
-             // println("Please reset me! " , kabadiwala, source);
-            }
-       }
-  } //end 
+  // Searches for valid paths only
+  pathNotFound = true;    
+  
+  while(pathNotFound) {
+    //identify the path between kabadiwala and source
+    Path a = new Path(kabadiwala, source);
+     if(HavD<=3500){ //solve the path only if HavD<=3km
+        a.solve(finder);
+        //println(a.waypoints.size());
+        //a.straightPath();
+        if(a.waypoints.size() > 1 && a.waypoints.get(a.waypoints.size()-1) == source) {
+          println("found valid path!");
+          pathNotFound = false;
+          paths.add(a);
+        }
+        else{
+          //are you resetting your source, etc? 
+         println("No valid path found, resetting source" , kabadiwala, source);
+         chooseSource();
+        }
+     }
+  } //end while notFound
   println("paths: ", paths.size());
 } //end KPaths
 
-      
+ void makeCompletePathFromKabadiwala(){
+   //initialize path
+   paths = new ArrayList<Path>();
+   
+   println("now choosing source...");
+   chooseSource(); //returns source
+   
+   //initialize kPath
+   kPath();
+   println("drawing path now");
+   //within kPath, use kabadiwala and source
+   //choose source
+   //if no valid path, reset the source and repeat kPath
+   
+   if(pathNotFound == false){
+     //if valid path, make sourceLocation the chooseSource()
+     PVector sourceLocation = new PVector();
+     sourceLocation = source;
+     //sourceLocation = temp; //returns source
+     println("Source Location: ",sourceLocation);
+     
+     //initialize bundle at sourceLocation
+     b = new Bundle(sourceLocation);
+     
+ }
+ }
+
+
 //draws a path that hits 10 kabadiwalas using the shortest distance between them and the Wholesaler/MRF
 void WholesalerPath(){ 
 //option 1. wholesaler is picking up
@@ -154,23 +178,25 @@ void checkAgentBehavior(){
      //try making each bundle and material have an ID:{times collected, picked Up, location, etc} value
      
      b.timesCollected++;
+     roundtripKM = parseInt((2*HavD)/1000);           
 
-      //KILL THE AGENT
-      p.isAlive = false;
-      println("killed person");
-      if(people.size()>1){
-        people.get(p.id+1).isAlive = true;
-        println("resurrected agent");
-      }
-      
-      //catch(Exception e){}
-      //add up the km traveled roundtrip
-      roundtripKM = parseInt((2*HavD)/1000);
-      //reset the lap count
-      laps = 0;
+
+    roundtripCompleted = true;
+
+    if(roundtripCompleted == true){
+            //KILL THE AGENT
+            p.isAlive = false;
+            println("killed person");
+            //if there are more iterations to go, resurrect an agent
+            println("j in this roudntrip is",j);
+            if(j<numBundlesPerKabadiwala){
+              println("j vs num", j);
+              println("bpk",numBundlesPerKabadiwala);
+              people.get(p.id+1).isAlive = true;
+              println("resurrected agent");
+            }
    }
-  
-      
+   }
     }
     }
     
