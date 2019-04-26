@@ -8,12 +8,24 @@ JSONObject mumbai_geojson;
 JSONObject speeds;
 JSONObject os_mumbai;
 JSONObject featureCollection;
+JSONObject hh_paths;
+JSONArray hh_paths_features;
+JSONObject hh_points;
+JSONArray hh_points_features;
 
 //declare Arrays
 ArrayList<ArrayList<PVector>> collectionOfCollections = new ArrayList<ArrayList<PVector>>(); //array of collection of road segments
 ArrayList collectionOfPairs = new ArrayList<PVector>(); //array of road segments
 ArrayList collection_kcoords = new ArrayList<PVector>(); //array of kabadiwalas
 ArrayList all_fclasses = new ArrayList(); //array of feature classes
+
+void loadHHtoKabadiwala(){
+ //load the paths from HH to kabadiwala
+ hh_paths = loadJSONObject("data/hh_to_k_shortened_formatted.json");
+ hh_paths_features = hh_paths.getJSONArray("features");
+ println("getting hh_paths_features");
+}
+
 
 void loadDataBandra() {
   //load and resize background image map if you want to include one
@@ -47,6 +59,26 @@ void load_k_mrf() { //load kabadiwala and MRF points
 }
 
 ///////////////////////////////////////////////////////
+void parseHHtoKabadiwala(){
+ println("calling hh to kabadiwala parse");
+ for(int i = 0; i<hh_paths_features.size(); i++){
+  String hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
+  String hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
+  println("kabadiwala: "+hhpaths_k_id+" and point: "+hhpaths_pt_id);
+ }
+}
+
+void parseHHPoints(){
+  println("calling hh points parse");
+  for(int i = 0; h<hh_points_features.size(); i++){
+    String hhpoints_k_id = hh_points_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
+    String hhpoints_pt_id = hh_points_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
+    println("point k_id: "+hhpoints_k_id+" and point: "+hhpoints_pt_id);
+  }
+}
+
+
+
 
 void parseData() {
   println("Calling parseData()");

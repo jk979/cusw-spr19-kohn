@@ -69,7 +69,19 @@ void initModel(){
         println("J IS: ",j);
           roundtripCompleted = false;
           //make a kPath for kabadiwala, mutable Source, and bundle
-          makeCompletePathFromKabadiwala();
+          //makeCompletePathFromKabadiwala();
+          
+          //build path
+          //i is the kabadiwala ID
+          //j is the point ID
+          
+          //concatenate I and J to find the appropriate destination and path
+          
+          
+          
+          //build endpoint
+          
+          
           
           //set bundle id 
           b.id = j;
@@ -113,7 +125,7 @@ void setup(){
   
   String whichMap;
   
-  whichMap = "speeds";
+  whichMap = "bandra";
   
   if(whichMap == "bandra"){
     loadDataBandra();
@@ -123,6 +135,8 @@ void setup(){
     pois = new ArrayList<POI>();
     load_k_mrf();
     parseData();
+    loadHHtoKabadiwala();
+    parseHHtoKabadiwala();
   }
   else if(whichMap == "OSMNX"){
     loadDataOSMNX();
@@ -183,11 +197,13 @@ void draw(){
     k_array.get(i).draw();
   }
   
-  drawInfo();
+  drawInfo();  
   
+  /*
   for(Path p : paths){
      p.displayDebug(255, 0);
   }
+  */
   
   checkAgentBehavior();
   checkSaleBehavior();
