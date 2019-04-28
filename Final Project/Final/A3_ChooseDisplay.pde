@@ -17,11 +17,6 @@
 //run agent from MRF to MRF path 3
 //picks up material from each kabadiwala on the way
 
-
-
-
-
-
 //drawing paths
 PVector kabadiwala = new PVector();
 PVector source = new PVector();
@@ -46,21 +41,29 @@ and Sources (of material) as destinations of the path.
 */
 
 //choose from list of kabadiwalas
-void chooseKabadiwala() {
+void chooseKabadiwala(int i) {
     println("number of kabadiwalas is: ", collection_kcoords.size());
     //random index parses for #3, but not for many within the coordinates.
     //made new points that are snapped to the "speeds" roads, but haven't been able 
     //to try yet on "speeds" network
     //randomKIndex = parseInt(random(0, collection_kcoords.size()));
-    randomKIndex = 3;  
+    randomKIndex = i;  
+    println("the kabadiwala's index is",i);
     //choose the kabadiwala corresponding with that index
     kabadiwala = (PVector)collection_kcoords.get(randomKIndex);
     kabadiwala = map.getScreenLocation(kabadiwala);
+    println("this kabadiwala's location is",kabadiwala);
     }
 
 //now determine a random Source point from collectionOfCollections
-PVector chooseSource() {
+void chooseSource(int j) {
   println("entered chooseSource()");
+  //make a dictionary with the k_pts json
+  //get the point pvector for the K index
+  //get the screen location
+  //print the screen location
+  
+  /*
   boolean foundPoint = false;
   while (!foundPoint){
   //get a random index from that list
@@ -87,6 +90,7 @@ PVector chooseSource() {
     print("no points within 3km found");
     return null;
   }
+  */
 }
 
 /////////////DISPLAY/////////////////

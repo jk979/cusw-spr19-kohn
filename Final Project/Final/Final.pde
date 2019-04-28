@@ -53,9 +53,10 @@ void initModel(){
   
   //Number of groups 
   println("entering group for loop");
-    //for(int i = 0 ; i< numKabadiwalas; i++){
-        chooseKabadiwala(); //choose the kabadiwala agent from the random list; returns "kabadiwala"
-        println("chose kabadiwala; initializing 0");
+    //kabadiwala IDs
+    for(int i = 1 ; i<2; i++){
+        chooseKabadiwala(100); //choose the #i kabadiwala agent
+        println("chose kabadiwala");
         //initialize 0 for each variable
            roundtripKM = 0;
            totalKPickupCost = 0;
@@ -65,7 +66,7 @@ void initModel(){
            kabadiwala_pickup_cost_metal = 0;
            misc = 0;
         //repeat below 
-        for(int j = 0; j<numBundlesPerKabadiwala; j++){ //how many bundles one kabadiwala should get
+        for(int j = 1; j<2; j++){ //how many bundles one kabadiwala should get
         println("J IS: ",j);
           roundtripCompleted = false;
           //make a kPath for kabadiwala, mutable Source, and bundle
@@ -78,20 +79,19 @@ void initModel(){
           //concatenate I and J to find the appropriate destination and path
           
           
-          
           //build endpoint
           
           
-          
           //set bundle id 
-          b.id = j;
-          println("attaching bundle id #"+b.id+" to source location");
+         // b.id = j;
+         // println("attaching bundle id #"+b.id+" to source location");
          
           //initialize population
-          println("path size is",paths.size());
-          initPopulation(1);
+          //println("path size is",paths.size());
+          //initPopulation(1);
           //Let go of the bundle 
         }
+    }
 }
 
 //////////////////////////////////// setup /////////////////////////////////////
@@ -137,6 +137,7 @@ void setup(){
     parseData();
     loadHHtoKabadiwala();
     parseHHtoKabadiwala();
+    parseHHPoints();
   }
   else if(whichMap == "OSMNX"){
     loadDataOSMNX();

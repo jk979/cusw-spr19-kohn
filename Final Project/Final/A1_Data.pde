@@ -24,6 +24,10 @@ void loadHHtoKabadiwala(){
  hh_paths = loadJSONObject("data/hh_to_k_shortened_formatted.json");
  hh_paths_features = hh_paths.getJSONArray("features");
  println("getting hh_paths_features");
+ 
+ hh_points = loadJSONObject("data/hh_to_k_pts_shortened_formatted.json");
+ hh_points_features = hh_points.getJSONArray("features");
+ println("getting hh_points_features");
 }
 
 
@@ -60,25 +64,124 @@ void load_k_mrf() { //load kabadiwala and MRF points
 
 ///////////////////////////////////////////////////////
 void parseHHtoKabadiwala(){
- println("calling hh to kabadiwala parse");
- for(int i = 0; i<hh_paths_features.size(); i++){
-  String hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
-  String hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
-  println("kabadiwala: "+hhpaths_k_id+" and point: "+hhpaths_pt_id);
- }
-}
+ println("calling hh path to kabadiwala parse");
+ float lat_hh_path, lon_hh_path; 
+  String hhpaths_k_id;
+  String hhpaths_pt_id;
+  String hhpaths_k_previd = "previous";
+  Map<String,ArrayList<PVector>> hhpath_coords_map = new HashMap<String,ArrayList<PVector>>();
+  
+  //looping through each of the features (coordinate pairs)
+  for(int i = 0; i<hh_paths_features.size(); i++){
+    hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
+    hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
+    JSONArray hh_path_jsonarray = hh_paths_features.getJSONObject(i).getJSONObject("geometry").getJSONArray("paths");
 
-void parseHHPoints(){
-  println("calling hh points parse");
-  for(int i = 0; h<hh_points_features.size(); i++){
-    String hhpoints_k_id = hh_points_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
-    String hhpoints_pt_id = hh_points_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
-    println("point k_id: "+hhpoints_k_id+" and point: "+hhpoints_pt_id);
+    String k_hh_path_key = hhpaths_k_id+"-"+hhpaths_pt_id;
+
+    //if 1-2 is different from 1-1
+    if (k_hh_path_key != hhpaths_k_previd) {
+      println("transitioning...");
+      //if(hhpath_coords_map.size() > 0){
+        // do something
+
+      //}
+      //clear coords
+      hhpath_coords_map = new HashMap<String,ArrayList<PVector>>();
+      //reset variable
+      hhpaths_k_previd = k_hh_path_key;
+    }
+      //if 1-1 is the same as 1-1
+      if (hhpaths_k_previd == k_hh_path_key){
+      //make an empty array of [ [ [,],[,] ] , [ [,],[,] ] ]
+      //fill the lat/lon in PVector [x,y]
+      //fill the coord_pair [ [x,y],[x,y] ] 
+      //tag with unique ID
+      //fill the full path [ [ [x,y],[x,y] ] , [ [x,y],[x,y] ] ]
+      //problem: looping through each of the individual features to do this, so output is the same
+      //need to look through the entire file at once and organize the ones whose unique IDs match
+      
+      ArrayList<HashMap<String,ArrayList<PVector>>> full_path = new ArrayList<HashMap<String,ArrayList<PVector>>>();
+
+      //start adding all the paths that match up with that ID
+      //need to count the number of paths that match with the ID
+       
+    //println(k_hh_path_key+" id has paths: ",hhpath_coords_map.get(k_hh_path_key));
+        //2-point segments that need to be concatenated into a larger array
+        //[ [x,y],[x,y] ]        
+        for (int j = 0; j<hh_path_jsonarray.size(); j++){
+          ArrayList<PVector> coord_pair = new ArrayList<PVector>();
+          //inside each path are 2 coordinate pairs
+          for(int k = 0; k<2; k++){
+          float path_lat = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(0);
+          float path_lon = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(1);
+          PVector path_coordinate = new PVector(path_lat,path_lon);
+          //add those coordinate pairs to the coord_pair array
+          coord_pair.add(path_coordinate);
+          }
+        //println(coord_pair); //back to paths structure
+        //now add each of these separate paths to a new array
+        hhpath_coords_map.put(k_hh_path_key,coord_pair);
+        //println("key: ",k_hh_path_key);
+        //full_path.add(1,k_hh_path_key,hhpath_coords_map);
+        //concatenate each of the hashmap pairs
+        //full_path.add(coord_pair);
+        }
+
+        //println("full path for "+k_hh_path_key+": ",full_path);
+        //[p1,p2] --> [[p1,p2],[[p1,p2]]
+        //coord_pair --> 
+
+      }
+         
+    //only add the coord_pair to a new array if it matchs the previous ID, otherwise, make a new array
+    
+    /*
+    ArrayList<PVector> hh_path_array = new ArrayList<PVector>();
+    for(int j=0; j<hh_path_jsonarray.size();j++){
+      hh_path_array.add(hh_path_jsonarray.getString(j));
+    }
+    */
+    
+    //make an arraylist of all the lines that go with that ID set
+    //hh_path_array is ready to be matched
+
+    //hhpath_coords_map.put(k_hh_path_key,hh_path_array);
+    //println(k_hh_path_key+" id has paths: ",hhpath_coords_map.get(k_hh_path_key));
+    
+    //Way way = new Way(hh_path_array);
   }
 }
 
 
 
+void parseHHPoints(){
+  println("calling hh points parse");
+  float lat_hh, lon_hh; 
+  String hhpoints_k_id;
+  String hhpoints_pt_id;
+  Map<String,PVector> hh_coords_map = new HashMap<String,PVector>();
+  
+  for(int i = 0; i<hh_points_features.size(); i++){
+    hhpoints_k_id = hh_points_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
+    hhpoints_pt_id = hh_points_features.getJSONObject(i).getJSONObject("attributes").getString("hh_id");
+    lat_hh = hh_points_features.getJSONObject(i).getJSONObject("geometry").getFloat("x");
+    lon_hh = hh_points_features.getJSONObject(i).getJSONObject("geometry").getFloat("y");
+    
+    //make a HashMap of endpoints
+    //give each endpoint a unique ID
+    String k_hh_key = hhpoints_k_id+"-"+hhpoints_pt_id;
+    
+    //give each endpoint an coordinates array
+    PVector hh_endpoint = new PVector();
+    hh_endpoint.add(lat_hh,lon_hh);
+    
+    //each endpoint has a k_id, point_id, and coordinate
+    hh_coords_map.put(k_hh_key,hh_endpoint);
+   // println(k_hh_key+" id has location: ",hh_coords_map.get(k_hh_key));
+  }
+  //println("the size of hh_coords_map is ",hh_coords_map.size());
+}
 
 void parseData() {
   println("Calling parseData()");
@@ -220,7 +323,7 @@ void parseData() {
 
 
 
-//////////////////////////////////////////////////// parse others
+//////////////////////////////////////////////////// parse Roads
 void parseSpeeds() {
   for (int t = 50000; t < 70000; t++) {
     JSONObject geometry = features.getJSONObject(t);

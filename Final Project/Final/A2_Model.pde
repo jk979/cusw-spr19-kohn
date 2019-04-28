@@ -50,7 +50,7 @@ void kPath() {
         else{
           //are you resetting your source, etc? 
          println("No valid path found, resetting source" , kabadiwala, source);
-         chooseSource();
+         //chooseSource();
         }
      }
   } //end while notFound
@@ -62,7 +62,7 @@ void kPath() {
    paths = new ArrayList<Path>();
    
    println("now choosing source...");
-   chooseSource(); //returns source
+   //chooseSource(); //returns source
    
    //initialize kPath
    kPath();
