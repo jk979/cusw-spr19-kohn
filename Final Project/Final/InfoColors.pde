@@ -11,6 +11,7 @@ color colorStreet = color(0,200,255,100);
 color colorWaterway = color(0,0,255); 
 color mrf_fill = color(173,255,47); //MRF points (yellow)
 color k_fill = color(34, 200, 34); //Kabadiwala shops(green)
+color colorWardBounds = color(128,128,128);
 
 void drawInfo(){
   text(frameRate, 25, 25);

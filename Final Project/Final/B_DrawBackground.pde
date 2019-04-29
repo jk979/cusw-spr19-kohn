@@ -55,14 +55,16 @@ class POI{
   //Lat, lon values
   float lat;
   float lon;
+  float elev;
   
   //fill color
   color fill;
 
-  POI(float _lat, float _lon){
+  POI(float _lat, float _lon, float _elev){
     lat = _lat;
     lon = _lon;
-    coord = new PVector(lat, lon);
+    elev = _elev;
+    coord = new PVector(lat, lon,0);
     fill = color(255, 0, 225, 100);
   }
   
@@ -86,6 +88,7 @@ class Way{
   boolean Coastline;
   boolean Rail;
   boolean Waterway;
+  boolean WardBounds;
   
   //Empty constructor
   Way(){}
@@ -146,7 +149,17 @@ class Way{
             pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
         }
      }
-
+     
+     else if(WardBounds){
+       pg.strokeWeight(0.5);
+       pg.stroke(colorWardBounds);
+       for(int i = 0; i<coordinates.size()-1; i++){
+            //iterate through the coordinates and draw lines
+            PVector screenStart = map.getScreenLocation(coordinates.get(i));
+            PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
+            pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
+        }
+     }
 }
 }
 

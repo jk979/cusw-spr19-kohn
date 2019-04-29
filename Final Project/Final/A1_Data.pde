@@ -131,6 +131,9 @@ void parseHHtoKabadiwala(){
           //add those coordinate pairs to the coord_pair array
           coord_pair.add(path_coordinate);
           }
+          
+          Way way = new Way(coord_pair);
+          ways.add(way);     
         //println(coord_pair); //back to paths structure
         //now add each of these separate paths to a new array
         hhpath_coords_map.put(k_hh_path_key,coord_pair);
@@ -190,35 +193,46 @@ void parseHHPoints(){
     
     //each endpoint has a k_id, point_id, and coordinate
     hh_coords_map.put(k_hh_key,hh_endpoint);
-   // println(k_hh_key+" id has location: ",hh_coords_map.get(k_hh_key));
+   
+   //if you provide a k_hh_key, use hh_coords_map.get to get the location for that k_hh_key
+   //POI poi = new POI(hh_endpoint);
+   //poi.add(poi);   
+   
+   //println(k_hh_key+" id has location: ",hh_coords_map.get(k_hh_key));
   }
+        
+        //way.WardBounds = true;
   //println("the size of hh_coords_map is ",hh_coords_map.size());
 }
 
 
 void parseWardBoundaries(){
   println("calling parseWardBoundaries()");
-  JSONObject wardfeature = ward_bound_features.getJSONObject(0);
-  for (int i = 0; i<wardfeature.size(); i++){
+  for (int i = 0; i<ward_bound_features.size(); i++){
+    println("ward buond features size",ward_bound_features.size());
     String ward_name = ward_bound_features.getJSONObject(i).getJSONObject("attributes").getString("Name");
     int ward_area = ward_bound_features.getJSONObject(i).getJSONObject("attributes").getInt("area");
-    println("Ward "+ward_name + ": "+ward_area + " km");
-    JSONObject geometry = wardfeature.getJSONObject("geometry");
+    println("Ward "+ward_name + " Area: "+ward_area + " km");
+    for(int j = 0; j<ward_bound_features.size(); j++){
+      JSONObject geometry = ward_bound_features.getJSONObject(j).getJSONObject("geometry");
     
-    //treat rings like lines
-    ArrayList<PVector> coords = new ArrayList<PVector>();
-      //get coordinates and iterate through them
-      JSONArray coordinates = geometry.getJSONArray("rings").getJSONArray(0);
-      for (int j = 0; j < coordinates.size(); j++) {
-        float lat = coordinates.getJSONArray(j).getFloat(1);
-        float lon = coordinates.getJSONArray(j).getFloat(0);
-        //make PVector and add it
-        PVector coordinate = new PVector(lat, lon);
-        coords.add(coordinate);
-      }
-      
-      Way way = new Way(coords);
-      ways.add(way);            
+      //treat rings like lines
+      ArrayList<PVector> coords = new ArrayList<PVector>();
+        //get coordinates and iterate through them
+        JSONArray coordinates = geometry.getJSONArray("rings").getJSONArray(0);
+        for (int k = 0; k < coordinates.size(); k++) {
+          float lat = coordinates.getJSONArray(k).getFloat(1);
+          float lon = coordinates.getJSONArray(k).getFloat(0);
+          //make PVector and add it
+          PVector coordinate = new PVector(lat, lon);
+          coords.add(coordinate);
+        }
+        
+        Way way = new Way(coords);
+        ways.add(way);   
+        way.WardBounds = true;
+    }
+
   }
     println("total ways added: ",ways.size());
 }
@@ -275,7 +289,7 @@ void parseData() {
       //create new POI
       float lat = geometry.getJSONArray("coordinates").getFloat(1);
       float lon = geometry.getJSONArray("coordinates").getFloat(0);
-      POI poi = new POI(lat, lon);
+      POI poi = new POI(lat, lon,0);
       pois.add(poi);
     }
 
@@ -503,12 +517,12 @@ void drawGISObjects() {
    }
    */
 
-  /*
+  
   //draw all POIs
    for(int i = 0; i<pois.size(); i++){
    pois.get(i).draw();
    }
-   */
+   
 
   //draw all Ways
   for (int i = 0; i<ways.size(); i++) {
