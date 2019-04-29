@@ -4,14 +4,20 @@ JSONArray features;
 JSONArray geometries;
 JSONObject bandra;
 Table kData, mrfData;
+
 JSONObject mumbai_geojson;
 JSONObject speeds;
 JSONObject os_mumbai;
 JSONObject featureCollection;
+
 JSONObject hh_paths;
 JSONArray hh_paths_features;
+
 JSONObject hh_points;
 JSONArray hh_points_features;
+
+JSONObject ward_bound;
+JSONArray ward_bound_features;
 
 //declare Arrays
 ArrayList<ArrayList<PVector>> collectionOfCollections = new ArrayList<ArrayList<PVector>>(); //array of collection of road segments
@@ -21,44 +27,50 @@ ArrayList all_fclasses = new ArrayList(); //array of feature classes
 
 void loadHHtoKabadiwala(){
  //load the paths from HH to kabadiwala
- hh_paths = loadJSONObject("data/hh_to_k_shortened_formatted.json");
+ hh_paths = loadJSONObject("data/paths/hh_to_k_shortened_formatted.json");
  hh_paths_features = hh_paths.getJSONArray("features");
  println("getting hh_paths_features");
  
- hh_points = loadJSONObject("data/hh_to_k_pts_shortened_formatted.json");
+ hh_points = loadJSONObject("data/points/hh_to_k_pts_shortened_formatted.json");
  hh_points_features = hh_points.getJSONArray("features");
  println("getting hh_points_features");
 }
 
+void loadWardBoundaries(){
+  ward_bound = loadJSONObject("data/base/mumbai_admin_wards_json_formatted.json");
+  ward_bound_features = ward_bound.getJSONArray("features");
+  println("getting ward features");
+}
 
 void loadDataBandra() {
   //load and resize background image map if you want to include one
   //background = loadImage("data/ImageMap.png");
   //background.resize(width, height);
 
-  bandra = loadJSONObject("data/bandra.json");
+  bandra = loadJSONObject("data/base/bandra.json");
   features = bandra.getJSONArray("features");
   println("getting features");
 }
 
 void loadDataOSMNX() { //OSMNX file of Mumbai simplified roads
-  os_mumbai = loadJSONObject("data/osmnx_mumbai.geojson");
+  os_mumbai = loadJSONObject("data/base/osmnx_mumbai.geojson");
   features = os_mumbai.getJSONArray("features");
 }
 
 void loadDataSpeeds() { //most granular roads data with speeds in metadata
-  speeds = loadJSONObject("data/mumbai_speeds.geojson");
+  speeds = loadJSONObject("data/base/mumbai_speeds.geojson");
   features = speeds.getJSONArray("features");
+  println("SPEED DATA loaded");
 }
 
 void loadDataMumbai() { //load OSM file of Mumbai without simplified roads
-  mumbai_geojson = loadJSONObject("data/mumbai_all.geojson");
+  mumbai_geojson = loadJSONObject("data/base/mumbai_all.geojson");
   geometries = mumbai_geojson.getJSONArray("geometries");
 }
 
 void load_k_mrf() { //load kabadiwala and MRF points
-  kData = loadTable("data/k_short_snapped.csv", "header");
-  mrfData = loadTable("data/mrf_formatted.csv", "header");
+  kData = loadTable("data/points/k_short_snapped.csv", "header");
+  mrfData = loadTable("data/points/mrf_formatted.csv", "header");
   println("data loaded!");
 }
 
@@ -182,6 +194,40 @@ void parseHHPoints(){
   }
   //println("the size of hh_coords_map is ",hh_coords_map.size());
 }
+
+
+void parseWardBoundaries(){
+  println("calling parseWardBoundaries()");
+  JSONObject wardfeature = ward_bound_features.getJSONObject(0);
+  for (int i = 0; i<wardfeature.size(); i++){
+//String ward_name = features.getJSONObject(i).getJSONObject("attributes").getString("Name");
+    //String ward_area = features.getJSONObject(i).getJSONObject("attributes").getString("area");
+    JSONObject geometry = features.getJSONObject(i).getJSONObject("geometry");
+    //rings seems to be a polygon
+    ArrayList<PVector> coords = new ArrayList<PVector>();
+      //get coordinates and iterate through them
+      JSONArray coordinates = geometry.getJSONArray("rings").getJSONArray(0);
+      for (int j = 0; j < coordinates.size(); j++) {
+        float lat = coordinates.getJSONArray(j).getFloat(1);
+        float lon = coordinates.getJSONArray(j).getFloat(0);
+        //make PVector and add it
+        PVector coordinate = new PVector(lat, lon);
+        coords.add(coordinate);
+      }
+      //create Polygon with coordinate PVectors
+      Polygon poly = new Polygon(coords);
+      poly.makeShape();
+      
+      polygons.add(poly);
+    }
+}
+
+
+
+void parseOSMElements(){} //adds buildings, land use, railways, waterways to map
+
+
+
 
 void parseData() {
   println("Calling parseData()");
@@ -325,7 +371,7 @@ void parseData() {
 
 //////////////////////////////////////////////////// parse Roads
 void parseSpeeds() {
-  for (int t = 50000; t < 70000; t++) {
+  for (int t = 26000; t < features.size(); t++) { //framerate seriously affected around 26000 and out of memory at 25000
     JSONObject geometry = features.getJSONObject(t);
     //println("geometry looks like",geometry);
     for (int u = 0; u < geometry.size(); u++) {
@@ -347,8 +393,8 @@ void parseSpeeds() {
       way.Street = true;
 
       ways.add(way);
-      println("ways added: ", ways.size()); //<-- this seems low
-      println("coords added: ", coords.size()); //<-- this seems low
+      //println("ways added: ", ways.size()); //<-- this seems low
+      //println("coords added: ", coords.size()); //<-- this seems low
       
       if (way.Street==true) {
         //make pair-nodes

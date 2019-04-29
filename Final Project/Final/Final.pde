@@ -44,7 +44,7 @@ void initModel(){
 
   //1. Initialize the network
   println("now initializing ways network");
-  waysNetwork(ways); //initialize the Ways network (roads)
+  //waysNetwork(ways); //initialize the Ways network (roads)
   
   //2. Initialize origin/destination and paths for kabadiwalas using kPath() method
   int numKabadiwalas = 1;
@@ -108,7 +108,7 @@ void setup(){
   
   //map extents
   String whichBackground;
-  whichBackground = "HW";
+  whichBackground = "0";
   
   if(whichBackground == "HW"){
     map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0); //bandra
@@ -138,6 +138,8 @@ void setup(){
     loadHHtoKabadiwala();
     parseHHtoKabadiwala();
     parseHHPoints();
+    loadWardBoundaries();
+    parseWardBoundaries();
   }
   else if(whichMap == "OSMNX"){
     loadDataOSMNX();
