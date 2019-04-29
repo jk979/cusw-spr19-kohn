@@ -93,7 +93,7 @@ void parseHHtoKabadiwala(){
 
     //if 1-2 is different from 1-1
     if (k_hh_path_key != hhpaths_k_previd) {
-      println("transitioning...");
+      //println("transitioning...");
       //if(hhpath_coords_map.size() > 0){
         // do something
 
@@ -113,8 +113,12 @@ void parseHHtoKabadiwala(){
       //problem: looping through each of the individual features to do this, so output is the same
       //need to look through the entire file at once and organize the ones whose unique IDs match
       
+      //provide a kabadiwala to parse and a path of the kabadiwala ("1-1")
+      //parser goes into the file and parses that number of segments
+      //segments are placed in an array that is displayed
+      //each segment group for a given ID is drawn and path becomes that agent's path
+      
       ArrayList<HashMap<String,ArrayList<PVector>>> full_path = new ArrayList<HashMap<String,ArrayList<PVector>>>();
-
       //start adding all the paths that match up with that ID
       //need to count the number of paths that match with the ID
        
@@ -125,24 +129,29 @@ void parseHHtoKabadiwala(){
           ArrayList<PVector> coord_pair = new ArrayList<PVector>();
           //inside each path are 2 coordinate pairs
           for(int k = 0; k<2; k++){
-          float path_lat = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(0);
-          float path_lon = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(1);
+          float path_lat = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(1);
+          float path_lon = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(0);
           PVector path_coordinate = new PVector(path_lat,path_lon);
           //add those coordinate pairs to the coord_pair array
           coord_pair.add(path_coordinate);
           }
           
+          //hold the paths for mapping
           Way way = new Way(coord_pair);
-          ways.add(way);     
-        //println(coord_pair); //back to paths structure
+          ways.add(way);          
+          way.HH_paths = true;   
+          
         //now add each of these separate paths to a new array
         hhpath_coords_map.put(k_hh_path_key,coord_pair);
+        println("class: ",hhpath_coords_map.getClass());
         //println("key: ",k_hh_path_key);
         //full_path.add(1,k_hh_path_key,hhpath_coords_map);
         //concatenate each of the hashmap pairs
         //full_path.add(coord_pair);
-        }
+        //full_path.add(hhpath_coords_map);
 
+        }
+       println("length of hh coords map is ",hhpath_coords_map);
         //println("full path for "+k_hh_path_key+": ",full_path);
         //[p1,p2] --> [[p1,p2],[[p1,p2]]
         //coord_pair --> 

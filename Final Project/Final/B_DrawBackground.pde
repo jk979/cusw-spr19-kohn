@@ -89,6 +89,7 @@ class Way{
   boolean Rail;
   boolean Waterway;
   boolean WardBounds;
+  boolean HH_paths;
   
   //Empty constructor
   Way(){}
@@ -101,7 +102,30 @@ class Way{
   //Draw the road
   void draw(){
 
-    if(Street){
+    
+    if(HH_paths){
+       pg.strokeWeight(0.1);
+       pg.stroke(colorHHPaths);
+       for(int i = 0; i<coordinates.size()-1; i++){
+            //iterate through the coordinates and draw lines
+            PVector screenStart = map.getScreenLocation(coordinates.get(i));
+            PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
+            pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
+        }
+     }
+     
+    else if(WardBounds){
+       pg.strokeWeight(0.5);
+       pg.stroke(colorWardBounds);
+       for(int i = 0; i<coordinates.size()-1; i++){
+            //iterate through the coordinates and draw lines
+            PVector screenStart = map.getScreenLocation(coordinates.get(i));
+            PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
+            pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
+        }
+     }
+     
+    else if(Street){
         pg.strokeWeight(2);
         pg.stroke(colorStreet);
     //draw road nodes
@@ -114,6 +138,7 @@ class Way{
     }
     }
     
+    /*
     //draw coastline
     if(Coastline){
       pg.strokeWeight(3);
@@ -149,17 +174,9 @@ class Way{
             pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
         }
      }
+     */
      
-     else if(WardBounds){
-       pg.strokeWeight(0.5);
-       pg.stroke(colorWardBounds);
-       for(int i = 0; i<coordinates.size()-1; i++){
-            //iterate through the coordinates and draw lines
-            PVector screenStart = map.getScreenLocation(coordinates.get(i));
-            PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
-            pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
-        }
-     }
+     
 }
 }
 
