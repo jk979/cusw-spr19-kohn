@@ -43,7 +43,7 @@ void initModel(){
   soldToKabadiwala = false;
 
   //1. Initialize the network
-  println("now initializing ways network");
+  println("NOT initializing ways network"); //because the paths along the network are already chosen
   //waysNetwork(ways); //initialize the Ways network (roads)
   
   //2. Initialize origin/destination and paths for kabadiwalas using kPath() method
@@ -124,7 +124,6 @@ void setup(){
   }
   
   String whichMap;
-  
   whichMap = "bandra";
   
   if(whichMap == "bandra"){

@@ -200,10 +200,12 @@ void parseWardBoundaries(){
   println("calling parseWardBoundaries()");
   JSONObject wardfeature = ward_bound_features.getJSONObject(0);
   for (int i = 0; i<wardfeature.size(); i++){
-//String ward_name = features.getJSONObject(i).getJSONObject("attributes").getString("Name");
-    //String ward_area = features.getJSONObject(i).getJSONObject("attributes").getString("area");
-    JSONObject geometry = features.getJSONObject(i).getJSONObject("geometry");
-    //rings seems to be a polygon
+    String ward_name = ward_bound_features.getJSONObject(i).getJSONObject("attributes").getString("Name");
+    int ward_area = ward_bound_features.getJSONObject(i).getJSONObject("attributes").getInt("area");
+    println("Ward "+ward_name + ": "+ward_area + " km");
+    JSONObject geometry = wardfeature.getJSONObject("geometry");
+    
+    //treat rings like lines
     ArrayList<PVector> coords = new ArrayList<PVector>();
       //get coordinates and iterate through them
       JSONArray coordinates = geometry.getJSONArray("rings").getJSONArray(0);
@@ -214,12 +216,11 @@ void parseWardBoundaries(){
         PVector coordinate = new PVector(lat, lon);
         coords.add(coordinate);
       }
-      //create Polygon with coordinate PVectors
-      Polygon poly = new Polygon(coords);
-      poly.makeShape();
       
-      polygons.add(poly);
-    }
+      Way way = new Way(coords);
+      ways.add(way);            
+  }
+    println("total ways added: ",ways.size());
 }
 
 
@@ -232,8 +233,6 @@ void parseOSMElements(){} //adds buildings, land use, railways, waterways to map
 void parseData() {
   println("Calling parseData()");
   //parse the JSON object
-  JSONObject feature = features.getJSONObject(0);
-
   //sort 3 types into classes to draw: properties, geometry, type
   for (int i = 0; i<features.size(); i++) {
     String type = features.getJSONObject(i).getJSONObject("geometry").getString("type");
