@@ -141,6 +141,7 @@ void parseHHtoKabadiwala(){
         ways.add(way);          
         way.HH_paths = true;  
       }
+
       //println(full_path);
       
       
@@ -198,19 +199,22 @@ void parseHHtoKabadiwala(){
       
     //Way way = new Way(hh_path_array);
   }
-  
+  println(hhpath_coords_map.size());
+  println(hhpath_coords_map);
+
   //loop through keys_only and add to new arraylist only if the IDs are unique
     ArrayList<String> keys_unique = new ArrayList<String>();
     //println("test: ",keys_only);
     for(int u = 0; u<keys_only.size(); u++){
-      println(keys_only.get(0));
-      println(keys_only.get(1));
-      
+      //println(keys_only.get(0));
+      //println(keys_only.get(1));
+      /*
       if(keys_only.get(u) != keys_only.get(u+1)){
         keys_unique.add(keys_only.get(u));
       }
+      */
     }
-    println("unique keys: ",keys_unique.size());
+    //println("unique keys: ",keys_unique.size());
     
 
 }
