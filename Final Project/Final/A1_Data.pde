@@ -76,54 +76,44 @@ void load_k_mrf() { //load kabadiwala and MRF points
 
 ///////////////////////////////////////////////////////
 void parseHHtoKabadiwala(){
- println("calling hh path to kabadiwala parse");
- float lat_hh_path, lon_hh_path; 
+  println("calling hh path to kabadiwala parse");
+  float lat_hh_path, lon_hh_path; 
   String hhpaths_k_id;
   String hhpaths_pt_id;
   String hhpaths_k_previd = "previous";
   Map<String,ArrayList<PVector>> hhpath_coords_map = new HashMap<String,ArrayList<PVector>>();
-  
+  Map<String,ArrayList<PVector>> hh_merged_map = new HashMap<String,ArrayList<PVector>>();
+  ArrayList<Map<String,ArrayList<PVector>>> full_path = new ArrayList<Map<String,ArrayList<PVector>>>();
+  ArrayList<Map<String,ArrayList<PVector>>> map3 = new ArrayList<Map<String,ArrayList<PVector>>>();
+  ArrayList<String> keys_only = new ArrayList<String>();
+
   //looping through each of the features (coordinate pairs)
   for(int i = 0; i<hh_paths_features.size(); i++){
     hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
     hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
     JSONArray hh_path_jsonarray = hh_paths_features.getJSONObject(i).getJSONObject("geometry").getJSONArray("paths");
 
-    String k_hh_path_key = hhpaths_k_id+"-"+hhpaths_pt_id;
-
-    //if 1-2 is different from 1-1
-    if (k_hh_path_key != hhpaths_k_previd) {
-      //println("transitioning...");
-      //if(hhpath_coords_map.size() > 0){
-        // do something
-
-      //}
-      //clear coords
-      hhpath_coords_map = new HashMap<String,ArrayList<PVector>>();
-      //reset variable
-      hhpaths_k_previd = k_hh_path_key;
-    }
+    String k_hh_path_key = hhpaths_k_id+"-"+hhpaths_pt_id; //i.e. 1-1
+    //make an arraylist of all the keys
+    keys_only.add(k_hh_path_key);
+      
+   
+    ////////
+    // 1. group the JSON by k_hh_path_key. Every time the k_id = 1 and pt_id = 1, group the lat/lon coordinate pairs in a single group. 
+    
       //if 1-1 is the same as 1-1
-      if (hhpaths_k_previd == k_hh_path_key){
       //make an empty array of [ [ [,],[,] ] , [ [,],[,] ] ]
       //fill the lat/lon in PVector [x,y]
       //fill the coord_pair [ [x,y],[x,y] ] 
       //tag with unique ID
       //fill the full path [ [ [x,y],[x,y] ] , [ [x,y],[x,y] ] ]
-      //problem: looping through each of the individual features to do this, so output is the same
-      //need to look through the entire file at once and organize the ones whose unique IDs match
       
       //provide a kabadiwala to parse and a path of the kabadiwala ("1-1")
       //parser goes into the file and parses that number of segments
       //segments are placed in an array that is displayed
       //each segment group for a given ID is drawn and path becomes that agent's path
-      
-      ArrayList<HashMap<String,ArrayList<PVector>>> full_path = new ArrayList<HashMap<String,ArrayList<PVector>>>();
-      //start adding all the paths that match up with that ID
-      //need to count the number of paths that match with the ID
-       
-    //println(k_hh_path_key+" id has paths: ",hhpath_coords_map.get(k_hh_path_key));
-        //2-point segments that need to be concatenated into a larger array
+             
+        //make 2-point segments that need to be concatenated into a larger array
         //[ [x,y],[x,y] ]        
         for (int j = 0; j<hh_path_jsonarray.size(); j++){
           ArrayList<PVector> coord_pair = new ArrayList<PVector>();
@@ -136,61 +126,106 @@ void parseHHtoKabadiwala(){
           coord_pair.add(path_coordinate);
           }
           
-          //hold the paths for mapping
-          Way way = new Way(coord_pair);
-          ways.add(way);          
-          way.HH_paths = true;   
-          
         //now add each of these separate paths to a new array
         hhpath_coords_map.put(k_hh_path_key,coord_pair);
-        println("class: ",hhpath_coords_map.getClass());
-        //println("key: ",k_hh_path_key);
-        //full_path.add(1,k_hh_path_key,hhpath_coords_map);
-        //concatenate each of the hashmap pairs
-        //full_path.add(coord_pair);
-        //full_path.add(hhpath_coords_map);
-
-        }
-       println("length of hh coords map is ",hhpath_coords_map);
-        //println("full path for "+k_hh_path_key+": ",full_path);
-        //[p1,p2] --> [[p1,p2],[[p1,p2]]
-        //coord_pair --> 
-
+        
+        //// END WORKING CODE ////
+        
+        
+        //concatenate each of the hashmap pairs into a full path
+        //something wrong here with the adding...
+        full_path.add(hhpath_coords_map);
+       
+        //hold the paths for mapping
+        Way way = new Way(coord_pair);
+        ways.add(way);          
+        way.HH_paths = true;  
       }
-         
-    //only add the coord_pair to a new array if it matchs the previous ID, otherwise, make a new array
-    
-    /*
-    ArrayList<PVector> hh_path_array = new ArrayList<PVector>();
-    for(int j=0; j<hh_path_jsonarray.size();j++){
-      hh_path_array.add(hh_path_jsonarray.getString(j));
-    }
-    */
-    
-    //make an arraylist of all the lines that go with that ID set
-    //hh_path_array is ready to be matched
+      //println(full_path);
+      
+      
+      /// trying to group by key for full_paths ///
+      
+      //attempt 1
+      /*
+       for (Map.Entry<String, ArrayList<PVector>> e : full_path.entrySet()){ 
+          println("e is:",e);
+          println("e key type: ",e.getKey());
+          println("e value type: ",e.getValue());
+          //map3.putAll(e.getKey(),e.getValue());
+          map3.merge(e.getKey(), e.getValue()), String::concat);
+        }
+        */
+        
+      //attempt 2
+      //loop through full_path and concatenate those which have the same key
+      //String keyToSearch = k_hh_path_key;
+      /*
+        for (Map<String, ArrayList<PVector>> map : full_path) {
+          for(String key : map.keySet()){
+            //println(map.get(key));
+            //map3.merge(String.valueOf(key), map.get(key), ArrayList<PVector>::concat);
+          }
 
-    //hhpath_coords_map.put(k_hh_path_key,hh_path_array);
-    //println(k_hh_path_key+" id has paths: ",hhpath_coords_map.get(k_hh_path_key));
-    
+          for (String key : map.keySet()) {
+            if(keyToSearch.equals(key)) {
+              //map3.merge(key, map.get(key), ArrayList<PVector>::concat);
+            }
+              //ArrayList<PVector> currentPath = map.get(keyToSearch);
+              //newValue = currentPath + map.keySet(key)
+              //println("Found : " + key + " / value : " + map.get(key));
+            }
+          }
+          */
+          
+      //attempt 3
+      //Map<String, ArrayList<PVector>> full_path_treemap = new TreeMap<String,ArrayList<PVector>>(full_path);
+      //println(full_path_treemap);
+      
+      //attempt 4
+      /*
+      for(Map<String, ArrayList<PVector>> Map : full_path){
+        // For each hashmap, iterate over it
+        for (Map.Entry<String, ArrayList<PVector>> entry : Map.entrySet())
+        {
+           // Do something with your entrySet, for example get the key.
+           String key1 = entry.getKey();
+           ArrayList<PVector> value1 = entry.getValue();
+           println("key: ",key1,"// value: ",value1);
+        }
+      }
+      */
+      
     //Way way = new Way(hh_path_array);
   }
+  
+  //loop through keys_only and add to new arraylist only if the IDs are unique
+    ArrayList<String> keys_unique = new ArrayList<String>();
+    //println("test: ",keys_only);
+    for(int u = 0; u<keys_only.size(); u++){
+      println(keys_only.get(0));
+      println(keys_only.get(1));
+      
+      if(keys_only.get(u) != keys_only.get(u+1)){
+        keys_unique.add(keys_only.get(u));
+      }
+    }
+    println("unique keys: ",keys_unique.size());
+    
+
 }
-
-
 
 void parseHHPoints(){
   println("calling hh points parse");
   float lat_hh, lon_hh; 
   String hhpoints_k_id;
   String hhpoints_pt_id;
-  Map<String,PVector> hh_coords_map = new HashMap<String,PVector>();
   
   for(int i = 0; i<hh_points_features.size(); i++){
     hhpoints_k_id = hh_points_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
     hhpoints_pt_id = hh_points_features.getJSONObject(i).getJSONObject("attributes").getString("hh_id");
-    lat_hh = hh_points_features.getJSONObject(i).getJSONObject("geometry").getFloat("x");
-    lon_hh = hh_points_features.getJSONObject(i).getJSONObject("geometry").getFloat("y");
+    lat_hh = hh_points_features.getJSONObject(i).getJSONObject("geometry").getFloat("y");
+    lon_hh = hh_points_features.getJSONObject(i).getJSONObject("geometry").getFloat("x");
     
     //make a HashMap of endpoints
     //give each endpoint a unique ID
@@ -201,24 +236,21 @@ void parseHHPoints(){
     hh_endpoint.add(lat_hh,lon_hh);
     
     //each endpoint has a k_id, point_id, and coordinate
-    hh_coords_map.put(k_hh_key,hh_endpoint);
+    hh_endpoint_map.put(k_hh_key,hh_endpoint);
    
-   //if you provide a k_hh_key, use hh_coords_map.get to get the location for that k_hh_key
-   //POI poi = new POI(hh_endpoint);
-   //poi.add(poi);   
-   
+   ////ISSUE IS HERE///
+   //if you provide a k_hh_key, use hh_endpoint_map.get to get the location for that k_hh_key
+   POI_hh h = new POI_hh(hh_endpoint);
+   //poi_hh_array.add(h); //will not add to array and display as a point
    //println(k_hh_key+" id has location: ",hh_coords_map.get(k_hh_key));
-  }
-        
-        //way.WardBounds = true;
-  //println("the size of hh_coords_map is ",hh_coords_map.size());
+  }        
+  //println(hh_endpoint_map);
 }
 
 
 void parseWardBoundaries(){
   println("calling parseWardBoundaries()");
   for (int i = 0; i<ward_bound_features.size(); i++){
-    println("ward buond features size",ward_bound_features.size());
     String ward_name = ward_bound_features.getJSONObject(i).getJSONObject("attributes").getString("Name");
     int ward_area = ward_bound_features.getJSONObject(i).getJSONObject("attributes").getInt("area");
     println("Ward "+ward_name + " Area: "+ward_area + " km");
@@ -246,12 +278,7 @@ void parseWardBoundaries(){
     println("total ways added: ",ways.size());
 }
 
-
-
 void parseOSMElements(){} //adds buildings, land use, railways, waterways to map
-
-
-
 
 void parseData() {
   println("Calling parseData()");
@@ -293,6 +320,7 @@ void parseData() {
     if (dataStreet!=null) street = dataStreet;
     else street = "";
 
+    /*
     //make POIs if point
     if (type.equals("Point")) {
       //create new POI
@@ -301,6 +329,7 @@ void parseData() {
       POI poi = new POI(lat, lon,0);
       pois.add(poi);
     }
+    */
 
 
     //make Polygons if polygon
@@ -355,8 +384,8 @@ void parseData() {
 
       ways.add(way);
       
-      println("ways added: ", ways.size()); //<-- this seems low
-      println("coords added: ", coords.size()); //<-- this seems low
+      //println("ways added: ", ways.size()); //<-- this seems low
+      //println("coords added: ", coords.size()); //<-- this seems low
       
 
       //make pair-nodes

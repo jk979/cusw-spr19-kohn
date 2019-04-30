@@ -13,10 +13,17 @@ MercatorMap map;
 PImage background;
 PGraphics pg;
 
-//declare GIS-style objects
+//declare inactive GIS-style objects
 ArrayList<POI> pois;
 ArrayList<Way> ways;
 ArrayList<Polygon> polygons;
+
+//declare active GIS objects
+ArrayList<POI_hh> poi_hh_array;
+Map<String,PVector> hh_endpoint_map = new HashMap<String,PVector>(); //to look up the corresponding hh endpoint by kabadiwala/endpoint ID
+
+//full path to query
+
 
 int bundlesCollected;
 int numKabadiwalas; 
@@ -66,10 +73,17 @@ void initModel(){
            kabadiwala_pickup_cost_metal = 0;
            misc = 0;
         //repeat below 
-        for(int j = 1; j<2; j++){ //how many bundles one kabadiwala should get
-        println("J IS: ",j);
+        for(int j = 1; j<3; j++){ //how many bundles one kabadiwala should get
           roundtripCompleted = false;
+          String kabadiwala_endpoint_ID = Integer.toString(i)+"-"+Integer.toString(j);
+          println("Now in kabadiwala #"+kabadiwala_endpoint_ID);
+          println(kabadiwala_endpoint_ID+" id has location: ",hh_endpoint_map.get(kabadiwala_endpoint_ID));
+          
           //make a kPath for kabadiwala, mutable Source, and bundle
+          //get the path for that kabadiwala-endpoint ID
+          
+          
+          
           //makeCompletePathFromKabadiwala();
           
           //build path
