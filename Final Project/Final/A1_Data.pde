@@ -98,7 +98,17 @@ void parseHHtoKabadiwala(){
     keys_only.add(k_hh_path_key);
       
    
-    ////////
+    ////////SEE INSTRUCTIONS BELOW for what I'd like to build. I need a list of k_id's and pt_id's that I can query to draw the 
+    ////////line path between them and have the agent use that path to travel. After the agent has done a roundtrip on that path,
+    ////////I will make another path and a new agent. I do this 10 times for each kabadiwala, representing 10 trips. There are
+    ////////162 kabadiwalas, and 10 trips each, so 1620 paths. 
+    //////// k_id is the kabadiwala
+    //////// pt_id is the endpoint of the line
+    //////// each part of the JSON has a k_id and pt_id associated with it. I need to assemble the lines by grouping the ones 
+    //////// with the same k_id and pt_id, i.e. "1-1" for kabadiwala 1, path 1, or "23-10" for kabadiwala 23, path 10. 
+    //////// Need to see if the way I build the lines will put each segment coordinate pair in the right order so that there's a 
+    //////// clear START and END part of the line. This is how I'm building each path and it's a central part of my visualization. 
+    
     // 1. group the JSON by k_hh_path_key. Every time the k_id = 1 and pt_id = 1, group the lat/lon coordinate pairs in a single group. 
     
       //if 1-1 is the same as 1-1
@@ -240,6 +250,7 @@ void parseHHtoKabadiwala(){
 
 }
 
+///////////////////////// parsing the endpoints (each pt_id) to draw separately ////////////////////
 void parseHHPoints(){
   println("calling hh points parse");
   float lat_hh, lon_hh; 
