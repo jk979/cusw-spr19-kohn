@@ -86,18 +86,75 @@ void parseHHtoKabadiwala(){
   ArrayList<Map<String,ArrayList<PVector>>> full_path = new ArrayList<Map<String,ArrayList<PVector>>>();
   ArrayList<Map<String,ArrayList<PVector>>> map3 = new ArrayList<Map<String,ArrayList<PVector>>>();
   ArrayList<String> keys_only = new ArrayList<String>();
+  
+  
+  /////////////////////  /////////////////////  /////////////////////   NINA CODE  /////////////////////  /////////////////////  /////////////////////  /////////////////////
+  HashSet<String> ids = new HashSet<String>();
+  Map<String, Set<ArrayList<PVector>>> mergedMap = new HashMap<String, Set<ArrayList<PVector>>>();
+  //looping through each of the features (coordinate pairs)
+  int lengthReal = hh_paths_features.size();
+  for(int i = 0; i<4; i++){
+    hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
+    hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
+    JSONArray hh_path_jsonarray = hh_paths_features.getJSONObject(i).getJSONObject("geometry").getJSONArray("paths");
+    String id = hhpaths_k_id+"-"+hhpaths_pt_id; //i.e. 1-1
+    ids.add(id);
+    
+    ArrayList<ArrayList<PVector>> coordinatePairs = new ArrayList<ArrayList<PVector>>();
+       for (int j = 0; j<hh_path_jsonarray.size(); j++){
+          ArrayList<PVector> coord_pair = new ArrayList<PVector>();
+          //inside each path are 2 coordinate pairs
+          for(int k = 0; k<2; k++){
+          float path_lat = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(1);
+          float path_lon = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(0);
+          PVector path_coordinate = new PVector(path_lat,path_lon);
+          //add those coordinate pairs to the coord_pair array
+          coord_pair.add(path_coordinate);
+          }
+          
+        coordinatePairs.add(coord_pair);
+        
+        //hold the paths for mapping
+        Way way = new Way(coord_pair);
+        ways.add(way);          
+        way.HH_paths = true;  
+        
+                
+        if(mergedMap.keySet().contains(id)){
+          Set<ArrayList<PVector>> value = mergedMap.get(id);
+          ArrayList<PVector> inner = new ArrayList<PVector>();  
+          inner.add(coord_pair.get(0));     
+          inner.add(coord_pair.get(1));
+          value.add(inner);
+        }
+        else{
+          Set<ArrayList<PVector>> outer = new HashSet<ArrayList<PVector>>();
+          ArrayList<PVector> inner = new ArrayList<PVector>();  
+          
+          inner.add(coord_pair.get(0));     
+          inner.add(coord_pair.get(1));
+          outer.add(inner); // add first list
+          
+          mergedMap.put(id,  outer);
+        }
+        
+    }
+   
+  }
+  
+  for(String s : mergedMap.keySet()){
+    println(s + "//" + mergedMap.get(s));
+  }
 
+  /////////////////////  /////////////////////  /////////////////////  END  NINA CODE  /////////////////////  /////////////////////  /////////////////////  /////////////////////
+  
   //looping through each of the features (coordinate pairs)
   for(int i = 0; i<hh_paths_features.size(); i++){
     hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
     hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
     JSONArray hh_path_jsonarray = hh_paths_features.getJSONObject(i).getJSONObject("geometry").getJSONArray("paths");
-
     String k_hh_path_key = hhpaths_k_id+"-"+hhpaths_pt_id; //i.e. 1-1
-    //make an arraylist of all the keys
-    keys_only.add(k_hh_path_key);
-      
-   
+    
     ////////SEE INSTRUCTIONS BELOW for what I'd like to build. I need a list of k_id's and pt_id's that I can query to draw the 
     ////////line path between them and have the agent use that path to travel. After the agent has done a roundtrip on that path,
     ////////I will make another path and a new agent. I do this 10 times for each kabadiwala, representing 10 trips. There are
@@ -151,7 +208,7 @@ void parseHHtoKabadiwala(){
         ways.add(way);          
         way.HH_paths = true;  
       }
-
+      
       //println(full_path);
       
       
@@ -198,29 +255,29 @@ void parseHHtoKabadiwala(){
       //Let's make a set of the keys that we want 
       //-- sometimes it helps to make a new helper structure like this later in the code so you know where you mad it
       
-      Set<String> keystoMerge = new HashSet<String>();
-      HashMap<String, Set<ArrayList<PVector>>> mergedMap = new HashMap<String, Set<ArrayList<PVector>>>();
+      //Set<String> keystoMerge = new HashSet<String>();
+
       
-      for(Map<String, ArrayList<PVector>> Map : full_path){
-        // For each hashmap, iterate over it
-        for (Map.Entry<String, ArrayList<PVector>> entry : Map.entrySet())
-        {
-           // Do something with your entrySet, for example get the key.
-           String key1 = entry.getKey();
-           ArrayList<PVector> value1 = entry.getValue();
-           if(mergedMap.keySet().contains(key1)){
-               Set<ArrayList<PVector>> valueOld = mergedMap.get(key1);
-               valueOld.add(value1);
-               Set<ArrayList<PVector>> valueNew = valueOld;
-               mergedMap.put(key1, valueNew);
-           }
-           else{
-             Set<ArrayList<PVector>> valueNew = new HashSet<ArrayList<PVector>>();
-             valueNew.add(value1);
-             mergedMap.put(key1, valueNew);
-           }
-        }
-      }
+      //for(Map<String, ArrayList<PVector>> Map : full_path){
+      //  // For each hashmap, iterate over it
+      //  for (Map.Entry<String, ArrayList<PVector>> entry : Map.entrySet())
+      //  {
+      //     // Do something with your entrySet, for example get the key.
+      //     String key1 = entry.getKey();
+      //     ArrayList<PVector> value1 = entry.getValue();
+      //     if(mergedMap.keySet().contains(key1)){
+      //         Set<ArrayList<PVector>> valueOld = mergedMap.get(key1);
+      //         valueOld.add(value1);
+      //         Set<ArrayList<PVector>> valueNew = valueOld;
+      //         mergedMap.put(key1, valueNew);
+      //     }
+      //     else{
+      //       Set<ArrayList<PVector>> valueNew = new HashSet<ArrayList<PVector>>();
+      //       valueNew.add(value1);
+      //       mergedMap.put(key1, valueNew);
+      //     }
+      //  }
+      //}
       
       //for(String keyString : mergedMap.keySet()){
       //  println(keyString + mergedMap.get(keyString));
@@ -230,8 +287,8 @@ void parseHHtoKabadiwala(){
       
     //Way way = new Way(hh_path_array);
   }
-  println(hhpath_coords_map.size());
-  println(hhpath_coords_map);
+  //println(hhpath_coords_map.size());
+  //println(hhpath_coords_map);
 
   //loop through keys_only and add to new arraylist only if the IDs are unique
     ArrayList<String> keys_unique = new ArrayList<String>();
