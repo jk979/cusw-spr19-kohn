@@ -179,12 +179,18 @@ void parseHHtoKabadiwala(){
           }
           */
           
-      //attempt 3
+      ////attempt 3
       //Map<String, ArrayList<PVector>> full_path_treemap = new TreeMap<String,ArrayList<PVector>>(full_path);
       //println(full_path_treemap);
       
       //attempt 4
-      /*
+      
+      //Let's make a set of the keys that we want 
+      //-- sometimes it helps to make a new helper structure like this later in the code so you know where you mad it
+      
+      Set<String> keystoMerge = new HashSet<String>();
+      HashMap<String, Set<ArrayList<PVector>>> mergedMap = new HashMap<String, Set<ArrayList<PVector>>>();
+      
       for(Map<String, ArrayList<PVector>> Map : full_path){
         // For each hashmap, iterate over it
         for (Map.Entry<String, ArrayList<PVector>> entry : Map.entrySet())
@@ -192,10 +198,25 @@ void parseHHtoKabadiwala(){
            // Do something with your entrySet, for example get the key.
            String key1 = entry.getKey();
            ArrayList<PVector> value1 = entry.getValue();
-           println("key: ",key1,"// value: ",value1);
+           if(mergedMap.keySet().contains(key1)){
+               Set<ArrayList<PVector>> valueOld = mergedMap.get(key1);
+               valueOld.add(value1);
+               Set<ArrayList<PVector>> valueNew = valueOld;
+               mergedMap.put(key1, valueNew);
+           }
+           else{
+             Set<ArrayList<PVector>> valueNew = new HashSet<ArrayList<PVector>>();
+             valueNew.add(value1);
+             mergedMap.put(key1, valueNew);
+           }
         }
       }
-      */
+      
+      //for(String keyString : mergedMap.keySet()){
+      //  println(keyString + mergedMap.get(keyString));
+      //}
+     
+      
       
     //Way way = new Way(hh_path_array);
   }
