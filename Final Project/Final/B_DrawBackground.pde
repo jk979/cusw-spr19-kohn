@@ -130,7 +130,7 @@ class Way{
 
     
     if(HH_paths){
-       pg.strokeWeight(0.1);
+       pg.strokeWeight(1);
        pg.stroke(colorHHPaths);
        for(int i = 0; i<coordinates.size()-1; i++){
             //iterate through the coordinates and draw lines

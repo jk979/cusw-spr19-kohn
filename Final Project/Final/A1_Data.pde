@@ -1,3 +1,6 @@
+Map<String, Set<ArrayList<PVector>>> mergedMap = new HashMap<String, Set<ArrayList<PVector>>>();
+
+
 //loading JSONs
 JSONObject example;
 JSONArray features;
@@ -89,11 +92,15 @@ void parseHHtoKabadiwala(){
   
   
   /////////////////////  /////////////////////  /////////////////////   NINA CODE  /////////////////////  /////////////////////  /////////////////////  /////////////////////
+  
+  //mergedMap consists of key//values array of all the paths. You can query it. 
+  
   HashSet<String> ids = new HashSet<String>();
-  Map<String, Set<ArrayList<PVector>>> mergedMap = new HashMap<String, Set<ArrayList<PVector>>>();
+  //previously had MERGEDMAP here, now made it global
   //looping through each of the features (coordinate pairs)
   int lengthReal = hh_paths_features.size();
-  for(int i = 0; i<4; i++){
+  
+  for(int i = 0; i<hh_paths_features.size(); i++){
     hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
     hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
     JSONArray hh_path_jsonarray = hh_paths_features.getJSONObject(i).getJSONObject("geometry").getJSONArray("paths");
@@ -113,12 +120,6 @@ void parseHHtoKabadiwala(){
           }
           
         coordinatePairs.add(coord_pair);
-        
-        //hold the paths for mapping
-        Way way = new Way(coord_pair);
-        ways.add(way);          
-        way.HH_paths = true;  
-        
                 
         if(mergedMap.keySet().contains(id)){
           Set<ArrayList<PVector>> value = mergedMap.get(id);
@@ -136,16 +137,13 @@ void parseHHtoKabadiwala(){
           outer.add(inner); // add first list
           
           mergedMap.put(id,  outer);
-        }
-        
+        }   
     }
-   
   }
   
   for(String s : mergedMap.keySet()){
     println(s + "//" + mergedMap.get(s));
   }
-
   /////////////////////  /////////////////////  /////////////////////  END  NINA CODE  /////////////////////  /////////////////////  /////////////////////  /////////////////////
   
   //looping through each of the features (coordinate pairs)
@@ -202,11 +200,12 @@ void parseHHtoKabadiwala(){
         //concatenate each of the hashmap pairs into a full path
         //something wrong here with the adding...
         full_path.add(hhpath_coords_map);
-       
+       /*
         //hold the paths for mapping
         Way way = new Way(coord_pair);
         ways.add(way);          
-        way.HH_paths = true;  
+        way.HH_paths = false;  
+        */
       }
       
       //println(full_path);

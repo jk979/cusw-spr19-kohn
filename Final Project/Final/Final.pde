@@ -75,22 +75,23 @@ void initModel(){
         //repeat below 
         for(int j = 1; j<3; j++){ //how many bundles one kabadiwala should get
           roundtripCompleted = false;
-          String kabadiwala_endpoint_ID = Integer.toString(i)+"-"+Integer.toString(j);
-          println("Now in kabadiwala #"+kabadiwala_endpoint_ID);
-          println(kabadiwala_endpoint_ID+" id has location: ",hh_endpoint_map.get(kabadiwala_endpoint_ID));
-          
+          String composite_ID = str(i)+"-"+str(j);          
           //make a kPath for kabadiwala, mutable Source, and bundle
-          //get the path for that kabadiwala-endpoint ID
+          println("I'm getting the k_id and the pt_id now");
+          println("k_id: "+i+" and pt_id: "+j);
           
-          
-          
+          //draw the path for the composite ID
+          println("the path for these guys is : "+composite_ID + "//" + mergedMap.get(composite_ID));
+         // [ [ [x,y],[x,y] ] , [ [x,y],[x,y] ] ]
+          for(ArrayList<PVector> s : mergedMap.get(composite_ID)){
+            println(s);
+            Way way = new Way(s);
+            ways.add(way);
+            way.HH_paths = true;
+            println("way.hhpaths"+way.HH_paths);
+          }
+       
           //makeCompletePathFromKabadiwala();
-          
-          //build path
-          //i is the kabadiwala ID
-          //j is the point ID
-          
-          //concatenate I and J to find the appropriate destination and path
           
           
           //build endpoint
