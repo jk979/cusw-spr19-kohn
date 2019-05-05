@@ -56,7 +56,7 @@ class Block {
  //a Bundle is a collection of 4 blocks: plastic, paper, glass, metal. 
  class Bundle {
     //basic properties
-    int id;
+    String id;
     float w, h;
     PVector location,loc;
     Block block, plastic, paper, glass, metal; //there are four blocks inside

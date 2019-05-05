@@ -1,3 +1,13 @@
+//number of kabadiwalas and bundles
+int numKabadiwalas = 5;
+int numBundlesPerKabadiwala = 2;
+int numMRFs = 1; 
+
+//size of kabadiwala and starting positions
+int radius = 15;
+int direction = 1; 
+int direction2 = 0;
+
 //set the costs and quantities (can change these dynamically)
 
 //only set Sources that are 1-3km from the shop

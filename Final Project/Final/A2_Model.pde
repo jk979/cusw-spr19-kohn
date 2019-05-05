@@ -4,7 +4,6 @@ ObstacleCourse course;
 Graph network;
 Pathfinder finder;
 boolean pathNotFound; //pathNotFound is a global variable
-Bundle b;
 
 import java.util.*;
 float laps; 
@@ -37,7 +36,7 @@ void kPath() {
   
   while(pathNotFound) {
     //identify the path between kabadiwala and source
-    Path a = new Path(kabadiwala, source);
+    Path a = new Path(kabadiwala_loc, source);
      if(HavD<=3500){ //solve the path only if HavD<=3km
         a.solve(finder);
         //println(a.waypoints.size());
@@ -49,7 +48,7 @@ void kPath() {
         }
         else{
           //are you resetting your source, etc? 
-         println("No valid path found, resetting source" , kabadiwala, source);
+         println("No valid path found, resetting source" , kabadiwala_loc, source);
          //chooseSource();
         }
      }
@@ -79,7 +78,6 @@ void kPath() {
      println("Source Location: ",sourceLocation);
      
      //initialize bundle at sourceLocation
-     b = new Bundle(sourceLocation);
      
  }
  }
@@ -154,9 +152,9 @@ void checkAgentBehavior(){
    
    //initial conditions: bundle at source, agent in transit
    int euclideanAgentBundle = parseInt(dist(b.w, b.h, p.location.x, p.location.y));
-   int euclideanOriginBundle = parseInt(dist(b.w, b.h, kabadiwala.x, kabadiwala.y));
+   int euclideanOriginBundle = parseInt(dist(b.w, b.h, kabadiwala_loc.x, kabadiwala_loc.y));
    int euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
-   int euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala.x, kabadiwala.y));
+   int euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala_loc.x, kabadiwala_loc.y));
    
    //1. when agent encounters bundle
    if(euclideanAgentBundle < 4){ 
@@ -170,8 +168,8 @@ void checkAgentBehavior(){
    //2. bundle brought to kabadiwala
    if(euclideanOriginBundle < 3){ 
      println("bundle brought to kabadiwala");
-     b.w = kabadiwala.x; 
-     b.w = kabadiwala.y;
+     b.w = kabadiwala_loc.x; 
+     b.w = kabadiwala_loc.y;
      b.pickedUp = false;
      
      println("the bundle #" +b.id+" has been touched by a collector " +b.timesCollected+" times");

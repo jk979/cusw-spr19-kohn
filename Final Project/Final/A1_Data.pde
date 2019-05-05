@@ -1,6 +1,3 @@
-Map<String, Set<ArrayList<PVector>>> mergedMap = new HashMap<String, Set<ArrayList<PVector>>>();
-
-
 //loading JSONs
 JSONObject example;
 JSONArray features;
@@ -13,6 +10,12 @@ JSONObject speeds;
 JSONObject os_mumbai;
 JSONObject featureCollection;
 
+JSONObject railways;
+JSONArray features_rail;
+
+JSONObject buildings;
+JSONArray features_buildings;
+
 JSONObject hh_paths;
 JSONArray hh_paths_features;
 
@@ -22,83 +25,98 @@ JSONArray hh_points_features;
 JSONObject ward_bound;
 JSONArray ward_bound_features;
 
-//declare Arrays
+//declare Arrays and HashMaps
+//household paths
+Map<String, Set<ArrayList<PVector>>> mergedMap = new HashMap<String, Set<ArrayList<PVector>>>();
+
+//legacy
 ArrayList<ArrayList<PVector>> collectionOfCollections = new ArrayList<ArrayList<PVector>>(); //array of collection of road segments
 ArrayList collectionOfPairs = new ArrayList<PVector>(); //array of road segments
-ArrayList collection_kcoords = new ArrayList<PVector>(); //array of kabadiwalas
-ArrayList all_fclasses = new ArrayList(); //array of feature classes
 
+//coordinates arrays for kabadiwala shops, MRFs, and wholesalers
+ArrayList collection_kcoords = new ArrayList<PVector>(); //array of kabadiwalas
+ArrayList collection_mrfcoords = new ArrayList<PVector>();
+ArrayList collection_wcoords = new ArrayList<PVector>();
+
+///////////////////////////////// LOAD FUNCTIONS ///////////////////////////////////
+
+//load household paths
 void loadHHtoKabadiwala(){
  //load the paths from HH to kabadiwala
  hh_paths = loadJSONObject("data/paths/hh_to_k_shortened_formatted.json");
  hh_paths_features = hh_paths.getJSONArray("features");
  println("getting hh_paths_features");
- 
  hh_points = loadJSONObject("data/points/hh_to_k_pts_shortened_formatted.json");
  hh_points_features = hh_points.getJSONArray("features");
  println("getting hh_points_features");
 }
 
+//load ward boundaries
 void loadWardBoundaries(){
   ward_bound = loadJSONObject("data/base/mumbai_admin_wards_json_formatted.json");
   ward_bound_features = ward_bound.getJSONArray("features");
   println("getting ward features");
 }
 
+//load map *bandra*
 void loadDataBandra() {
   //load and resize background image map if you want to include one
   //background = loadImage("data/ImageMap.png");
   //background.resize(width, height);
-
   bandra = loadJSONObject("data/base/bandra.json");
   features = bandra.getJSONArray("features");
   println("getting features");
 }
 
-void loadDataOSMNX() { //OSMNX file of Mumbai simplified roads
-  os_mumbai = loadJSONObject("data/base/osmnx_mumbai.geojson");
-  features = os_mumbai.getJSONArray("features");
-}
-
+//load map *speeds* (huge file)
 void loadDataSpeeds() { //most granular roads data with speeds in metadata
   speeds = loadJSONObject("data/base/mumbai_speeds.geojson");
   features = speeds.getJSONArray("features");
   println("SPEED DATA loaded");
 }
 
+void loadRailways() {
+ railways = loadJSONObject("data/osm_geojson/o2g_railways.geojson");
+ features_rail = railways.getJSONArray("features");
+ println("loaded Rail data");
+}
+
+void loadBuildings() {
+  buildings = loadJSONObject("data/osm_geojson/o2g_buildings_a.geojson");
+  features_buildings = buildings.getJSONArray("features");
+  println("loaded Building data");
+}
+
+/*
+//load map *OSMNX*
+void loadDataOSMNX() { //OSMNX file of Mumbai simplified roads
+  os_mumbai = loadJSONObject("data/base/osmnx_mumbai.geojson");
+  features = os_mumbai.getJSONArray("features");
+}
+
+//load map *OSM Mumbai without simplified roads*
 void loadDataMumbai() { //load OSM file of Mumbai without simplified roads
   mumbai_geojson = loadJSONObject("data/base/mumbai_all.geojson");
   geometries = mumbai_geojson.getJSONArray("geometries");
 }
+*/
 
-void load_k_mrf() { //load kabadiwala and MRF points
+//load kabadiwala and MRF points CSV
+void load_k_mrf() { 
   kData = loadTable("data/points/k_short_snapped.csv", "header");
   mrfData = loadTable("data/points/mrf_formatted.csv", "header");
   println("data loaded!");
 }
 
-///////////////////////////////////////////////////////
+/////////////////// PARSE FUNCTIONS //////////////////////////////
+
+//parse household paths
 void parseHHtoKabadiwala(){
   println("calling hh path to kabadiwala parse");
-  float lat_hh_path, lon_hh_path; 
   String hhpaths_k_id;
   String hhpaths_pt_id;
-  String hhpaths_k_previd = "previous";
-  Map<String,ArrayList<PVector>> hhpath_coords_map = new HashMap<String,ArrayList<PVector>>();
-  Map<String,ArrayList<PVector>> hh_merged_map = new HashMap<String,ArrayList<PVector>>();
-  ArrayList<Map<String,ArrayList<PVector>>> full_path = new ArrayList<Map<String,ArrayList<PVector>>>();
-  ArrayList<Map<String,ArrayList<PVector>>> map3 = new ArrayList<Map<String,ArrayList<PVector>>>();
-  ArrayList<String> keys_only = new ArrayList<String>();
-  
-  
-  /////////////////////  /////////////////////  /////////////////////   NINA CODE  /////////////////////  /////////////////////  /////////////////////  /////////////////////
-  
-  //mergedMap consists of key//values array of all the paths. You can query it. 
-  
+    
   HashSet<String> ids = new HashSet<String>();
-  //previously had MERGEDMAP here, now made it global
-  //looping through each of the features (coordinate pairs)
-  int lengthReal = hh_paths_features.size();
   
   for(int i = 0; i<hh_paths_features.size(); i++){
     hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
@@ -140,173 +158,15 @@ void parseHHtoKabadiwala(){
         }   
     }
   }
-  
+  //output: mergedMap which features all the lines inside it
+  /*
   for(String s : mergedMap.keySet()){
     println(s + "//" + mergedMap.get(s));
   }
-  /////////////////////  /////////////////////  /////////////////////  END  NINA CODE  /////////////////////  /////////////////////  /////////////////////  /////////////////////
-  
-  //looping through each of the features (coordinate pairs)
-  for(int i = 0; i<hh_paths_features.size(); i++){
-    hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
-    hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
-    JSONArray hh_path_jsonarray = hh_paths_features.getJSONObject(i).getJSONObject("geometry").getJSONArray("paths");
-    String k_hh_path_key = hhpaths_k_id+"-"+hhpaths_pt_id; //i.e. 1-1
-    
-    ////////SEE INSTRUCTIONS BELOW for what I'd like to build. I need a list of k_id's and pt_id's that I can query to draw the 
-    ////////line path between them and have the agent use that path to travel. After the agent has done a roundtrip on that path,
-    ////////I will make another path and a new agent. I do this 10 times for each kabadiwala, representing 10 trips. There are
-    ////////162 kabadiwalas, and 10 trips each, so 1620 paths. 
-    //////// k_id is the kabadiwala
-    //////// pt_id is the endpoint of the line
-    //////// each part of the JSON has a k_id and pt_id associated with it. I need to assemble the lines by grouping the ones 
-    //////// with the same k_id and pt_id, i.e. "1-1" for kabadiwala 1, path 1, or "23-10" for kabadiwala 23, path 10. 
-    //////// Need to see if the way I build the lines will put each segment coordinate pair in the right order so that there's a 
-    //////// clear START and END part of the line. This is how I'm building each path and it's a central part of my visualization. 
-    
-    // 1. group the JSON by k_hh_path_key. Every time the k_id = 1 and pt_id = 1, group the lat/lon coordinate pairs in a single group. 
-    
-      //if 1-1 is the same as 1-1
-      //make an empty array of [ [ [,],[,] ] , [ [,],[,] ] ]
-      //fill the lat/lon in PVector [x,y]
-      //fill the coord_pair [ [x,y],[x,y] ] 
-      //tag with unique ID
-      //fill the full path [ [ [x,y],[x,y] ] , [ [x,y],[x,y] ] ]
-      
-      //provide a kabadiwala to parse and a path of the kabadiwala ("1-1")
-      //parser goes into the file and parses that number of segments
-      //segments are placed in an array that is displayed
-      //each segment group for a given ID is drawn and path becomes that agent's path
-             
-        //make 2-point segments that need to be concatenated into a larger array
-        //[ [x,y],[x,y] ]        
-        for (int j = 0; j<hh_path_jsonarray.size(); j++){
-          ArrayList<PVector> coord_pair = new ArrayList<PVector>();
-          //inside each path are 2 coordinate pairs
-          for(int k = 0; k<2; k++){
-          float path_lat = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(1);
-          float path_lon = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(0);
-          PVector path_coordinate = new PVector(path_lat,path_lon);
-          //add those coordinate pairs to the coord_pair array
-          coord_pair.add(path_coordinate);
-          }
-          
-        //now add each of these separate paths to a new array
-        hhpath_coords_map.put(k_hh_path_key,coord_pair);
-        
-        //// END WORKING CODE ////
-        
-        
-        //concatenate each of the hashmap pairs into a full path
-        //something wrong here with the adding...
-        full_path.add(hhpath_coords_map);
-       /*
-        //hold the paths for mapping
-        Way way = new Way(coord_pair);
-        ways.add(way);          
-        way.HH_paths = false;  
-        */
-      }
-      
-      //println(full_path);
-      
-      
-      /// trying to group by key for full_paths ///
-      
-      //attempt 1
-      /*
-       for (Map.Entry<String, ArrayList<PVector>> e : full_path.entrySet()){ 
-          println("e is:",e);
-          println("e key type: ",e.getKey());
-          println("e value type: ",e.getValue());
-          //map3.putAll(e.getKey(),e.getValue());
-          map3.merge(e.getKey(), e.getValue()), String::concat);
-        }
-        */
-        
-      //attempt 2
-      //loop through full_path and concatenate those which have the same key
-      //String keyToSearch = k_hh_path_key;
-      /*
-        for (Map<String, ArrayList<PVector>> map : full_path) {
-          for(String key : map.keySet()){
-            //println(map.get(key));
-            //map3.merge(String.valueOf(key), map.get(key), ArrayList<PVector>::concat);
-          }
-
-          for (String key : map.keySet()) {
-            if(keyToSearch.equals(key)) {
-              //map3.merge(key, map.get(key), ArrayList<PVector>::concat);
-            }
-              //ArrayList<PVector> currentPath = map.get(keyToSearch);
-              //newValue = currentPath + map.keySet(key)
-              //println("Found : " + key + " / value : " + map.get(key));
-            }
-          }
-          */
-          
-      ////attempt 3
-      //Map<String, ArrayList<PVector>> full_path_treemap = new TreeMap<String,ArrayList<PVector>>(full_path);
-      //println(full_path_treemap);
-      
-      //attempt 4
-      
-      //Let's make a set of the keys that we want 
-      //-- sometimes it helps to make a new helper structure like this later in the code so you know where you mad it
-      
-      //Set<String> keystoMerge = new HashSet<String>();
-
-      
-      //for(Map<String, ArrayList<PVector>> Map : full_path){
-      //  // For each hashmap, iterate over it
-      //  for (Map.Entry<String, ArrayList<PVector>> entry : Map.entrySet())
-      //  {
-      //     // Do something with your entrySet, for example get the key.
-      //     String key1 = entry.getKey();
-      //     ArrayList<PVector> value1 = entry.getValue();
-      //     if(mergedMap.keySet().contains(key1)){
-      //         Set<ArrayList<PVector>> valueOld = mergedMap.get(key1);
-      //         valueOld.add(value1);
-      //         Set<ArrayList<PVector>> valueNew = valueOld;
-      //         mergedMap.put(key1, valueNew);
-      //     }
-      //     else{
-      //       Set<ArrayList<PVector>> valueNew = new HashSet<ArrayList<PVector>>();
-      //       valueNew.add(value1);
-      //       mergedMap.put(key1, valueNew);
-      //     }
-      //  }
-      //}
-      
-      //for(String keyString : mergedMap.keySet()){
-      //  println(keyString + mergedMap.get(keyString));
-      //}
-     
-      
-      
-    //Way way = new Way(hh_path_array);
-  }
-  //println(hhpath_coords_map.size());
-  //println(hhpath_coords_map);
-
-  //loop through keys_only and add to new arraylist only if the IDs are unique
-    ArrayList<String> keys_unique = new ArrayList<String>();
-    //println("test: ",keys_only);
-    for(int u = 0; u<keys_only.size(); u++){
-      //println(keys_only.get(0));
-      //println(keys_only.get(1));
-      /*
-      if(keys_only.get(u) != keys_only.get(u+1)){
-        keys_unique.add(keys_only.get(u));
-      }
-      */
-    }
-    //println("unique keys: ",keys_unique.size());
-    
-
+  */
 }
-
-///////////////////////// parsing the endpoints (each pt_id) to draw separately ////////////////////
+  
+//parse household endpoints to draw separately (or query their locations)
 void parseHHPoints(){
   println("calling hh points parse");
   float lat_hh, lon_hh; 
@@ -319,27 +179,19 @@ void parseHHPoints(){
     lat_hh = hh_points_features.getJSONObject(i).getJSONObject("geometry").getFloat("y");
     lon_hh = hh_points_features.getJSONObject(i).getJSONObject("geometry").getFloat("x");
     
-    //make a HashMap of endpoints
-    //give each endpoint a unique ID
+    //make a HashMap of endpoints  and give each endpoint a unique ID
     String k_hh_key = hhpoints_k_id+"-"+hhpoints_pt_id;
     
-    //give each endpoint an coordinates array
+    //make coordinates for each ndpint
     PVector hh_endpoint = new PVector();
     hh_endpoint.add(lat_hh,lon_hh);
     
-    //each endpoint has a k_id, point_id, and coordinate
+    //each endpoint has a unique ID and coordinate
     hh_endpoint_map.put(k_hh_key,hh_endpoint);
-   
-   ////ISSUE IS HERE///
-   //if you provide a k_hh_key, use hh_endpoint_map.get to get the location for that k_hh_key
-   POI_hh h = new POI_hh(hh_endpoint);
-   //poi_hh_array.add(h); //will not add to array and display as a point
-   //println(k_hh_key+" id has location: ",hh_coords_map.get(k_hh_key));
-  }        
-  //println(hh_endpoint_map);
+    }        
 }
 
-
+//parse Ward boundaries
 void parseWardBoundaries(){
   println("calling parseWardBoundaries()");
   for (int i = 0; i<ward_bound_features.size(); i++){
@@ -349,7 +201,6 @@ void parseWardBoundaries(){
     for(int j = 0; j<ward_bound_features.size(); j++){
       JSONObject geometry = ward_bound_features.getJSONObject(j).getJSONObject("geometry");
     
-      //treat rings like lines
       ArrayList<PVector> coords = new ArrayList<PVector>();
         //get coordinates and iterate through them
         JSONArray coordinates = geometry.getJSONArray("rings").getJSONArray(0);
@@ -367,11 +218,73 @@ void parseWardBoundaries(){
     }
 
   }
-    println("total ways added: ",ways.size());
+    //println("total ways added: ",ways.size());
 }
 
 void parseOSMElements(){} //adds buildings, land use, railways, waterways to map
 
+
+void parseBuildings(){
+  println("calling Bulidings");
+  for(int i=0; i<features_buildings.size(); i++){
+    String type = features_buildings.getJSONObject(i).getJSONObject("geometry").getString("type");
+    JSONObject geometry = features_buildings.getJSONObject(i).getJSONObject("geometry");
+    
+    if(type.equals("MultiPolygon")){
+      ArrayList<PVector> coords = new ArrayList<PVector>();
+      //get coordinates and iterate through them
+      JSONArray coordinates = geometry.getJSONArray("coordinates").getJSONArray(0).getJSONArray(0);
+      for (int j = 0; j < coordinates.size(); j++) {
+        float lat = coordinates.getJSONArray(j).getFloat(1);
+        float lon = coordinates.getJSONArray(j).getFloat(0);
+        
+        //make PVector and add it
+        PVector coordinate = new PVector(lat, lon);
+        coords.add(coordinate);
+      }
+      //println("coords list is",coords);
+      //create Polygon with coordinate PVectors
+      Polygon poly = new Polygon(coords);
+      poly.makeShape();
+      polygons.add(poly);
+      poly.BuildingResidential = true;
+
+      
+    }
+  }
+}
+
+void parseRailways(){
+  println("calling Railways");
+  for(int i=0; i<features_rail.size(); i++){
+    String type = features_rail.getJSONObject(i).getJSONObject("geometry").getString("type");
+    JSONObject geometry = features_rail.getJSONObject(i).getJSONObject("geometry");
+    
+    if (type.equals("MultiLineString")) {
+      ArrayList<PVector> coords = new ArrayList<PVector>();
+      //get coordinates and iterate through them
+      JSONArray coordinates = geometry.getJSONArray("coordinates").getJSONArray(0); //list of all the coordinates in [ [[x,y],[x,y]] ] format
+      for (int j = 0; j<coordinates.size(); j++) {
+        float lat = coordinates.getJSONArray(j).getFloat(1);
+        float lon = coordinates.getJSONArray(j).getFloat(0);
+        //make PVector and add it
+        PVector coordinate = new PVector(lat, lon);
+        coords.add(coordinate);
+        }
+      //create Way with coordinate PVectors
+      Way way = new Way(coords);
+      ways.add(way);
+      way.Railway = true;
+
+  }
+  }
+}
+
+void parseWaterways(){
+  
+}
+
+//parse buildings, railways, etc. for Bandra
 void parseData() {
   println("Calling parseData()");
   //parse the JSON object
@@ -633,20 +546,14 @@ void parseMRF() {
     if (mrf_id == previd_mrf) {
       float lat_mrfmatch = float(mrfData.getString(n, 3)); //west
       float lon_mrfmatch = float(mrfData.getString(n, 4));
-      mrfcoords.add(new PVector(lat_mrfmatch, lon_mrfmatch));
+      mrfcoords.add(new PVector(lat_mrfmatch,lon_mrfmatch));
+      collection_mrfcoords.add(new PVector(lat_mrfmatch, lon_mrfmatch));
     }
   }
+  println("mrf array size: ",mrf_array.size());
 }
 
 void drawGISObjects() {
-
-  //draw all Polygons
-  /*
-  for(int i = 0; i<polygons.size(); i++){
-   polygons.get(i).draw();
-   }
-   */
-
   
   //draw all POIs
    for(int i = 0; i<pois.size(); i++){
@@ -658,4 +565,10 @@ void drawGISObjects() {
   for (int i = 0; i<ways.size(); i++) {
     ways.get(i).draw();
   }
+  
+  //draw all Polygons
+  for(int i = 0; i<polygons.size(); i++){
+   polygons.get(i).draw();
+   }
+   
 }

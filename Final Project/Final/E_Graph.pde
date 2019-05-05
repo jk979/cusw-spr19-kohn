@@ -708,7 +708,7 @@ class Path {
     
     // Draw Origin (Green) and Destination (Blue)
     fill(#FF0000); // Green
-    ellipse(kabadiwala.x, kabadiwala.y, diameter, diameter);
+    ellipse(kabadiwala_loc.x, kabadiwala_loc.y, diameter, diameter);
     //ellipse(origin.x, origin.y, diameter, diameter);
     fill(#d3d3d3); // Blue
     ellipse(source.x, source.y, 15, 15);
@@ -732,7 +732,7 @@ class Path {
     
     // Draw Origin (Green) and Destination (Blue)
     fill(#FF0000); // RED
-    ellipse(kabadiwala.x, kabadiwala.y, diameter, diameter);
+    ellipse(kabadiwala_loc.x, kabadiwala_loc.y, diameter, diameter);
     //ellipse(origin.x, origin.y, diameter, diameter);
     fill(#0000FF); // Blue
     ellipse(source.x, source.y, 15, 15);

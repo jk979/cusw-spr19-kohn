@@ -113,6 +113,7 @@ class Way{
   boolean Street;
   boolean Coastline;
   boolean Rail;
+  boolean Railway;
   boolean Waterway;
   boolean WardBounds;
   boolean HH_paths;
@@ -151,8 +152,19 @@ class Way{
         }
      }
      
+   else if(Railway){
+     pg.strokeWeight(0.5);
+       pg.stroke(colorRailways);
+       for(int i = 0; i<coordinates.size()-1; i++){
+            //iterate through the coordinates and draw lines
+            PVector screenStart = map.getScreenLocation(coordinates.get(i));
+            PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
+            pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
+        }
+     }
+     
     else if(Street){
-        pg.strokeWeight(2);
+        pg.strokeWeight(0.5);
         pg.stroke(colorStreet);
     //draw road nodes
     for(int i = 0; i<coordinates.size()-1; i++){

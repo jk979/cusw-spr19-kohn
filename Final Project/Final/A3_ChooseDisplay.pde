@@ -18,7 +18,9 @@
 //picks up material from each kabadiwala on the way
 
 //drawing paths
-PVector kabadiwala = new PVector();
+PVector kabadiwala_loc = new PVector();
+PVector mrf_loc = new PVector();
+
 PVector source = new PVector();
 ArrayList<ArrayList<PVector>> bundles = new ArrayList<ArrayList<PVector>>();
 
@@ -43,17 +45,21 @@ and Sources (of material) as destinations of the path.
 //choose from list of kabadiwalas
 void chooseKabadiwala(int i) {
     println("number of kabadiwalas is: ", collection_kcoords.size());
-    //random index parses for #3, but not for many within the coordinates.
-    //made new points that are snapped to the "speeds" roads, but haven't been able 
-    //to try yet on "speeds" network
-    //randomKIndex = parseInt(random(0, collection_kcoords.size()));
     randomKIndex = i;  
     println("the kabadiwala's index is",i);
     //choose the kabadiwala corresponding with that index
-    kabadiwala = (PVector)collection_kcoords.get(randomKIndex);
-    kabadiwala = map.getScreenLocation(kabadiwala);
-    println("this kabadiwala's location is",kabadiwala);
+    kabadiwala_loc = (PVector)collection_kcoords.get(randomKIndex);
+    kabadiwala_loc = map.getScreenLocation(kabadiwala_loc);
+    println("this kabadiwala's screen location is",kabadiwala_loc);
     }
+    
+void chooseMRF(int i) {
+  println(collection_mrfcoords);
+  randomKIndex = i; 
+  mrf_loc = (PVector) collection_mrfcoords.get(randomKIndex);
+  mrf_loc = map.getScreenLocation(mrf_loc);
+  println("this mrf's screen location is",mrf_loc);
+}
 
 //now determine a random Source point from collectionOfCollections
 void chooseSource(int j) {
@@ -99,5 +105,5 @@ void chooseSource(int j) {
 void displayKabadiwala() {
   stroke(color(255, 255, 255));
   noFill();
-  polygon(kabadiwala.x, kabadiwala.y, 3, 4);
+  polygon(kabadiwala_loc.x, kabadiwala_loc.y, 3, 4);
 }

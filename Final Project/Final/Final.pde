@@ -1,17 +1,11 @@
-//midterm assignment
-
-/*
-Bugs left: 
-initModel -- is the ways network changing? Do you have to re-chose any data structures?
-while loop exit condition/choosing -- are there options that shouldn't be chosen together, etc? 
-*/
-
 //bundles and source must be linked
 
 //make Bandra map
 MercatorMap map; 
 PImage background;
 PGraphics pg;
+ArrayList<String> day = new ArrayList<String>();
+String currentDay;
 
 //declare inactive GIS-style objects
 ArrayList<POI> pois;
@@ -22,16 +16,19 @@ ArrayList<Polygon> polygons;
 ArrayList<POI_hh> poi_hh_array;
 Map<String,PVector> hh_endpoint_map = new HashMap<String,PVector>(); //to look up the corresponding hh endpoint by kabadiwala/endpoint ID
 
-//full path to query
-
-
 int bundlesCollected;
-int numKabadiwalas; 
-int numBundlesPerKabadiwala;
 
 boolean soldToKabadiwala;
 boolean roundtripCompleted;
 int j;
+
+Bundle b;
+
+//temporary array for number of bundles created
+ArrayList<Bundle> bundleArray = new ArrayList(); 
+ArrayList<KabadiwalaAgent> kabadiwalaArray = new ArrayList(); 
+ArrayList<MRFAgent> mrfArray = new ArrayList(); 
+
 
 ///////////////////////
 
@@ -54,16 +51,18 @@ void initModel(){
   //waysNetwork(ways); //initialize the Ways network (roads)
   
   //2. Initialize origin/destination and paths for kabadiwalas using kPath() method
-  int numKabadiwalas = 1;
-  int numBundlesPerKabadiwala = 3;
-  println("NK = "+numKabadiwalas+ " and NB = "+numBundlesPerKabadiwala);
   
   //Number of groups 
   println("entering group for loop");
-    //kabadiwala IDs
-    for(int i = 1 ; i<2; i++){
-        chooseKabadiwala(100); //choose the #i kabadiwala agent
-        println("chose kabadiwala");
+  
+    //set up the kabadiwalas
+    for(int i = 0 ; i<numKabadiwalas; i++){
+      chooseKabadiwala(i+1); //choose the #i kabadiwala agent
+      //initialize the agent on screen
+      KabadiwalaAgent k = new KabadiwalaAgent(kabadiwala_loc.x, kabadiwala_loc.y);
+      kabadiwalaArray.add(k);
+      
+      println("chose kabadiwala #",i+1);
         //initialize 0 for each variable
            roundtripKM = 0;
            totalKPickupCost = 0;
@@ -72,40 +71,52 @@ void initModel(){
            kabadiwala_pickup_cost_glass = 0;
            kabadiwala_pickup_cost_metal = 0;
            misc = 0;
-        //repeat below 
-        for(int j = 1; j<3; j++){ //how many bundles one kabadiwala should get
+           
+        //set up each kabadiwala's bundles
+        for(int j = 0; j<numBundlesPerKabadiwala; j++){ //how many bundles one kabadiwala should get
           roundtripCompleted = false;
-          String composite_ID = str(i)+"-"+str(j);          
+          String composite_ID = str(i+1)+"-"+str(j+1);      
+          println("composite ID: ",composite_ID);
           //make a kPath for kabadiwala, mutable Source, and bundle
-          println("I'm getting the k_id and the pt_id now");
-          println("k_id: "+i+" and pt_id: "+j);
-          
+
           //draw the path for the composite ID
-          println("the path for these guys is : "+composite_ID + "//" + mergedMap.get(composite_ID));
-         // [ [ [x,y],[x,y] ] , [ [x,y],[x,y] ] ]
+          //println("the path for these guys is : "+composite_ID + "//" + mergedMap.get(composite_ID));
+          // [ [ [x,y],[x,y] ] , [ [x,y],[x,y] ] ]
           for(ArrayList<PVector> s : mergedMap.get(composite_ID)){
-            println(s);
+            //println(s);
             Way way = new Way(s);
             ways.add(way);
             way.HH_paths = true;
-            println("way.hhpaths"+way.HH_paths);
+            //println("way.hhpaths"+way.HH_paths);
           }
+          
+          //find point at end of path and assign Bundle to its location
+          PVector bundlepoint = hh_endpoint_map.get(composite_ID);
+          println("composite ID ",composite_ID, " has endpoint location: ",bundlepoint);
+          b = new Bundle(map.getScreenLocation(bundlepoint));
+          b.id = composite_ID; //bind to ID
+          
+          //add to bundleArray for displaying in draw()
+          bundleArray.add(b);
+          
+          //trying to display the endpoint
+          //POI_hh h = new POI_hh(hh_endpoint);
+          //poi_hh_array.add(h);
        
           //makeCompletePathFromKabadiwala();
           
-          
-          //build endpoint
-          
-          
-          //set bundle id 
-         // b.id = j;
-         // println("attaching bundle id #"+b.id+" to source location");
-         
           //initialize population
           //println("path size is",paths.size());
           //initPopulation(1);
           //Let go of the bundle 
         }
+    }
+    
+    //set up Level 2
+    for(int i = 0 ; i<numMRFs; i++){
+      chooseMRF(i+1);
+      MRFAgent m = new MRFAgent(mrf_loc.x, mrf_loc.y);
+      mrfArray.add(m);
     }
 }
 
@@ -113,7 +124,7 @@ void initModel(){
 
 void setup(){
   size(1250,750); //add ,P3D to make it 3D
-
+  addDays();
   //add background graphic to place GIS objects on
   pg = createGraphics(width, height);
     
@@ -139,7 +150,7 @@ void setup(){
   }
   
   String whichMap;
-  whichMap = "bandra";
+  whichMap = "speeds";
   
   if(whichMap == "bandra"){
     loadDataBandra();
@@ -147,14 +158,24 @@ void setup(){
     polygons = new ArrayList<Polygon>();
     ways = new ArrayList<Way>();
     pois = new ArrayList<POI>();
+    
     load_k_mrf();
     parseData();
+    
     loadHHtoKabadiwala();
     parseHHtoKabadiwala();
     parseHHPoints();
+    
     loadWardBoundaries();
+    
     parseWardBoundaries();
+    loadRailways();
+    parseRailways();
+    
+    //loadBuildings();
+    //parseBuildings();
   }
+  /*
   else if(whichMap == "OSMNX"){
     loadDataOSMNX();
     //initialize attributes
@@ -172,7 +193,7 @@ void setup(){
     pois = new ArrayList<POI>();
     load_k_mrf();
     parseDataMumbai();
-  }
+  }*/
   else if(whichMap == "speeds"){
     loadDataSpeeds();
     //initialize attributes
@@ -181,6 +202,16 @@ void setup(){
     pois = new ArrayList<POI>();
     load_k_mrf();
     parseSpeeds();
+    
+    loadHHtoKabadiwala();
+    parseHHtoKabadiwala();
+    parseHHPoints();
+    
+    loadWardBoundaries();
+    
+    parseWardBoundaries();
+    loadRailways();
+    parseRailways();
   }
   
   println("now beginning to draw gis objects...");
@@ -190,7 +221,6 @@ void setup(){
   pg.endDraw();
   println("ended drawing gis objects");
   
-
   //initialize model and simulation
   initModel();
   
@@ -204,16 +234,23 @@ void draw(){
   //camera(70.0,-35.0, 1200.0, 450.0, -50, 0, 0, 1, 0);
   background(0);
   image(pg, 0,0);
- //draw mrfs
+  
+ //draw each of the mrf shops
   for(int i=0; i<mrfData.getRowCount()-1; i++){
      mrf_array.get(i).draw();
   }
- 
- //draw each of the kabadiwalas
+
+ //draw each of the kabadiwala shops
   for(int i =0 ; i<k_array.size(); i++){
     k_array.get(i).draw();
   }
   
+  //draw each of the poi_hh
+  /*
+  for(int i = 0; i<poi_hh_array.size(); i++){
+    poi_hh_array.get(i).draw();
+  }
+  */
   drawInfo();  
   
   /*
@@ -224,31 +261,72 @@ void draw(){
   
   checkAgentBehavior();
   checkSaleBehavior();
-    
+  
+  //draw each of the bundles
+  for(int i = 0; i<bundleArray.size(); i++){
+    Bundle Bn = (Bundle) bundleArray.get(i);
+    Bn.display();
+    //text("Weight: "+Bn.total_kg, Bn.w, Bn.h);
+  }
+  
+  //draw the KABADIWALA!
+  for(int i = 0; i<kabadiwalaArray.size(); i++){
+    KabadiwalaAgent k = (KabadiwalaAgent) kabadiwalaArray.get(i);
+    k.display();
+  }
+  
+  //draw the MRF agent!
+  for(int i = 0; i<mrfArray.size(); i++){
+    MRFAgent m = (MRFAgent) mrfArray.get(i);
+    m.display();
+  }
+  
+  
   //noLoop();
 }
 
 void addDays(){
-ArrayList<String> day = new ArrayList<String>();
 day.add("Monday");
 day.add("Tuesday");
 day.add("Wednesday");
 day.add("Thursday");
 day.add("Friday");
 day.add("Saturday");
-//println(day);
+println(day);
 }
 
 void keyPressed(){
     if(key==ENTER || key==RETURN){
       initModel();
   }
-  else if(key=='1'){
-    //text("Day: "+day.get(0), 1100, 70);
+  else if(key=='q'){
+    square = !square;
   }
-  else if(key=='2'){
-    text("Day: Tuesday",1100,70);
+}
+
+void keyTyped(){
+  if(key == '1'){
+    currentDay = day.get(0);
   }
+  else if(key == '2'){
+    currentDay = day.get(1);
+  }
+  else if(key == '3'){
+    currentDay = day.get(2);
+  }
+  else if(key == '4'){
+    currentDay = day.get(3);
+  }
+  else if(key == '5'){
+    currentDay = day.get(4);
+  }
+  else if(key == '6'){
+    currentDay = day.get(5);
+  }
+  else if(key == '7'){
+    currentDay = day.get(6);
+  }
+  
 }
 
 //each day: 10 routes for each kabadiwala

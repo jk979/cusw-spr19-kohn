@@ -9,6 +9,7 @@ color colorCoastline = color(128,128,128);
 color colorRail = color(255,170,170);
 color colorStreet = color(0,200,255,100);
 color colorWaterway = color(0,0,255); 
+color colorRailways = color(255,170,170);
 color mrf_fill = color(173,255,47); //MRF points (yellow)
 color k_fill = color(34, 200, 34); //Kabadiwala shops(green)
 color colorWardBounds = color(128,128,128);
@@ -43,8 +44,8 @@ void drawInfo(){
   fill(255,255,255);
   //draw input content
   textSize(12);
-  text("# kabadiwalas: "+numKabadiwalas,525,220);
-  text("# bundles per kabadiwala: "+numBundlesPerKabadiwala,525,240);
+  text("Kabadiwalas in System: "+numKabadiwalas,525,220);
+  text("Bundles per Kabadiwala: "+numBundlesPerKabadiwala,525,240);
   //quantities
   text("---Quantities From Each Household---", 525,260);
   text("Paper: "+ wt_paper + " KG",525,280);
@@ -109,5 +110,7 @@ void drawInfo(){
   //text("bundle is picked up? "+b.pickedUp,925,300);
   text("---------Wholesalers----------------", 925,320);
   
+  text("current day: "+currentDay, 1100, 70);
+
   
 }
