@@ -145,13 +145,15 @@ void initModel(){
         //   //println("WAYS LIST IS",pathways.getClass());
             
         //  //find point at end of path and assign Bundle to its location
-          PVector bundlepoint = hh_endpoint_map.get(composite_ID);
+          //PVector bundlepoint = hh_endpoint_map.get(composite_ID);
+          ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
+          PVector bundlepoint = temp_array.get(temp_array.size()-1);
         //  println("composite ID ",composite_ID, " has endpoint location: ",bundlepoint);
           b = new Bundle(map.getScreenLocation(bundlepoint));
-        //  b.id = composite_ID; //bind to ID
+          b.id = composite_ID; //bind to ID
           
         //  //add to bundleArray for displaying in draw()
-        //  bundleArray.add(b);
+          bundleArray.add(b);
         //  //trying to display the endpoint
         //  //POI_hh h = new POI_hh(hh_endpoint);
         //  //poi_hh_array.add(h);

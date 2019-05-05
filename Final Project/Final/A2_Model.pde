@@ -110,7 +110,7 @@ void initPopulation(int count) {
   */
   
   people = new ArrayList<Agent>();
-  for (int i=0; i<count; i++) {
+  for (int i=0; i<numBundlesPerKabadiwala; i++) {
     int random_index = int(random(paths.size()));
     Path random_path = paths.get(random_index);
     if (random_path.waypoints.size() > 1) {
@@ -182,19 +182,26 @@ void checkAgentBehavior(){
      b.timesCollected++;
      roundtripKM = parseInt((2*HavD)/1000);           
 
-
     roundtripCompleted = true;
 
     if(roundtripCompleted == true){
+      //kill the agent
+      
+      //delete the path
+      
+      //
+      
+      
             //KILL THE AGENT
             p.isAlive = false;
             println("killed person");
             //if there are more iterations to go, resurrect an agent
-            println("j in this roudntrip is",j);
+            println("j in this roundtrip is",j);
             if(j<numBundlesPerKabadiwala){
               println("j vs num", j);
               println("bpk",numBundlesPerKabadiwala);
               people.get(p.id+1).isAlive = true;
+              roundtripCompleted = false;
               println("resurrected agent");
             }
    }

@@ -1,6 +1,6 @@
 //number of kabadiwalas and bundles
 int numKabadiwalas = 1;
-int numBundlesPerKabadiwala = 1;
+int numBundlesPerKabadiwala = 2;
 int numMRFs = 38; 
 
 //size of kabadiwala and starting positions
