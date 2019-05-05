@@ -1,7 +1,7 @@
 //number of kabadiwalas and bundles
-int numKabadiwalas = 5;
+int numKabadiwalas = 1;
 int numBundlesPerKabadiwala = 2;
-int numMRFs = 1; 
+int numMRFs = 38; 
 
 //size of kabadiwala and starting positions
 int radius = 15;
@@ -14,10 +14,10 @@ int direction2 = 0;
 int dist_from_shop = 2000;
 
 //set global quantities generated per household
-float wt_plastic = 6; //6kg per household
-float wt_paper = 25; //25kg per household
-float wt_glass = 1; //1kg per household
-float wt_metal = 0.17; //0.17kg per household
+float wt_plastic = 2; //2kg per household
+float wt_paper = 6; //6kg per household
+float wt_glass = 12; //12kg per household
+float wt_metal = 0.5; //0.5kg per household
 
 //weekly quantities
 int paperQuantity = 1500;

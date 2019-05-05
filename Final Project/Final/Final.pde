@@ -2,6 +2,14 @@
 
 //make Bandra map
 MercatorMap map; 
+String whichBackground;
+int k_min;
+int k_max;
+int m_min; 
+int m_max;
+int w_min; 
+int w_max;
+
 PImage background;
 PGraphics pg;
 ArrayList<String> day = new ArrayList<String>();
@@ -28,7 +36,7 @@ Bundle b;
 ArrayList<Bundle> bundleArray = new ArrayList(); 
 ArrayList<KabadiwalaAgent> kabadiwalaArray = new ArrayList(); 
 ArrayList<MRFAgent> mrfArray = new ArrayList(); 
-
+ArrayList<WholesalerAgent> wholesalerArray = new ArrayList(); 
 
 ///////////////////////
 
@@ -54,10 +62,47 @@ void initModel(){
   
   //Number of groups 
   println("entering group for loop");
-  
+    //what map are we in?
+    if(whichBackground == "0"){
+      k_min = 0;
+      k_max = 162;
+      m_min = 0;
+      m_max = 39;
+      w_min = 0;
+      w_max = 3;
+    }
+    else if(whichBackground == "HW"){
+      //test
+      k_min = 0; 
+      k_max = numKabadiwalas;
+      m_min = 16;
+      m_max = 18;
+      w_min = 1;
+      w_max = 2;
+      //when ready for complete
+      //k_min = 0; 
+      //k_max = 66;
+    }
+    else if(whichBackground == "N"){
+      k_min = 67; 
+      k_max = 112;
+      m_min = 36;
+      m_max = 37;
+      w_min = 0;
+      w_max = 1;
+    }
+    else if(whichBackground == "RN"){
+      k_min = 113;
+      k_max = 162;
+      m_min = 29;
+      m_max = 31;
+      w_min = 2;
+      w_max = 3;
+    }
+    
     //set up the kabadiwalas
-    for(int i = 0 ; i<numKabadiwalas; i++){
-      chooseKabadiwala(i+1); //choose the #i kabadiwala agent
+    for(int i = k_min ; i<k_max; i++){
+      chooseKabadiwala(i); //choose the #i kabadiwala agent
       //initialize the agent on screen
       KabadiwalaAgent k = new KabadiwalaAgent(kabadiwala_loc.x, kabadiwala_loc.y);
       kabadiwalaArray.add(k);
@@ -79,15 +124,13 @@ void initModel(){
           println("composite ID: ",composite_ID);
           //make a kPath for kabadiwala, mutable Source, and bundle
 
-          //draw the path for the composite ID
+          //get the path for the composite ID
           //println("the path for these guys is : "+composite_ID + "//" + mergedMap.get(composite_ID));
           // [ [ [x,y],[x,y] ] , [ [x,y],[x,y] ] ]
           for(ArrayList<PVector> s : mergedMap.get(composite_ID)){
-            //println(s);
             Way way = new Way(s);
             ways.add(way);
             way.HH_paths = true;
-            //println("way.hhpaths"+way.HH_paths);
           }
           
           //find point at end of path and assign Bundle to its location
@@ -113,10 +156,16 @@ void initModel(){
     }
     
     //set up Level 2
-    for(int i = 0 ; i<numMRFs; i++){
-      chooseMRF(i+1);
+  
+    for(int i = m_min ; i<m_max; i++){
+      chooseMRF(i);
       MRFAgent m = new MRFAgent(mrf_loc.x, mrf_loc.y);
       mrfArray.add(m);
+    }
+    for(int i = w_min ; i<w_max; i++){
+      chooseWholesaler(i);
+      WholesalerAgent w = new WholesalerAgent(w_loc.x, w_loc.y);
+      wholesalerArray.add(w);
     }
 }
 
@@ -133,17 +182,17 @@ void setup(){
   int height_map = height;
   
   //map extents
-  String whichBackground;
-  whichBackground = "HW";
+  whichBackground = "0";
   
   if(whichBackground == "HW"){
+    //map = new MercatorMap(width_map, height_map, 19.0926, 19.0402, 72.7740, 72.8507,0);
     map = new MercatorMap(width_map, height_map, 19.0942, 19.0391, 72.8143, 72.8462, 0); //bandra
   }
   else if(whichBackground == "RN"){
-    map = new MercatorMap(width_map+500, height_map, 19.2729, 19.2322, 72.8309, 72.8989, 0); //dahisar
+    map = new MercatorMap(width_map+700, height_map, 19.2729, 19.2322, 72.8309, 72.8989, 0); //dahisar
   }
   else if(whichBackground == "N"){
-    map = new MercatorMap(width_map, height_map, 19.1213, 19.0545, 72.8787, 72.9612, 0); //ghatkopar
+    map = new MercatorMap(width_map, height_map-400, 19.1213, 19.0545, 72.8787, 72.9612, 0); //ghatkopar
   }
   else if(whichBackground == "0"){
     map = new MercatorMap(width_map+150, height_map, 19.2904, 18.8835,72.7364,73.0570, 0); //mumbai complete
@@ -251,7 +300,7 @@ void draw(){
     poi_hh_array.get(i).draw();
   }
   */
-  drawInfo();  
+  
   
   /*
   for(Path p : paths){
@@ -269,6 +318,9 @@ void draw(){
     //text("Weight: "+Bn.total_kg, Bn.w, Bn.h);
   }
   
+  //draw the kabadiwala's path
+  
+  
   //draw the KABADIWALA!
   for(int i = 0; i<kabadiwalaArray.size(); i++){
     KabadiwalaAgent k = (KabadiwalaAgent) kabadiwalaArray.get(i);
@@ -281,7 +333,13 @@ void draw(){
     m.display();
   }
   
+  //draw the wholesaler!
+  for(int i = 0; i<wholesalerArray.size(); i++){
+    WholesalerAgent w = (WholesalerAgent) wholesalerArray.get(i);
+    w.display();
+  }
   
+  drawInfo();  
   //noLoop();
 }
 
@@ -301,6 +359,18 @@ void keyPressed(){
   }
   else if(key=='q'){
     square = !square;
+  }
+  else if(key=='z'){
+    whichBackground = "HW";
+  }
+  else if(key=='x'){
+    whichBackground = "N";
+  }
+  else if(key=='c'){
+    whichBackground = "RN";
+  }
+  else if(key=='v'){
+    whichBackground = "0";
   }
 }
 

@@ -1,11 +1,13 @@
 ArrayList<Point_k> k_array = new ArrayList<Point_k>();
 ArrayList<Point_k> mrf_array = new ArrayList<Point_k>();
+ArrayList<Point_k> w_array = new ArrayList<Point_k>();
 
 class Point_k{
     PVector kcoord;
     
     boolean typeMRF;
     boolean typeK;
+    boolean typeWholesaler;
   
     //lat, lon values
     float lat_k; 
@@ -28,6 +30,11 @@ class Point_k{
        ellipse(screenLocation.x, screenLocation.y, 4, 4); //fill point
      } else if(typeMRF){
        fill(mrf_fill);
+       noStroke();
+       polygon(screenLocation.x, screenLocation.y,5,4);
+     } else if(typeWholesaler){
+       println("printing wholesaler");
+       fill(w_fill);
        noStroke();
        polygon(screenLocation.x, screenLocation.y,5,4);
      }

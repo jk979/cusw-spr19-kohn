@@ -7,11 +7,12 @@ int lnColor = 255;
 color colorBuildingResidential = color(0,0,0);
 color colorCoastline = color(128,128,128);
 color colorRail = color(255,170,170);
-color colorStreet = color(0,200,255,100);
+color colorStreet = color(64,70,77,100); //blue: (0,200,255,100)
 color colorWaterway = color(0,0,255); 
 color colorRailways = color(255,170,170);
 color mrf_fill = color(173,255,47); //MRF points (yellow)
 color k_fill = color(34, 200, 34); //Kabadiwala shops(green)
+color w_fill = color(0,200,255);
 color colorWardBounds = color(128,128,128);
 color colorHHPaths = color(255,211,0);
 
@@ -21,7 +22,7 @@ void drawInfo(){
   //draw title box
   int bgColor = 230;
   noStroke();
-  fill(bgColor, 2*baseAlpha);
+  fill(bgColor, 3*baseAlpha);
   rect(520,20,700,120,10);
   //draw title text
   fill(255,255,255);
@@ -77,12 +78,11 @@ void drawInfo(){
   text("|", 705,440);
   text("|", 705,460);
 
-
   //K to W
-  text("X INR",655,400);
-  text("X INR",655,420);
-  text("X INR",655,440);
-  text("X INR",655,460);
+  text(paperKSell +" INR",650,400);
+  text(plasticKSell +" INR",650,420);
+  text(glassKSell +" INR",650,440);
+  text(metalKSell +" INR",650,460);
   //selling prices
   //total cost of buying
   text("----Kabadiwala Total Cost of Buying---", 525,480);
@@ -93,7 +93,7 @@ void drawInfo(){
   text("Miscellaneous Items: "+ misc + " INR",525,580);
 
   //draw output box
-  fill(bgColor, 2*baseAlpha);
+  fill(bgColor,2*baseAlpha); //, 0*baseAlpha);
   rect(920, 150, 300, 500, 10);
   //draw output title
   textSize(16);

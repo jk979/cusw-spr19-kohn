@@ -3,7 +3,7 @@ JSONObject example;
 JSONArray features;
 JSONArray geometries;
 JSONObject bandra;
-Table kData, mrfData;
+Table kData, mrfData, wData;
 
 JSONObject mumbai_geojson;
 JSONObject speeds;
@@ -105,6 +105,7 @@ void loadDataMumbai() { //load OSM file of Mumbai without simplified roads
 void load_k_mrf() { 
   kData = loadTable("data/points/k_short_snapped.csv", "header");
   mrfData = loadTable("data/points/mrf_formatted.csv", "header");
+  wData = loadTable("data/points/wholesaler_points_snapped.csv", "header");
   println("data loaded!");
 }
 
@@ -418,6 +419,7 @@ void parseData() {
 
   parseMRF(); //read in MRF CSV
   parseKabadiwala(); //read in Kabadiwala CSV
+  parseWholesaler(); //read in Wholesaler CSV
 
   println("Total segment pairs in this road file: "+collectionOfCollections.size());
   println("Completed Parsing");
@@ -427,7 +429,7 @@ void parseData() {
 
 //////////////////////////////////////////////////// parse Roads
 void parseSpeeds() {
-  for (int t = 26000; t < features.size(); t++) { //framerate seriously affected around 26000 and out of memory at 25000
+  for (int t = 0; t < features.size(); t++) { //framerate seriously affected around 26000 and out of memory at 25000
     JSONObject geometry = features.getJSONObject(t);
     //println("geometry looks like",geometry);
     for (int u = 0; u < geometry.size(); u++) {
@@ -474,6 +476,8 @@ void parseSpeeds() {
   }
   parseMRF(); //read in MRF CSV
   parseKabadiwala(); //read in Kabadiwala CSV
+  parseWholesaler(); //read in Wholesaler CSV
+
   println("Total segment pairs in this road file: "+collectionOfCollections.size());
   //println("CC: ", collectionOfCollections);
   println("ENDING CALLING PARSE DATA");
@@ -483,6 +487,50 @@ void parseSpeeds() {
 
 
 ////////////////////////// parse Kabadiwalas and MRFs //////////////////////////////////////////////////////////////////////////////////
+
+void parseWholesaler() {
+  println("PARSE WHOLESALER");
+  int previd_w = 0;
+  float lat_w, lon_w;
+  String ward;
+  ArrayList<PVector> wcoords = new ArrayList<PVector>();
+  
+  for (int w = 0; w<wData.getRowCount(); w++){
+    ward = wData.getString(w,2);
+    lat_w = wData.getFloat(w,3);
+    lon_w = wData.getFloat(w,4);
+    int w_id = int(wData.getString(w,0));
+    println(lat_w);
+    println(lon_w);
+    println("ID WHOLESALER",w_id);
+    if (w_id != previd_w) {
+      if (wcoords.size() > 0) { //create constructor for kcoords
+      println("now making wholesaler point!");
+        Point_k wh = new Point_k(lat_w, lon_w);
+        wh.typeWholesaler = true;
+        w_array.add(wh);
+
+      }
+      //clear coords
+      wcoords = new ArrayList<PVector>();
+      //reset variable
+      previd_w = w_id;
+    }
+    if (w_id == previd_w) {
+      float lat_wmatch = wData.getFloat(w, 3); //west
+      float lon_wmatch = wData.getFloat(w, 4);
+      PVector temp_w = new PVector(lat_wmatch,lon_wmatch);
+      println("TEMP PVECTOR IS ",temp_w);
+      wcoords.add(temp_w);
+      collection_wcoords.add(temp_w);
+    }
+  }
+  println("wholesaler array size: ",w_array.size());
+  println("wcoords size: ",wcoords.size());
+  println("collection_wcoords size: ",collection_wcoords.size());
+}
+
+
 
 void parseKabadiwala() {
   println("PARSE KABADIWALA");
@@ -497,7 +545,7 @@ void parseKabadiwala() {
     lat_k = float(kData.getString(m, 2));
     lon_k = float(kData.getString(m, 3));
 
-    //only for Bandra kabadiwalas, can add the others once the GeoJSON full merge on all street networks is operational
+    //only have kabadiwalas within HW, N, and RN
     if (ward.equals("HW")|| ward.equals("N") || ward.equals("RN")){ 
       int k_id = int(kData.getString(m, 0));
       if (k_id != previd_k) {
@@ -546,11 +594,14 @@ void parseMRF() {
     if (mrf_id == previd_mrf) {
       float lat_mrfmatch = float(mrfData.getString(n, 3)); //west
       float lon_mrfmatch = float(mrfData.getString(n, 4));
-      mrfcoords.add(new PVector(lat_mrfmatch,lon_mrfmatch));
-      collection_mrfcoords.add(new PVector(lat_mrfmatch, lon_mrfmatch));
+      PVector temp_mrf = new PVector(lat_mrfmatch,lon_mrfmatch);
+      mrfcoords.add(temp_mrf);
+      collection_mrfcoords.add(temp_mrf);
     }
   }
   println("mrf array size: ",mrf_array.size());
+  println("mrfcoords size: ",mrfcoords.size());
+  println("collection_mrfcoords size: ",collection_mrfcoords.size());
 }
 
 void drawGISObjects() {
@@ -560,7 +611,6 @@ void drawGISObjects() {
    pois.get(i).draw();
    }
    
-
   //draw all Ways
   for (int i = 0; i<ways.size(); i++) {
     ways.get(i).draw();

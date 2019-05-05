@@ -20,6 +20,7 @@
 //drawing paths
 PVector kabadiwala_loc = new PVector();
 PVector mrf_loc = new PVector();
+PVector w_loc = new PVector();
 
 PVector source = new PVector();
 ArrayList<ArrayList<PVector>> bundles = new ArrayList<ArrayList<PVector>>();
@@ -35,6 +36,8 @@ ArrayList multi_bundles = new ArrayList<PVector>(); //all bundles belonging to a
 ArrayList<ArrayList<PVector>> allBundles = new ArrayList<ArrayList<PVector>>(); //all bundles in the animation
 
 int randomKIndex;
+int randomMIndex;
+int randomWIndex;
 
 ///////////////////////// Choose Functions //////////////////////////////
 /* 
@@ -54,12 +57,19 @@ void chooseKabadiwala(int i) {
     }
     
 void chooseMRF(int i) {
-  println(collection_mrfcoords);
-  randomKIndex = i; 
-  mrf_loc = (PVector) collection_mrfcoords.get(randomKIndex);
+  randomMIndex = i; 
+  mrf_loc = (PVector) collection_mrfcoords.get(randomMIndex);
   mrf_loc = map.getScreenLocation(mrf_loc);
-  println("this mrf's screen location is",mrf_loc);
 }
+
+void chooseWholesaler(int i) {
+  println("There are THIS MANY COORDINATE PAIRS IN Wholesalers: ",collection_wcoords.size());
+  randomWIndex = i; 
+  w_loc = (PVector) collection_wcoords.get(randomWIndex);
+  w_loc = map.getScreenLocation(w_loc);
+  println("this wholesaler's screen location is",w_loc);
+}
+
 
 //now determine a random Source point from collectionOfCollections
 void chooseSource(int j) {
