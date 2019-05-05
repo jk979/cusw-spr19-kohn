@@ -73,8 +73,8 @@ void initModel(){
     }
     else if(whichBackground == "HW"){
       //test
-      k_min = 0; 
-      k_max = numKabadiwalas;
+      k_min = 2; 
+      k_max = 3; //testing one at a time
       m_min = 16;
       m_max = 18;
       w_min = 1;
