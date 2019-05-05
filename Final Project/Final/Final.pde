@@ -127,12 +127,12 @@ void initModel(){
           //get the path for the composite ID
           //println("the path for these guys is : "+composite_ID + "//" + mergedMap.get(composite_ID));
           // [ [ [x,y],[x,y] ] , [ [x,y],[x,y] ] ]
-          for(ArrayList<PVector> s : mergedMap.get(composite_ID)){
-            println(composite_ID,"//",mergedMap.get(composite_ID));
-            Way way = new Way(s);
-            way.HH_paths = true;
-            ways.add(way);
-          }
+          //for(ArrayList<PVector> s : mergedMap.get(composite_ID)){
+          //  println(composite_ID,"//",mergedMap.get(composite_ID));
+          //  Way way = new Way(s);
+          //  way.HH_paths = true;
+          //  ways.add(way);
+          //}
           //waysNetwork(ways);
           
           //find point at end of path and assign Bundle to its location
