@@ -128,12 +128,12 @@ void initModel(){
           //println("the path for these guys is : "+composite_ID + "//" + mergedMap.get(composite_ID));
           // [ [ [x,y],[x,y] ] , [ [x,y],[x,y] ] ]
           for(ArrayList<PVector> s : mergedMap.get(composite_ID)){
+            println(composite_ID,"//",mergedMap.get(composite_ID));
             Way way = new Way(s);
-            ways.add(way);
             way.HH_paths = true;
+            ways.add(way);
           }
           //waysNetwork(ways);
-
           
           //find point at end of path and assign Bundle to its location
           PVector bundlepoint = hh_endpoint_map.get(composite_ID);
@@ -155,7 +155,7 @@ void initModel(){
           //Let go of the bundle 
         }
     }
-    
+        
     //set up Level 2
   
     for(int i = m_min ; i<m_max; i++){
@@ -264,15 +264,16 @@ void setup(){
     parseRailways();
   }
   
+  println("initializing model...");
+  //initialize model and simulation
+  initModel();
+  
   println("now beginning to draw gis objects...");
   pg.beginDraw();
   //pg.background(0);
   drawGISObjects(); //make this into PGraphic
   pg.endDraw();
   println("ended drawing gis objects");
-  
-  //initialize model and simulation
-  initModel();
   
 }
 

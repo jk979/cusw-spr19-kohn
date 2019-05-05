@@ -135,7 +135,6 @@ class Way{
   //Draw the road
   void draw(){
 
-    
     if(HH_paths){
        pg.strokeWeight(1);
        pg.stroke(colorHHPaths);
