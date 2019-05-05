@@ -341,3 +341,50 @@ void parseOSMNX() {
     //println("unique keys: ",keys_unique.size());
 //}
 */
+
+
+
+////// mergedMap //////
+
+ /*
+  for(int i = 0; i<hh_paths_features.size(); i++){
+    hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
+    hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
+    JSONArray hh_path_jsonarray = hh_paths_features.getJSONObject(i).getJSONObject("geometry").getJSONArray("paths");
+    String id = hhpaths_k_id+"-"+hhpaths_pt_id; //i.e. 1-1
+    ids.add(id);
+    
+    ArrayList<ArrayList<PVector>> coordinatePairs = new ArrayList<ArrayList<PVector>>();
+       for (int j = 0; j<hh_path_jsonarray.size(); j++){
+          ArrayList<PVector> coord_pair = new ArrayList<PVector>();          
+          //inside each path are 2 coordinate pairs
+          for(int k = 0; k<2; k++){
+          float path_lat = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(1);
+          float path_lon = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(0);
+          PVector path_coordinate = new PVector(path_lat,path_lon);
+          //add those coordinate pairs to the coord_pair array
+          coord_pair.add(path_coordinate);
+          }
+          
+        coordinatePairs.add(coord_pair);
+                
+        if(mergedMap.keySet().contains(id)){
+          ArrayList<ArrayList<PVector>> value = mergedMap.get(id);
+          ArrayList<PVector> inner = new ArrayList<PVector>();  
+          inner.add(coord_pair.get(0));     
+          inner.add(coord_pair.get(1));
+          value.add(inner);
+          mergedMap.put(id, value);
+        }
+        else{
+          ArrayList<ArrayList<PVector>> outer = new ArrayList<ArrayList<PVector>>();
+          ArrayList<PVector> inner = new ArrayList<PVector>();  
+          inner.add(coord_pair.get(0));     
+          inner.add(coord_pair.get(1));
+          outer.add(inner); // add first list
+          mergedMap.put(id,  outer);
+        }   
+    }
+  }
+}
+*/

@@ -674,13 +674,23 @@ class Path {
     waypoints = new ArrayList<PVector>();
     straightPath();
   }
+     
   
   // Constructs an Empty Path with waypoints yet to be included
-  Path(PVector o, PVector d) {
+  Path(PVector o, PVector d, ArrayList<PVector> w) {
+    //make path from origin, destination, and intermediate waypoints
     origin = o;
     destination = d;
-    waypoints = new ArrayList<PVector>();
-    straightPath();
+    waypoints = w;
+    //pathFromWaypoints();
+    //straightPath();
+  }
+  void pathFromWaypoints() {
+    waypoints.clear();
+    waypoints.add(origin);
+    //waypoints.add(
+    //put all the intermediate points in here
+    waypoints.add(destination);
   }
   
   void solve(Pathfinder finder) {
@@ -689,10 +699,11 @@ class Path {
   }
   
   void straightPath() {
-    waypoints.clear();
+    waypoints.clear(); 
     waypoints.add(origin);
     waypoints.add(destination);
-  }
+    }
+  
   
   void display(int col, int alpha) {
     // Draw Shortest Path

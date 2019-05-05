@@ -111,6 +111,36 @@ class POI_hh{
 }
 
 //////////////////////////// WAY ////////////////////////
+class Pathway{
+  //Coordinates and color variables
+  ArrayList<PVector>coordinates;
+
+  color stroke;
+  boolean HH_paths;
+  
+  //Empty constructor
+  Pathway(){}
+  
+  //Constructor of coordinates
+  Pathway(ArrayList<PVector> coords){
+    coordinates =  coords;
+  }
+  
+  //Draw the road
+  void draw(){
+    if(HH_paths){
+       pg.strokeWeight(1);
+       pg.stroke(colorHHPaths);
+       for(int i = 0; i<coordinates.size()-1; i++){
+            //iterate through the coordinates and draw lines
+            PVector screenStart = map.getScreenLocation(coordinates.get(i));
+            PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
+            pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
+        }
+     } 
+}
+}
+
 class Way{
   //Coordinates and color variables
   ArrayList<PVector>coordinates;

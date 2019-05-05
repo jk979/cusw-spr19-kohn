@@ -19,6 +19,7 @@ String currentDay;
 ArrayList<POI> pois;
 ArrayList<Way> ways;
 ArrayList<Polygon> polygons;
+ArrayList<Pathway> pathways; //the specific path the agents will travel
 
 //declare active GIS objects
 ArrayList<POI_hh> poi_hh_array;
@@ -73,8 +74,8 @@ void initModel(){
     }
     else if(whichBackground == "HW"){
       //test
-      k_min = 2; 
-      k_max = 3; //testing one at a time
+      k_min = 0; 
+      k_max = numKabadiwalas; //testing one at a time
       m_min = 16;
       m_max = 18;
       w_min = 1;
@@ -129,12 +130,20 @@ void initModel(){
           // [ [ [x,y],[x,y] ] , [ [x,y],[x,y] ] ]
           //for(ArrayList<PVector> s : mergedMap.get(composite_ID)){
           //  println(composite_ID,"//",mergedMap.get(composite_ID));
-          //  Way way = new Way(s);
-          //  way.HH_paths = true;
-          //  ways.add(way);
-          //}
-          //waysNetwork(ways);
-          
+           
+           /*
+           Way way = new Way(newMergedMap.get(composite_ID));
+           ways.add(way);
+           way.HH_paths = true;
+           */
+         
+           Pathway pathway = new Pathway(newMergedMap.get(composite_ID));
+           pathway.HH_paths = true;
+           //
+           pathways.add(pathway);
+           println("PATHWAY IS",pathways);
+           //println("WAYS LIST IS",pathways.getClass());
+            
           //find point at end of path and assign Bundle to its location
           PVector bundlepoint = hh_endpoint_map.get(composite_ID);
           println("composite ID ",composite_ID, " has endpoint location: ",bundlepoint);
@@ -148,6 +157,12 @@ void initModel(){
           //poi_hh_array.add(h);
        
           //makeCompletePathFromKabadiwala();
+          pathNotFound = true;
+          Path a = new Path(kabadiwala_loc, b.loc, pathway); //pathways must b an arraylist of pvector
+          pathNotFound = false;
+          //paths.add(a);
+          //println("Paths: ",paths);
+
           
           //initialize population
           //println("path size is",paths.size());
@@ -208,6 +223,7 @@ void setup(){
     polygons = new ArrayList<Polygon>();
     ways = new ArrayList<Way>();
     pois = new ArrayList<POI>();
+    pathways = new ArrayList<Pathway>();
     
     load_k_mrf();
     parseData();
@@ -250,6 +266,7 @@ void setup(){
     polygons = new ArrayList<Polygon>();
     ways = new ArrayList<Way>();
     pois = new ArrayList<POI>();
+    pathways = new ArrayList<Pathway>();
     load_k_mrf();
     parseSpeeds();
     

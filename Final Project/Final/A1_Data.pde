@@ -25,8 +25,6 @@ JSONArray hh_points_features;
 JSONObject ward_bound;
 JSONArray ward_bound_features;
 
-
-
 //legacy
 ArrayList<ArrayList<PVector>> collectionOfCollections = new ArrayList<ArrayList<PVector>>(); //array of collection of road segments
 ArrayList collectionOfPairs = new ArrayList<PVector>(); //array of road segments
@@ -111,16 +109,16 @@ void load_k_mrf() {
 //declare Arrays and HashMaps
 //household paths
 Map<String, ArrayList<ArrayList<PVector>>> mergedMap = new HashMap<String, ArrayList<ArrayList<PVector>>>();
+Map<String, ArrayList<PVector>> newMergedMap = new HashMap<String, ArrayList<PVector>>();
+
 //parse household paths
 void parseHHtoKabadiwala(){
   println("calling hh path to kabadiwala parse");
   String hhpaths_k_id;
   String hhpaths_pt_id;
     
-    ////////////////////////////////////START NINA CODE/////////////////////////////////
   HashSet<String> ids = new HashSet<String>();
  
-  
  for(int i = 0; i<hh_paths_features.size(); i++){
     hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
     hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
@@ -128,7 +126,6 @@ void parseHHtoKabadiwala(){
     ids.add(id);
  }
  
- Map<String, ArrayList<PVector>> newMergedMap = new HashMap<String, ArrayList<PVector>>();
  for(String currentID : ids){
      ArrayList<PVector> coordinatesTest = new ArrayList<PVector>();
      for(int i = 0; i<hh_paths_features.size(); i++){
@@ -147,54 +144,9 @@ void parseHHtoKabadiwala(){
             }
       }
     }
+    //add to merged map
      newMergedMap.put(currentID, coordinatesTest);
-     Way way = new Way(coordinatesTest);
-     way.HH_paths = true;
-     ways.add(way);
  }
- 
-     ////////////////////////////////////END NINA CODE/////////////////////////////////
-
-  
-  for(int i = 0; i<hh_paths_features.size(); i++){
-    hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
-    hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
-    JSONArray hh_path_jsonarray = hh_paths_features.getJSONObject(i).getJSONObject("geometry").getJSONArray("paths");
-    String id = hhpaths_k_id+"-"+hhpaths_pt_id; //i.e. 1-1
-    ids.add(id);
-    
-    ArrayList<ArrayList<PVector>> coordinatePairs = new ArrayList<ArrayList<PVector>>();
-       for (int j = 0; j<hh_path_jsonarray.size(); j++){
-          ArrayList<PVector> coord_pair = new ArrayList<PVector>();          
-          //inside each path are 2 coordinate pairs
-          for(int k = 0; k<2; k++){
-          float path_lat = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(1);
-          float path_lon = hh_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(0);
-          PVector path_coordinate = new PVector(path_lat,path_lon);
-          //add those coordinate pairs to the coord_pair array
-          coord_pair.add(path_coordinate);
-          }
-          
-        coordinatePairs.add(coord_pair);
-                
-        if(mergedMap.keySet().contains(id)){
-          ArrayList<ArrayList<PVector>> value = mergedMap.get(id);
-          ArrayList<PVector> inner = new ArrayList<PVector>();  
-          inner.add(coord_pair.get(0));     
-          inner.add(coord_pair.get(1));
-          value.add(inner);
-          mergedMap.put(id, value);
-        }
-        else{
-          ArrayList<ArrayList<PVector>> outer = new ArrayList<ArrayList<PVector>>();
-          ArrayList<PVector> inner = new ArrayList<PVector>();  
-          inner.add(coord_pair.get(0));     
-          inner.add(coord_pair.get(1));
-          outer.add(inner); // add first list
-          mergedMap.put(id,  outer);
-        }   
-    }
-  }
 }
   
 //parse household endpoints to draw separately (or query their locations)
@@ -639,6 +591,11 @@ void drawGISObjects() {
   //draw all Ways
   for (int i = 0; i<ways.size(); i++) {
     ways.get(i).draw();
+  }
+  
+  //draw all Pathways
+  for (int i = 0; i<pathways.size(); i++) {
+    pathways.get(i).draw();
   }
   
   //draw all Polygons

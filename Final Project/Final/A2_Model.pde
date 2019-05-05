@@ -24,16 +24,17 @@ void waysNetwork(ArrayList<Way> w) {
 }
 
 //draw a shortest path between the kabadiwala and the source; Path defined by two coordinates "origin" and "destination"
+
+/*
 void kPath() {
-  
-  println("kPath is running");
   /*  An pathfinder object used to derive the shortest path. */
-  finder = new Pathfinder(network);
-  println("initialized finder");
+  //finder = new Pathfinder(network);
+  //println("initialized finder");
 
   // Searches for valid paths only
-  pathNotFound = true;    
+  //pathNotFound = true;    
   
+  /*
   while(pathNotFound) {
     //identify the path between kabadiwala and source
     Path a = new Path(kabadiwala_loc, source);
@@ -54,8 +55,10 @@ void kPath() {
      }
   } //end while notFound
   println("paths: ", paths.size());
-} //end KPaths
+}
+*/ //end KPaths 
 
+/*
  void makeCompletePathFromKabadiwala(){
    //initialize path
    paths = new ArrayList<Path>();
@@ -64,7 +67,7 @@ void kPath() {
    //chooseSource(); //returns source
    
    //initialize kPath
-   kPath();
+   //kPath();
    println("drawing path now");
    //within kPath, use kabadiwala and source
    //choose source
@@ -81,6 +84,7 @@ void kPath() {
      
  }
  }
+ */
 
 
 //draws a path that hits 10 kabadiwalas using the shortest distance between them and the Wholesaler/MRF
