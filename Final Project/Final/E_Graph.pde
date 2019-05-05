@@ -674,6 +674,19 @@ class Path {
     waypoints = new ArrayList<PVector>();
     straightPath();
   }
+  
+  Path(PVector o, PVector d, ArrayList<PVector> w, boolean latLon) {
+    //if true -- convert each one and draw appropriately 
+    ArrayList<PVector> convertStuff = new ArrayList<PVector>();
+    for(PVector p : w){
+      PVector n = map.getScreenLocation(p);
+      convertStuff.add(n);
+    }
+    waypoints = convertStuff;
+    origin = map.getScreenLocation(o);
+    destination = map.getScreenLocation(d);
+  }
+  
      
   
   // Constructs an Empty Path with waypoints yet to be included

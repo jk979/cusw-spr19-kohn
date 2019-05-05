@@ -137,36 +137,45 @@ void initModel(){
            way.HH_paths = true;
            */
          
-           Pathway pathway = new Pathway(newMergedMap.get(composite_ID));
-           pathway.HH_paths = true;
-           //
-           pathways.add(pathway);
-           println("PATHWAY IS",pathways);
-           //println("WAYS LIST IS",pathways.getClass());
+        //   Pathway pathway = new Pathway(newMergedMap.get(composite_ID));
+        //   pathway.HH_paths = true;
+        //   //
+        //   pathways.add(pathway);
+        //   println("PATHWAY IS",pathways);
+        //   //println("WAYS LIST IS",pathways.getClass());
             
-          //find point at end of path and assign Bundle to its location
+        //  //find point at end of path and assign Bundle to its location
           PVector bundlepoint = hh_endpoint_map.get(composite_ID);
-          println("composite ID ",composite_ID, " has endpoint location: ",bundlepoint);
+        //  println("composite ID ",composite_ID, " has endpoint location: ",bundlepoint);
           b = new Bundle(map.getScreenLocation(bundlepoint));
-          b.id = composite_ID; //bind to ID
+        //  b.id = composite_ID; //bind to ID
           
-          //add to bundleArray for displaying in draw()
-          bundleArray.add(b);
-          //trying to display the endpoint
-          //POI_hh h = new POI_hh(hh_endpoint);
-          //poi_hh_array.add(h);
+        //  //add to bundleArray for displaying in draw()
+        //  bundleArray.add(b);
+        //  //trying to display the endpoint
+        //  //POI_hh h = new POI_hh(hh_endpoint);
+        //  //poi_hh_array.add(h);
        
-          //makeCompletePathFromKabadiwala();
-          pathNotFound = true;
-          Path a = new Path(kabadiwala_loc, b.loc, pathway); //pathways must b an arraylist of pvector
-          pathNotFound = false;
-          //paths.add(a);
+        //  //makeCompletePathFromKabadiwala();
+        //  pathNotFound = true;
+        // // ArrayList<PVector> testList = new ArrayList<PVector>();
+        //  //testList.add(new PVector(40, 40));
+        ////  Path a = new Path(kabadiwala_loc, b.loc, testList); //pathways must b an arraylist of pvector
+        //  //
+        //  pathNotFound = false;
+        //  paths.add(a);
           //println("Paths: ",paths);
-
+          
+          ArrayList<PVector> myVectors = newMergedMap.get(composite_ID);
+          
+          Path a = new Path(kabadiwala_loc, b.loc, myVectors, true);
+          
+          paths.add(a);
+    
           
           //initialize population
           //println("path size is",paths.size());
-          //initPopulation(1);
+          initPopulation(1);
           //Let go of the bundle 
         }
     }
