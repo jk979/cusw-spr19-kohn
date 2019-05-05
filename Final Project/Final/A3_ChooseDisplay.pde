@@ -49,7 +49,6 @@ and Sources (of material) as destinations of the path.
 void chooseKabadiwala(int i) {
     println("number of kabadiwalas is: ", collection_kcoords.size());
     randomKIndex = i;  
-    println("the kabadiwala's index is",i);
     //choose the kabadiwala corresponding with that index
     kabadiwala_loc = (PVector)collection_kcoords.get(randomKIndex);
     kabadiwala_loc = map.getScreenLocation(kabadiwala_loc);
@@ -63,7 +62,6 @@ void chooseMRF(int i) {
 }
 
 void chooseWholesaler(int i) {
-  println("There are THIS MANY COORDINATE PAIRS IN Wholesalers: ",collection_wcoords.size());
   randomWIndex = i; 
   w_loc = (PVector) collection_wcoords.get(randomWIndex);
   w_loc = map.getScreenLocation(w_loc);

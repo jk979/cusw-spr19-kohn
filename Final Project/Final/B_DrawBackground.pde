@@ -108,7 +108,6 @@ class POI_hh{
     ellipse(screenLocation.x, screenLocation.y, 10, 10);
   } 
   
-  
 }
 
 //////////////////////////// WAY ////////////////////////

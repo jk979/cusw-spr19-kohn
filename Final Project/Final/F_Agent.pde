@@ -13,7 +13,7 @@ class KabadiwalaAgent{
   }
   
   void display(){
-    fill(255,0,0);
+    fill(k_fill);
     smooth();
     noStroke();
     render();
@@ -52,7 +52,7 @@ class MRFAgent{
   }
   
   void display(){
-    fill(0,255,0);
+    fill(mrf_fill);
     smooth();
     noStroke();
     render();

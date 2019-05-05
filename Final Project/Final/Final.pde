@@ -132,6 +132,8 @@ void initModel(){
             ways.add(way);
             way.HH_paths = true;
           }
+          //waysNetwork(ways);
+
           
           //find point at end of path and assign Bundle to its location
           PVector bundlepoint = hh_endpoint_map.get(composite_ID);
@@ -141,7 +143,6 @@ void initModel(){
           
           //add to bundleArray for displaying in draw()
           bundleArray.add(b);
-          
           //trying to display the endpoint
           //POI_hh h = new POI_hh(hh_endpoint);
           //poi_hh_array.add(h);
@@ -182,7 +183,7 @@ void setup(){
   int height_map = height;
   
   //map extents
-  whichBackground = "0";
+  whichBackground = "HW";
   
   if(whichBackground == "HW"){
     //map = new MercatorMap(width_map, height_map, 19.0926, 19.0402, 72.7740, 72.8507,0);

@@ -483,9 +483,6 @@ void parseSpeeds() {
   println("ENDING CALLING PARSE DATA");
 }
 
-
-
-
 ////////////////////////// parse Kabadiwalas and MRFs //////////////////////////////////////////////////////////////////////////////////
 
 void parseWholesaler() {
@@ -529,8 +526,6 @@ void parseWholesaler() {
   println("wcoords size: ",wcoords.size());
   println("collection_wcoords size: ",collection_wcoords.size());
 }
-
-
 
 void parseKabadiwala() {
   println("PARSE KABADIWALA");
