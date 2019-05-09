@@ -110,18 +110,21 @@ void initPopulation(int count) {
   */
   
   people = new ArrayList<Agent>();
-  for (int i=0; i<numBundlesPerKabadiwala; i++) {
-    int random_index = int(random(paths.size()));
-    Path random_path = paths.get(random_index);
-    if (random_path.waypoints.size() > 1) {
-      int random_waypoint = 0;//int(random(random_path.waypoints.size()));
+  for (int i=0; i<count; i++) { //for each bundle...
+    Path bundle_path = paths.get(i); //get the path number of the count (1 = 1st path, 2 = 2nd path, etc)
+    
+    if (bundle_path.waypoints.size() > 1) { //if there's a path made up of waypoints...
       //float random_speed = random(0.1, 0.3);
       float random_speed = 0.7;
-      PVector loc = random_path.waypoints.get(random_waypoint);
-      Agent person = new Agent(loc.x, loc.y, 7, random_speed, random_path.waypoints);
-      person.id = people.size();
+      PVector loc = bundle_path.waypoints.get(0); //get the full waypoints path
+      
+      //make an agent with the desired features, and the agent is associated with that bundle_path
+      Agent person = new Agent(loc.x, loc.y, 7, random_speed, bundle_path.waypoints);
+      person.id = i+1; //make the person's id "1" if it's the first path, "2" if it's the second path, etc)
       people.add(person);
-      person.pathToDraw = random_path;
+      println("people array has "+str(people.size())+" people in it.");
+      println("now drawing the person's bundle path");
+      person.pathToDraw = bundle_path;
       //Only call the first person of each group to life 
       if(people.size() == 1 || people.size() == 1) person.isAlive = true;
       else person.isAlive= false;
@@ -148,7 +151,7 @@ void checkAgentBehavior(){
     
     p.update(personLocations(people), collisionDetection);
     p.pathToDraw.display(100, 100); //draw path for agent to follow
-    p.display(#FF00FF, 255); //draw agent
+    p.display(); //draw agent
     b.display(); //draw bundle
     }
    
@@ -190,8 +193,6 @@ void checkAgentBehavior(){
       //delete the path
       
       //
-      
-      
             //KILL THE AGENT
             p.isAlive = false;
             println("killed person");
@@ -200,7 +201,7 @@ void checkAgentBehavior(){
             if(j<numBundlesPerKabadiwala){
               println("j vs num", j);
               println("bpk",numBundlesPerKabadiwala);
-              people.get(p.id+1).isAlive = true;
+              //people.get(p.id+1).isAlive = true;
               roundtripCompleted = false;
               println("resurrected agent");
             }

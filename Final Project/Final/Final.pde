@@ -125,25 +125,6 @@ void initModel(){
           println("composite ID: ",composite_ID);
           //make a kPath for kabadiwala, mutable Source, and bundle
 
-          //get the path for the composite ID
-          //println("the path for these guys is : "+composite_ID + "//" + mergedMap.get(composite_ID));
-          // [ [ [x,y],[x,y] ] , [ [x,y],[x,y] ] ]
-          //for(ArrayList<PVector> s : mergedMap.get(composite_ID)){
-          //  println(composite_ID,"//",mergedMap.get(composite_ID));
-           
-           /*
-           Way way = new Way(newMergedMap.get(composite_ID));
-           ways.add(way);
-           way.HH_paths = true;
-           */
-         
-        //   Pathway pathway = new Pathway(newMergedMap.get(composite_ID));
-        //   pathway.HH_paths = true;
-        //   //
-        //   pathways.add(pathway);
-        //   println("PATHWAY IS",pathways);
-        //   //println("WAYS LIST IS",pathways.getClass());
-            
         //  //find point at end of path and assign Bundle to its location
           //PVector bundlepoint = hh_endpoint_map.get(composite_ID);
           ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
@@ -171,15 +152,14 @@ void initModel(){
           ArrayList<PVector> myVectors = newMergedMap.get(composite_ID);
           
           Path a = new Path(kabadiwala_loc, b.loc, myVectors, true);
-          
-          paths.add(a);
+          paths.add(a); //added the single bundle path
     
-          
-          //initialize population
-          //println("path size is",paths.size());
-          initPopulation(1);
-          //Let go of the bundle 
         }
+        //once all the bundle paths are added to Paths...
+        //agent walks on each path in paths
+        
+        initPopulation(numBundlesPerKabadiwala); // 2
+
     }
         
     //set up Level 2
@@ -199,7 +179,7 @@ void initModel(){
 //////////////////////////////////// setup /////////////////////////////////////
 
 void setup(){
-  size(1250,750); //add ,P3D to make it 3D
+  size(1250,750); //add ,P3D to make it 3D //1250,750
   addDays();
   //add background graphic to place GIS objects on
   pg = createGraphics(width, height);
@@ -209,7 +189,7 @@ void setup(){
   int height_map = height;
   
   //map extents
-  whichBackground = "HW";
+  whichBackground = "RN";
   
   if(whichBackground == "HW"){
     //map = new MercatorMap(width_map, height_map, 19.0926, 19.0402, 72.7740, 72.8507,0);
@@ -239,9 +219,14 @@ void setup(){
     load_k_mrf();
     parseData();
     
+    //level 1: household --> kabadiwala
     loadHHtoKabadiwala();
-    parseHHtoKabadiwala();
+    //parseHHtoKabadiwala();
     parseHHPoints();
+    
+    //level 2: kabadiwala --> MRF
+    loadKabadiwalaToMRF();
+    parseKabadiwalaToMRF();
     
     loadWardBoundaries();
     
@@ -281,9 +266,14 @@ void setup(){
     load_k_mrf();
     parseSpeeds();
     
+    //level 1: households --> kabadiwala
     loadHHtoKabadiwala();
     parseHHtoKabadiwala();
     parseHHPoints();
+    
+    //level 2: kabadiwala --> MRF
+    loadKabadiwalaToMRF();
+    parseKabadiwalaToMRF();
     
     loadWardBoundaries();
     

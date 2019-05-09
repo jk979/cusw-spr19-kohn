@@ -125,15 +125,6 @@ class WholesalerAgent{
 
 
 
-
-
-
-
-
-
-
-
-
 class Agent {
   //movement properties
   PVector location;
@@ -281,9 +272,31 @@ class Agent {
     
   }
   
-  void display(color col, int alpha) { //agent color
-    fill(col, alpha);
+  void display(){
+    fill(18,247,41);
+    smooth();
     noStroke();
-    ellipse(location.x, location.y, r, r);
+    render();
   }
+  
+  void render() {
+  for ( int i=-1; i < 2; i++) {
+    for ( int j=-1; j < 2; j++) {
+      pushMatrix();
+      translate(location.x + (i * width), location.y + (j*height));
+      if ( pathDirection == 1) { 
+        rotate(PI);
+      }
+      if ( pathDirection == -1) { 
+        //rotate(HALF_PI);
+      }
+      if ( direction2 == -1) { 
+        rotate( PI + HALF_PI );
+      }
+      arc(0, 0, radius, radius, map((millis() % 500), 0, 500, 0, 0.52), map((millis() % 500), 0, 500, TWO_PI, 5.76) );
+      popMatrix();
+      // mouth movement //
+    }
+  }
+}
 }

@@ -19,6 +19,9 @@ JSONArray features_buildings;
 JSONObject hh_paths;
 JSONArray hh_paths_features;
 
+JSONObject mrf_paths;
+JSONArray mrf_paths_features;
+
 JSONObject hh_points;
 JSONArray hh_points_features;
 
@@ -45,6 +48,13 @@ void loadHHtoKabadiwala(){
  hh_points = loadJSONObject("data/points/hh_to_k_pts_shortened_formatted.json");
  hh_points_features = hh_points.getJSONArray("features");
  println("getting hh_points_features");
+}
+
+void loadKabadiwalaToMRF(){
+  //load the paths from kabadiwala to MRF
+  mrf_paths = loadJSONObject("data/paths/all_mrf_kabadiwala_formatted.json");
+  mrf_paths_features = mrf_paths.getJSONArray("features");
+  println("getting mrf_paths_features");
 }
 
 //load ward boundaries
@@ -107,11 +117,57 @@ void load_k_mrf() {
 
 /////////////////// PARSE FUNCTIONS //////////////////////////////
 //declare Arrays and HashMaps
-//household paths
+
+
+//parse MRF paths
+Map<String, ArrayList<PVector>> MRFMergedMap = new HashMap<String, ArrayList<PVector>>();
+
+//don't need to match it with a group of kabadiwalas; just need to run each in sequence.
+void parseKabadiwalaToMRF(){
+  HashSet<String> ids = new HashSet<String>();
+
+  println("calling mrf path to kabadiwala parse");
+  String mrfpaths_k_id;
+  String mrfpaths_pt_id;
+  String mrfpaths_id;
+  //gather the unique path IDs
+   for(int i = 0; i<mrf_paths_features.size(); i++){
+    mrfpaths_k_id = mrf_paths_features.getJSONObject(i).getJSONObject("attributes").getString("ward");
+    mrfpaths_pt_id = mrf_paths_features.getJSONObject(i).getJSONObject("attributes").getString("id");
+    mrfpaths_id = mrfpaths_k_id+"-"+mrfpaths_pt_id; //i.e. 1-1
+    println("the full MRF id is",mrfpaths_id);
+    ids.add(mrfpaths_id);
+}
+println("full list of MRF id's is: ",ids);
+for(String currentID : ids){
+     ArrayList<PVector> coordinatesTest = new ArrayList<PVector>();
+     for(int i = 0; i<mrf_paths_features.size(); i++){
+        mrfpaths_k_id = mrf_paths_features.getJSONObject(i).getJSONObject("attributes").getString("ward");
+        mrfpaths_pt_id = mrf_paths_features.getJSONObject(i).getJSONObject("attributes").getString("id");
+        JSONArray mrf_path_jsonarray = mrf_paths_features.getJSONObject(i).getJSONObject("geometry").getJSONArray("paths");
+        String id = mrfpaths_k_id+"-"+mrfpaths_pt_id; //i.e. 1-1
+        if(id.equals(currentID)){
+            for (int j = 0; j<mrf_path_jsonarray.size(); j++){
+                for(int k = 0; k<2; k++){
+                    float path_lat = mrf_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(1);
+                    float path_lon = mrf_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(0);
+                    PVector coord = new PVector(path_lat, path_lon);
+                    coordinatesTest.add(coord);
+                }
+            }
+      }
+    }
+    //add to merged map
+     MRFMergedMap.put(currentID, coordinatesTest);
+ }
+ println("MRF MERGED MAP: ",MRFMergedMap);
+}
+
+
+//parse household paths
 Map<String, ArrayList<ArrayList<PVector>>> mergedMap = new HashMap<String, ArrayList<ArrayList<PVector>>>();
 Map<String, ArrayList<PVector>> newMergedMap = new HashMap<String, ArrayList<PVector>>();
 
-//parse household paths
 void parseHHtoKabadiwala(){
   println("calling hh path to kabadiwala parse");
   String hhpaths_k_id;
