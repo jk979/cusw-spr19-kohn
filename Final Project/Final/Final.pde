@@ -55,24 +55,17 @@ boolean showUI = true;
 void initModel() {
   soldToKabadiwala = false;
 
-  //1. Initialize the network
-  println("NOT initializing ways network"); //because the paths along the network are already chosen
+  //println("NOT initializing ways network"); //because the paths along the network are already chosen
   //waysNetwork(ways); //initialize the Ways network (roads)
 
-  //2. Initialize origin/destination and paths for kabadiwalas using kPath() method
-
-  //Number of groups 
   println("entering group for loop");
   
-  //set up the kabadiwalas
+  //1. Set up the number of kabadiwalas
   for (int i = k_min; i<k_max; i++) {
     //println("going from ",k_min," to ",k_max);
     chooseKabadiwala(i); //choose the #i kabadiwala agent
     //initialize the agent on screen
-    //KabadiwalaAgent k = new KabadiwalaAgent(kabadiwala_loc.x, kabadiwala_loc.y);
-    //kabadiwalaArray.add(k);
 
-    //println("chose kabadiwala #", i+1);
     //initialize 0 for each variable
     roundtripKM = 0;
     totalKPickupCost = 0;
@@ -82,47 +75,41 @@ void initModel() {
     kabadiwala_pickup_cost_metal = 0;
     misc = 0;
 
-    //set up each kabadiwala's bundles
+    //2. For each kabadiwala, set up each kabadiwala's bundles
+    println("setting up "+numBundlesPerKabadiwala+" bundles for kabadiwala "+str(i));
     for (int j = 0; j<numBundlesPerKabadiwala; j++) { //how many bundles one kabadiwala should get
+    println("2. now getting bundle #"+j+" for this kabadiwala");
       roundtripCompleted = false;
-      String composite_ID = str(i+1)+"-"+str(j+1);  
-      
-      //get path to bundle
-      ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
-      //println(newMergedMap.get("76-8"));
-      //println(newMergedMap.get("76-9"));
-      println("getting path array for composite id",composite_ID);
-      
-      //get last point in array
-      PVector bundlepoint = temp_array.get(temp_array.size()-1);
-      //println("bundlepoint located at the endpoint for ",composite_ID, " which is ",bundlepoint);
-
-      //translate bundle point to map coordinates
-      b = new Bundle(map.getScreenLocation(bundlepoint));
-      b.id = composite_ID; //bind to ID
-
-      //  //add to bundleArray for displaying in draw()
-      bundleArray.add(b);
-
-      //  //makeCompletePathFromKabadiwala();
-      //  pathNotFound = true;
-      // // ArrayList<PVector> testList = new ArrayList<PVector>();
-      //  //testList.add(new PVector(40, 40));
-      ////  Path a = new Path(kabadiwala_loc, b.loc, testList); //pathways must b an arraylist of pvector
-      //  //
-      //  pathNotFound = false;
-      //  paths.add(a);
-      //println("Paths: ",paths);
-
-      ArrayList<PVector> myVectors = newMergedMap.get(composite_ID);
-
-      Path a = new Path(kabadiwala_loc, b.loc, myVectors, true);
-      paths.add(a); //added the single bundle path
+      if(roundtripCompleted == false){
+        
+        String composite_ID = str(i+1)+"-"+str(j+1);  
+        
+        //2a. get path to bundle
+        ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
+        println("3. getting path array for composite id",composite_ID);
+        
+        //2b. get last point in array
+        PVector bundlepoint = temp_array.get(temp_array.size()-1);
+        //println("bundlepoint located at the endpoint for ",composite_ID, " which is ",bundlepoint);
+  
+        //3. assign bundle to last point and translate to map coordinates
+        b = new Bundle(map.getScreenLocation(bundlepoint));
+        b.id = composite_ID; //bind to ID
+  
+        //  //add to bundleArray for displaying in draw()
+        bundleArray.add(b);
+  
+        ArrayList<PVector> myVectors = newMergedMap.get(composite_ID);
+  
+        Path a = new Path(kabadiwala_loc, b.loc, myVectors, true);
+        paths.add(a); //added the single bundle path to this bundle
+        println("4. path made, now initializing population...");
+        initPopulation(1); // 2
+        } //end roundtripCompleted = false
     }
     //once all the bundle paths are added to Paths...
     //agent walks on each path in paths
 
-    initPopulation(numBundlesPerKabadiwala); // 2
   }
 
   //set up Level 2
@@ -141,10 +128,9 @@ void initModel() {
 
 //////////////////////////////////// setup /////////////////////////////////////
 
-
 //initial variables for map
 int width_map = 600;
-int height_map = height+600;
+int height_map = height+650;
 float scalarForMap_a = 19.2904;
 float scalarForMap_b = 18.8835;
 float scalarForMap_c = 72.7364;
@@ -160,6 +146,24 @@ void setup() {
   addDays();
   //add background graphic to place GIS objects on
   pg = createGraphics(width, height);
+
+  // TEMPORARY MOVING TO HW //
+  width_map = 450;
+  scalarForMap_a = 19.0942; 
+  scalarForMap_b = 19.0391;
+  scalarForMap_c = 72.8143;
+  scalarForMap_d = 72.8462;
+  setMap();
+    
+  //set number of actors for HW
+  k_min = 0; 
+  k_max = numKabadiwalas; //testing one at a time
+  m_min = 16;
+  m_max = 18;
+  w_min = 1;
+  w_max = 2;
+  
+    // END TEMPORARY HW MAP //
 
   //set the world map
   setMap();
@@ -177,7 +181,7 @@ void setup() {
 
   //level 1 paths: households --> kabadiwala
   loadHHtoKabadiwala();
-  parseHHtoKabadiwala();
+  parseHHtoKabadiwala(); //get full list of HHtoKabadiwala paths
   parseHHPoints();
 
   //level 2 paths: kabadiwala --> MRF
@@ -262,6 +266,7 @@ void draw() {
    }
    */
 
+  println("now checking agent behavior...");
   checkAgentBehavior();
   checkSaleBehavior();
 
@@ -303,6 +308,9 @@ void keyPressed() {
     w_min = 1;
     w_max = 2;
     
+  loadHHtoKabadiwala();
+  parseHHtoKabadiwala();
+  parseHHPoints();
 
    
     pg.beginDraw();

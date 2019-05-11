@@ -108,26 +108,35 @@ void initPopulation(int count) {
   /*  An example population that traverses along various paths
   *  FORMAT: Agent(x, y, radius, speed, path);
   */
-  
+  //1. make an arraylist of people 
+  println("1. now in initPopulation, making an arraylist of people");
   people = new ArrayList<Agent>();
-  for (int i=0; i<count; i++) { //for each bundle...
-    Path bundle_path = paths.get(i); //get the path number of the count (1 = 1st path, 2 = 2nd path, etc)
+  //2. for each bundle...
+  for (int i=0; i<1; i++) {
+  println("there are "+count+" bundles here, let's go through the for loop and do stuff with them");
+  //3. get the path number of the count (1 = 1st path, 2 = 2nd path, etc)
+    Path bundle_path = paths.get(i);
+    println("the bundle path number is ",bundle_path);
     
-    if (bundle_path.waypoints.size() > 1) { //if there's a path made up of waypoints...
+    //4. if there's a path made up of waypoints...
+    if (bundle_path.waypoints.size() > 1) { 
       //float random_speed = random(0.1, 0.3);
       float random_speed = 0.7;
+      println("making a waypoints pvector to get the full waypoints path for this bundle");
       PVector loc = bundle_path.waypoints.get(0); //get the full waypoints path
       
       //make an agent with the desired features, and the agent is associated with that bundle_path
+      println("now making an agent with the desired features and associated with bundle path "+bundle_path);
       Agent person = new Agent(loc.x, loc.y, 7, random_speed, bundle_path.waypoints);
       person.id = i+1; //make the person's id "1" if it's the first path, "2" if it's the second path, etc)
       people.add(person);
       //println("people array has "+str(people.size())+" people in it.");
-      //println("now drawing the person's bundle path");
+      println("now drawing the person's bundle path");
       person.pathToDraw = bundle_path;
       //Only call the first person of each group to life 
+      println("is this person alive?"+person.isAlive);
       if(people.size() == 1 || people.size() == 1) person.isAlive = true;
-      else person.isAlive= false;
+      else person.isAlive= false; 
     }
     
   }
@@ -165,6 +174,7 @@ void checkAgentBehavior(){
    
    //1. when agent encounters bundle
    if(euclideanAgentBundle < 4){ 
+     println("the agent encountered the bundle and picked it up!");
      b.w = p.location.x; 
      b.h = p.location.y;
      b.pickedUp = true;
@@ -174,36 +184,34 @@ void checkAgentBehavior(){
    
    //2. bundle brought to kabadiwala
    if(euclideanOriginBundle < 3){ 
-     println("bundle brought to kabadiwala");
+     println("bundle brought to kabadiwala shop");
      b.w = kabadiwala_loc.x; 
      b.w = kabadiwala_loc.y;
      b.pickedUp = false;
      
-     println("the bundle #" +b.id+" has been touched by a collector " +b.timesCollected+" times");
+     println("the bundle #" +b.id+" has been touched by collector "+b.timesCollected+" times");
      //try making each bundle and material have an ID:{times collected, picked Up, location, etc} value
      
      b.timesCollected++;
-     roundtripKM = parseInt((2*HavD)/1000);           
-
+     //roundtripKM = //total distance of the path
+     
     roundtripCompleted = true;
 
-    if(roundtripCompleted == true){
-      //kill the agent
-      
-      //delete the path
-      
-      //
+    if(roundtripCompleted == true){    
             //KILL THE AGENT
-            p.isAlive = false;
-            println("killed person");
             //if there are more iterations to go, resurrect an agent
             println("j in this roundtrip is",j);
-            if(j<numBundlesPerKabadiwala){
-              println("j vs num", j);
-              println("bpk",numBundlesPerKabadiwala);
-              //people.get(p.id+1).isAlive = true;
+            for(int j = 0; j<numBundlesPerKabadiwala; j++){
+              println("killing 1st person...");
+              p.isAlive = false;
+              println("j is "+j);
+              println("let's see how to get it to numBundlesPerKabadiwala which is"+numBundlesPerKabadiwala);
+              println("people size is",people.size());
+              println("current p id is ",p.id);
+              println("the next p id is ", p.id + 1);
+              p.isAlive = true;
+              println("resurrected agent, now going to the next path");
               roundtripCompleted = false;
-              println("resurrected agent");
             }
    }
    }
