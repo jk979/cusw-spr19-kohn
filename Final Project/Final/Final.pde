@@ -86,6 +86,8 @@ void initModel() {
         
         //2a. get path to bundle
         ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
+        ArrayList<PVector> mrf_test_array = MRFMergedMap.get("HW17-sector1");
+        println("PRINTING MRF TEST ARRAY",mrf_test_array);
         println("3. getting path array for composite id",composite_ID);
         
         //2b. get last point in array
@@ -185,8 +187,8 @@ void setup() {
   parseHHPoints();
 
   //level 2 paths: kabadiwala --> MRF
-  //loadKabadiwalaToMRF();
-  //parseKabadiwalaToMRF();
+  loadKabadiwalaToMRF();
+  parseKabadiwalaToMRF();
 
   loadWardBoundaries();
   parseWardBoundaries();
@@ -237,16 +239,16 @@ void drawAgents(){
   }
 
   //draw the MRF agent!
-  for (int i = 0; i<mrfArray.size(); i++) {
-    MRFAgent m = (MRFAgent) mrfArray.get(i);
-    m.display();
-  }
+  //for (int i = 0; i<mrfArray.size(); i++) {
+  //  MRFAgent m = (MRFAgent) mrfArray.get(i);
+  //  m.display();
+  //}
 
   //draw the wholesaler!
-  for (int i = 0; i<wholesalerArray.size(); i++) {
-    WholesalerAgent w = (WholesalerAgent) wholesalerArray.get(i);
-    w.display();
-  }
+  //for (int i = 0; i<wholesalerArray.size(); i++) {
+  //  WholesalerAgent w = (WholesalerAgent) wholesalerArray.get(i);
+  //  w.display();
+  //}
 }
 
 void draw() {
@@ -266,7 +268,7 @@ void draw() {
    }
    */
 
-  println("now checking agent behavior...");
+  //println("now checking agent behavior...");
   checkAgentBehavior();
   checkSaleBehavior();
 

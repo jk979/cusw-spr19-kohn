@@ -7,7 +7,7 @@ int lnColor = 255;
 color colorBuildingResidential = color(0,0,0);
 color colorCoastline = color(128,128,128);
 color colorRail = color(255,170,170);
-color colorStreet = color(64,70,77,100); //blue: (0,200,255,100)
+color colorStreet = color(105,105,105); //dark gray (64,70,77,100) //blue: (0,200,255,100)
 color colorWaterway = color(0,0,255); 
 color colorRailways = color(255,170,170);
 color mrf_fill = color(173,255,47); //MRF points (yellow)
@@ -15,6 +15,7 @@ color k_fill = color(34, 200, 34); //Kabadiwala shops(green)
 color w_fill = color(0,200,255);
 color colorWardBounds = color(128,128,128);
 color colorHHPaths = color(255,211,0);
+color colorMRFPaths = color(230,45,10);
 
 void drawInfo(){
   text(frameRate, 25, 25);

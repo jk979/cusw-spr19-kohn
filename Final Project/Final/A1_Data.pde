@@ -138,7 +138,7 @@ void parseKabadiwalaToMRF(){
     println("the full MRF id is",mrfpaths_id);
     ids.add(mrfpaths_id);
 }
-println("full list of MRF id's is: ",ids);
+
 for(String currentID : ids){
      ArrayList<PVector> coordinatesTest = new ArrayList<PVector>();
      for(int i = 0; i<mrf_paths_features.size(); i++){
@@ -148,7 +148,7 @@ for(String currentID : ids){
         String id = mrfpaths_k_id+"-"+mrfpaths_pt_id; //i.e. 1-1
         if(id.equals(currentID)){
             for (int j = 0; j<mrf_path_jsonarray.size(); j++){
-                for(int k = 0; k<2; k++){
+                for(int k = 0; k<mrf_path_jsonarray.getJSONArray(j).size(); k++){
                     float path_lat = mrf_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(1);
                     float path_lon = mrf_path_jsonarray.getJSONArray(j).getJSONArray(k).getFloat(0);
                     PVector coord = new PVector(path_lat, path_lon);
@@ -158,9 +158,8 @@ for(String currentID : ids){
       }
     }
     //add to merged map
-     MRFMergedMap.put(currentID, coordinatesTest);
+    MRFMergedMap.put(currentID, coordinatesTest);
  }
- println("MRF MERGED MAP: ",MRFMergedMap);
 }
 
 
@@ -207,7 +206,7 @@ void parseHHtoKabadiwala(){
     //add to merged map
     newMergedMap.put(currentID, coordinatesTest);
  }
- println(newMergedMap);
+ //println(newMergedMap);
 }
   
 //parse household endpoints to draw separately (or query their locations)

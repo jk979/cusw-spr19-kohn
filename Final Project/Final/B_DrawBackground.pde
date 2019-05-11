@@ -153,6 +153,7 @@ class Way{
   boolean Waterway;
   boolean WardBounds;
   boolean HH_paths;
+  boolean MRF_paths;
   
   //Empty constructor
   Way(){}
@@ -176,8 +177,19 @@ class Way{
         }
      }
      
+     else if(MRF_paths){
+         pg.strokeWeight(1);
+         pg.stroke(colorMRFPaths);
+         for(int i = 0; i<coordinates.size()-1; i++){
+           //iterate through coordinates and draw lines
+           PVector screenStart = map.getScreenLocation(coordinates.get(i));
+           PVector screenEnd = map.getScreenLocation(coordinates.get(i+1));
+           pg.line(screenStart.x, screenStart.y, screenEnd.x, screenEnd.y);
+         }
+     }
+     
     else if(WardBounds){
-       pg.strokeWeight(0.5);
+       pg.strokeWeight(2);
        pg.stroke(colorWardBounds);
        for(int i = 0; i<coordinates.size()-1; i++){
             //iterate through the coordinates and draw lines
