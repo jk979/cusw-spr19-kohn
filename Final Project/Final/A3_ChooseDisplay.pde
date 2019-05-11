@@ -47,12 +47,12 @@ and Sources (of material) as destinations of the path.
 
 //choose from list of kabadiwalas
 void chooseKabadiwala(int i) {
-    println("number of kabadiwalas is: ", collection_kcoords.size());
+    //println("number of kabadiwalas is: ", collection_kcoords.size());
     randomKIndex = i;  
     //choose the kabadiwala corresponding with that index
     kabadiwala_loc = (PVector)collection_kcoords.get(randomKIndex);
     kabadiwala_loc = map.getScreenLocation(kabadiwala_loc);
-    println("this kabadiwala's screen location is",kabadiwala_loc);
+    //println("this kabadiwala's screen location is",kabadiwala_loc);
     }
     
 void chooseMRF(int i) {

@@ -122,8 +122,8 @@ void initPopulation(int count) {
       Agent person = new Agent(loc.x, loc.y, 7, random_speed, bundle_path.waypoints);
       person.id = i+1; //make the person's id "1" if it's the first path, "2" if it's the second path, etc)
       people.add(person);
-      println("people array has "+str(people.size())+" people in it.");
-      println("now drawing the person's bundle path");
+      //println("people array has "+str(people.size())+" people in it.");
+      //println("now drawing the person's bundle path");
       person.pathToDraw = bundle_path;
       //Only call the first person of each group to life 
       if(people.size() == 1 || people.size() == 1) person.isAlive = true;
@@ -131,7 +131,7 @@ void initPopulation(int count) {
     }
     
   }
-  println("People in system: ", people.size());
+  //println("People in system: ", people.size());
 }
 
 ArrayList<PVector> personLocations(ArrayList<Agent> people) {

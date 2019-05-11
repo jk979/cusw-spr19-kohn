@@ -74,7 +74,7 @@ void loadDataBandra() {
   println("getting features");
 }
 
-//load map *speeds* (huge file)
+//load map *speeds*
 void loadDataSpeeds() { //most granular roads data with speeds in metadata
   speeds = loadJSONObject("data/base/mumbai_speeds.geojson");
   features = speeds.getJSONArray("features");
@@ -169,6 +169,8 @@ Map<String, ArrayList<ArrayList<PVector>>> mergedMap = new HashMap<String, Array
 Map<String, ArrayList<PVector>> newMergedMap = new HashMap<String, ArrayList<PVector>>();
 
 void parseHHtoKabadiwala(){
+  //populates IDs with their respective path segments
+  
   println("calling hh path to kabadiwala parse");
   String hhpaths_k_id;
   String hhpaths_pt_id;
@@ -184,7 +186,9 @@ void parseHHtoKabadiwala(){
  
  for(String currentID : ids){
      ArrayList<PVector> coordinatesTest = new ArrayList<PVector>();
+
      for(int i = 0; i<hh_paths_features.size(); i++){
+       
         hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
         hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
         JSONArray hh_path_jsonarray = hh_paths_features.getJSONObject(i).getJSONObject("geometry").getJSONArray("paths");
@@ -201,8 +205,9 @@ void parseHHtoKabadiwala(){
       }
     }
     //add to merged map
-     newMergedMap.put(currentID, coordinatesTest);
+    newMergedMap.put(currentID, coordinatesTest);
  }
+ println(newMergedMap);
 }
   
 //parse household endpoints to draw separately (or query their locations)
