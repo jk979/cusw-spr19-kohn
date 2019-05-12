@@ -101,6 +101,7 @@ void WholesalerPath(){
 //get the shortest distance linking all of them with Wholesaler point as origin and destination
 //run the path using an agent and pick up all the materials
 //stop when you reach the Wholesaler point again
+
 }
 
 void initPopulation(int count) {
@@ -139,11 +140,7 @@ void initPopulation(int count) {
     }
     
   }
-  println("People in system: ", people.size());
-}
-
-void modifyPaths(){
-  
+  //println("People in system: ", people.size());
 }
 
 ArrayList<PVector> personLocations(ArrayList<Agent> people) {
