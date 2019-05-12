@@ -197,22 +197,11 @@ void checkAgentBehavior(){
      
     roundtripCompleted = true;
 
-    if(roundtripCompleted == true){    
-            //KILL THE AGENT
-            //if there are more iterations to go, resurrect an agent
-            //println("j in this roundtrip is",j);
-            for(int j = 0; j<numBundlesPerKabadiwala; j++){
-              //println("killing 1st person...");
-              p.isAlive = false;
-              //println("j is "+j);
-              //println("let's see how to get it to numBundlesPerKabadiwala which is"+numBundlesPerKabadiwala);
-              //println("people size is",people.size());
-              //println("current p id is ",p.id);
-              //println("the next p id is ", p.id + 1);
-              p.isAlive = true;
-              //println("resurrected agent, now going to the next path");
-              roundtripCompleted = false;
-            }
+    if(roundtripCompleted == true){
+      p.isAlive = false;
+      initModel(); //Write a new test function that is simpler to make another path for this agent or another agent 
+      println("HERE I AM COMPLETED");
+      p.isAlive = true;
    }
    }
     }

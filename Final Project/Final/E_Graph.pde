@@ -678,6 +678,7 @@ class Path {
   Path(PVector o, PVector d, ArrayList<PVector> w, boolean latLon) {
     //if true -- convert each one and draw appropriately 
     ArrayList<PVector> convertStuff = new ArrayList<PVector>();
+    println(w);
     for(PVector p : w){
       PVector n = map.getScreenLocation(p);
       convertStuff.add(n);

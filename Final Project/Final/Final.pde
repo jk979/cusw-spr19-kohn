@@ -119,13 +119,14 @@ void initModel() {
     println("MRF agent is at location",m);
     mrfArray.add(m);
     
-    ArrayList<PVector> mrf_test_array = MRFMergedMap.get("HW17-sector1");
-    
+    //Issue #1 
+    ArrayList<PVector> mrf_test_array = MRFMergedMap.get("MRF-HW17-sector1");
+    println(mrf_test_array);
     //make path with origin at MRF and destination at same MRF
     Path b = new Path(mrf_loc, mrf_loc, mrf_test_array, true);
     println("MRF LOC IS ",mrf_loc);
     paths.add(b);
-    
+    initPopulation(1); // 2
   }
   for (int i = w_min; i<w_max; i++) {
     chooseWholesaler(i);
