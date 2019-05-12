@@ -131,6 +131,7 @@ void initModel() {
     chooseWholesaler(i);
     WholesalerAgent w = new WholesalerAgent(w_loc.x, w_loc.y);
     wholesalerArray.add(w);
+    
   }
   
    
@@ -174,7 +175,7 @@ void setup() {
   w_min = 1;
   w_max = 2;
   
-    // END TEMPORARY HW MAP //
+  // END TEMPORARY HW MAP //
 
   //set the world map
   setMap();

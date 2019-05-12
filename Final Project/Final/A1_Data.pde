@@ -118,8 +118,7 @@ void load_k_mrf() {
 /////////////////// PARSE FUNCTIONS //////////////////////////////
 //declare Arrays and HashMaps
 
-
-//parse MRF paths
+//parse MRF and Wholesaler paths together because they're Level 2
 Map<String, ArrayList<PVector>> MRFMergedMap = new HashMap<String, ArrayList<PVector>>();
 
 //don't need to match it with a group of kabadiwalas; just need to run each in sequence.
@@ -130,11 +129,14 @@ void parseKabadiwalaToMRF(){
   String mrfpaths_k_id;
   String mrfpaths_pt_id;
   String mrfpaths_id;
+  String mrfpaths_level2_id;
+  
   //gather the unique path IDs
    for(int i = 0; i<mrf_paths_features.size(); i++){
+    mrfpaths_level2_id = mrf_paths_features.getJSONObject(i).getJSONObject("attributes").getString("type");
     mrfpaths_k_id = mrf_paths_features.getJSONObject(i).getJSONObject("attributes").getString("ward");
     mrfpaths_pt_id = mrf_paths_features.getJSONObject(i).getJSONObject("attributes").getString("id");
-    mrfpaths_id = mrfpaths_k_id+"-"+mrfpaths_pt_id; //i.e. 1-1
+    mrfpaths_id = mrfpaths_level2_id+"-"+mrfpaths_k_id+"-"+mrfpaths_pt_id; //i.e. 1-1
     println("the full MRF id is",mrfpaths_id);
     ids.add(mrfpaths_id);
 }
