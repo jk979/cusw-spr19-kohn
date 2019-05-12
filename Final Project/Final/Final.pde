@@ -51,6 +51,37 @@ boolean showUI = true;
 
 /////////////////////////
 
+void tempModel(){
+  soldToKabadiwala = false;
+  println("activating test model to move on to path 2");
+  
+  //1. get the kabadiwala
+  chooseKabadiwala(0);    
+  String composite_ID = str(1)+"-"+str(2);  
+  println("composite ID is now",composite_ID);
+  
+  //2a. get path to bundle
+  ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
+  println("getting path array for composite ID ",composite_ID);
+  
+  //2b. get last point in array
+  PVector bundlepoint = temp_array.get(temp_array.size()-1);
+  
+  //3. assign bundle to last point and translate to map coordinates
+  b = new Bundle(map.getScreenLocation(bundlepoint));
+  b.id = composite_ID; //bind to ID
+
+  //4. add to bundleArray for displaying in draw()
+  bundleArray.add(b);
+  
+  //5. initialize the path
+  Path c = new Path(kabadiwala_loc, b.loc, temp_array, true);
+  paths.add(c); //added the single bundle path to this bundle
+  println("6. path made, now initializing population...");
+  initPopulation(1); // 2
+}
+
+
 //contain the model initialization
 void initModel() {
   soldToKabadiwala = false;
@@ -89,22 +120,20 @@ void initModel() {
         
         //2b. get last point in array
         PVector bundlepoint = temp_array.get(temp_array.size()-1);
-        //println("bundlepoint located at the endpoint for ",composite_ID, " which is ",bundlepoint);
   
         //3. assign bundle to last point and translate to map coordinates
         b = new Bundle(map.getScreenLocation(bundlepoint));
         b.id = composite_ID; //bind to ID
   
-        //  //add to bundleArray for displaying in draw()
+        //4. add to bundleArray for displaying in draw()
         bundleArray.add(b);
   
-        ArrayList<PVector> myVectors = newMergedMap.get(composite_ID);
-        Path a = new Path(kabadiwala_loc, b.loc, myVectors, true);
-
+        Path a = new Path(kabadiwala_loc, b.loc, temp_array, true);
         paths.add(a); //added the single bundle path to this bundle
-        println("4. path made, now initializing population...");
-        initPopulation(1); // 2
+        //println("4. path made, now initializing population...");
+        initPopulation(1);
         } //end roundtripCompleted = false
+       
     }
     //once all the bundle paths are added to Paths...
     //agent walks on each path in paths

@@ -186,7 +186,7 @@ void checkAgentBehavior(){
    if(euclideanOriginBundle < 3){ 
      //println("bundle brought to kabadiwala shop");
      b.w = kabadiwala_loc.x; 
-     b.w = kabadiwala_loc.y;
+     b.h = kabadiwala_loc.y;
      b.pickedUp = false;
      
      //println("the bundle #" +b.id+" has been touched by collector "+b.timesCollected+" times");
@@ -199,20 +199,21 @@ void checkAgentBehavior(){
 
     if(roundtripCompleted == true){
       p.isAlive = false;
-      initModel(); //Write a new test function that is simpler to make another path for this agent or another agent 
       println("HERE I AM COMPLETED");
+      //make a new path
       p.isAlive = true;
-   }
-   }
+      tempModel();
     }
-    }
+   }
+  }
+}
+
     
 void checkSaleBehavior(){
     //when wholesaler picks up, revenue is earned!
     //kabadiwala_offload_cost_paper = paperKSell*paperQuantity;
     //paperWBuy = paperKSell;
   
-    
     if (soldToKabadiwala == true){
       //bundle picked up and transaction made
       kabadiwala_pickup_cost_paper = paperKBuy * wt_paper;
