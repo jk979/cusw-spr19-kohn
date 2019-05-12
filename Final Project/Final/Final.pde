@@ -79,15 +79,12 @@ void initModel() {
     println("setting up "+numBundlesPerKabadiwala+" bundles for kabadiwala "+str(i));
     for (int j = 0; j<numBundlesPerKabadiwala; j++) { //how many bundles one kabadiwala should get
     println("2. now getting bundle #"+j+" for this kabadiwala");
-      roundtripCompleted = false;
       if(roundtripCompleted == false){
         
         String composite_ID = str(i+1)+"-"+str(j+1);  
         
         //2a. get path to bundle
         ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
-        ArrayList<PVector> mrf_test_array = MRFMergedMap.get("HW17-sector1");
-        println("PRINTING MRF TEST ARRAY",mrf_test_array);
         println("3. getting path array for composite id",composite_ID);
         
         //2b. get last point in array
@@ -102,8 +99,8 @@ void initModel() {
         bundleArray.add(b);
   
         ArrayList<PVector> myVectors = newMergedMap.get(composite_ID);
-  
         Path a = new Path(kabadiwala_loc, b.loc, myVectors, true);
+
         paths.add(a); //added the single bundle path to this bundle
         println("4. path made, now initializing population...");
         initPopulation(1); // 2
@@ -115,17 +112,29 @@ void initModel() {
   }
 
   //set up Level 2
-
   for (int i = m_min; i<m_max; i++) {
     chooseMRF(i);
+    println("MRF CHOSEN IS ",i);
     MRFAgent m = new MRFAgent(mrf_loc.x, mrf_loc.y);
+    println("MRF agent is at location",m);
     mrfArray.add(m);
+    
+    ArrayList<PVector> mrf_test_array = MRFMergedMap.get("HW17-sector1");
+    
+    //make path with origin at MRF and destination at same MRF
+    Path b = new Path(mrf_loc, mrf_loc, mrf_test_array, true);
+    println("MRF LOC IS ",mrf_loc);
+    paths.add(b);
+    
   }
   for (int i = w_min; i<w_max; i++) {
     chooseWholesaler(i);
     WholesalerAgent w = new WholesalerAgent(w_loc.x, w_loc.y);
     wholesalerArray.add(w);
   }
+  
+   
+  
 }
 
 //////////////////////////////////// setup /////////////////////////////////////
@@ -160,8 +169,8 @@ void setup() {
   //set number of actors for HW
   k_min = 0; 
   k_max = numKabadiwalas; //testing one at a time
-  m_min = 16;
-  m_max = 18;
+  m_min = 17;
+  m_max = 19;
   w_min = 1;
   w_max = 2;
   
@@ -239,10 +248,10 @@ void drawAgents(){
   }
 
   //draw the MRF agent!
-  //for (int i = 0; i<mrfArray.size(); i++) {
-  //  MRFAgent m = (MRFAgent) mrfArray.get(i);
-  //  m.display();
-  //}
+  for (int i = 0; i<mrfArray.size(); i++) {
+    MRFAgent m = (MRFAgent) mrfArray.get(i);
+    m.display();
+  }
 
   //draw the wholesaler!
   //for (int i = 0; i<wholesalerArray.size(); i++) {
