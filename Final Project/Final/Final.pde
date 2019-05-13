@@ -132,7 +132,7 @@ void initModel() {
     
     //Issue #1 
     ArrayList<PVector> mrf_test_array = MRFMergedMap.get("MRF-HW17-sector1");
-    println("mrf test array is",mrf_test_array);
+    println(mrf_test_array);
     //make path with origin at MRF and destination at same MRF
     Path b = new Path(mrf_loc, mrf_loc, mrf_test_array, true);
     println("MRF LOC IS ",mrf_loc);
