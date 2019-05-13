@@ -114,7 +114,7 @@ void initPopulation(int kabadiwalaNum) {
   kabadiwalaArmy = new ArrayList<Agent>();
   
   //2. for each bundle...
-  for (int i=0; i<5; i++) {
+  for (int i=0; i<3; i++) {
     
     //initialize bundle object
     Bundle b;
@@ -225,6 +225,9 @@ void checkAgentBehavior(){
          s.h = kabadiwala_loc.y;
          s.pickedUp = false;     
          s.timesCollected++;
+         //look up KM based on s.id
+         println("path distance was ",s.id, hh_dist_MergedMap.get(s.id));
+
          //roundtripKM = //total distance of the path
      
          roundtripCompleted = true;

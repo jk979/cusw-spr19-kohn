@@ -164,10 +164,47 @@ for(String currentID : ids){
  }
 }
 
-
 //parse household paths
 Map<String, ArrayList<ArrayList<PVector>>> mergedMap = new HashMap<String, ArrayList<ArrayList<PVector>>>();
 Map<String, ArrayList<PVector>> newMergedMap = new HashMap<String, ArrayList<PVector>>();
+Map<String, Float> hh_dist_MergedMap = new HashMap<String, Float>();
+
+
+void parseHHdist(){
+  println("calling hh path to kabadiwala distance");
+  String hhpaths_k_id;
+  String hhpaths_pt_id;
+  float hhpaths_dist;
+  
+  HashSet<String> ids = new HashSet<String>();
+  for(int i = 0; i<hh_paths_features.size(); i++){
+    hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
+    hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
+    hhpaths_dist = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getFloat("Attr_Kilom");
+    String id = hhpaths_k_id+"-"+hhpaths_pt_id;
+    ids.add(id);
+  }
+  
+  for(String currentID : ids){
+    //sum up all the km for the path
+     float sum_dist = 0;
+
+     for(int i = 0; i<hh_paths_features.size(); i++){
+       
+        hhpaths_k_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("k_id");
+        hhpaths_pt_id = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getString("pt_id");
+        hhpaths_dist = hh_paths_features.getJSONObject(i).getJSONObject("attributes").getFloat("Attr_Kilom");
+        String id = hhpaths_k_id+"-"+hhpaths_pt_id; //i.e. 1-1
+        if(id.equals(currentID)){
+            sum_dist = sum_dist + hhpaths_dist;
+            }
+      }
+     hh_dist_MergedMap.put(currentID, sum_dist);
+    }
+ }
+ 
+  
+  
 
 void parseHHtoKabadiwala(){
   //populates IDs with their respective path segments

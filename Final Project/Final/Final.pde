@@ -57,10 +57,10 @@ void tempModel(){
   println("activating temp model...");
   
   //1. get the kabadiwala
-  chooseKabadiwala(0);    
+  chooseKabadiwala(1);    
   
   //2. initialize the kabadiwala Agent
-  initPopulation(1);
+  initPopulation(2); 
 }
 
 
@@ -208,6 +208,7 @@ void setup() {
   loadHHtoKabadiwala();
   parseHHtoKabadiwala(); //get full list of HHtoKabadiwala paths
   parseHHPoints();
+  parseHHdist();
 
   //level 2 paths: kabadiwala --> MRF
   loadKabadiwalaToMRF();
