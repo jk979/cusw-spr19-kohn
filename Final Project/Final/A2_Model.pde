@@ -114,8 +114,11 @@ void initPopulation(int kabadiwalaNum) {
   people = new ArrayList<Agent>();
   
   //2. for each bundle...
-  for (int i=0; i<3; i++) {
-
+  for (int i=0; i<5; i++) {
+    
+    //initialize bundle object
+    Bundle b;
+    
     //3. get the ID to find the unique path
     String composite_ID = str(kabadiwalaNum)+"-"+str(i+1);  //gets composite ID of 1-1, 1-2, etc. 
     println("composite ID is now",composite_ID);
@@ -142,7 +145,11 @@ void initPopulation(int kabadiwalaNum) {
   
   //9. once paths has been populated with all the paths for the Agent...
   println("number of paths in pathArray is: ",paths.size());
-    
+  println("i have bundles gathered for the kabadiwala, the size of bundle array is ",bundleArray.size());
+  println("bundles in bundleArray: ");
+  for(int e = 0; e<bundleArray.size(); e++){
+    println("bundleArray bundle: ",bundleArray.get(e).id);
+  }
   //10. add agent to the path if the path has been parsed successfully
   if (paths.get(0).waypoints.size() > 1) { 
     //float random_speed = random(0.1, 0.3);
@@ -151,8 +158,9 @@ void initPopulation(int kabadiwalaNum) {
     PVector loc = paths.get(0).waypoints.get(0); //get the full waypoints path
     
     //make an agent with the desired features, and the agent is associated with that bundle_path
-    Agent person = new Agent(loc.x, loc.y, 7, random_speed, paths);
-    //person.id = i+1; //make the person's id "1" if it's the first path, "2" if it's the second path, etc)
+    Agent person = new Agent(loc.x, loc.y, 7, random_speed, paths, kabadiwalaNum);
+    person.id = kabadiwalaNum;
+    println("now inputting id into kabadiwala person, kabadiwalaNum is ",kabadiwalaNum," and person id is",person.id);
     people.add(person);
 
     person.pathToDraw = paths.get(0);
@@ -170,62 +178,67 @@ ArrayList<PVector> personLocations(ArrayList<Agent> people) {
 }
 
 void checkAgentBehavior(){
-   //euclidean
-      //test if agent is alive; agent stops upon returning to shop
+  
   boolean collisionDetection = true;
+  
+  //check if Agent is alive
   for (Agent p: people) {
     if(p.isAlive){
-    
-    p.update(personLocations(people), collisionDetection);
-    p.pathToDraw.display(100, 100); //draw path for agent to follow
-    p.display(); //draw agent
-    b.display(); //draw bundle
+      p.update(personLocations(people), collisionDetection);
+      p.pathToDraw.display(100, 100); //draw path for agent to follow
+      p.display(); //draw agent
+      //display each of the bundles in bundleArray
+      for(int e = 0; e<bundleArray.size(); e++){
+        bundleArray.get(e).display(); //draw bundle
+      }
     }
    
-   /*
-   
-   //checking where the bundle is. Is it with the agent? Is it at the origin?
-   
-   //initial conditions: bundle at source, agent in transit
-   int euclideanAgentBundle = parseInt(dist(b.w, b.h, p.location.x, p.location.y));
-   int euclideanOriginBundle = parseInt(dist(b.w, b.h, kabadiwala_loc.x, kabadiwala_loc.y));
-   int euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
-   int euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala_loc.x, kabadiwala_loc.y));
-   
-   //1. when agent encounters bundle
-   if(euclideanAgentBundle < 4){ 
-     //println("the agent encountered the bundle and picked it up!");
-     b.w = p.location.x; 
-     b.h = p.location.y;
-     b.pickedUp = true;
-     b.timesCollected = 1;
-     soldToKabadiwala = true;
-   }
-   
-   //2. bundle brought to kabadiwala
-   if(euclideanOriginBundle < 3){ 
-     //println("bundle brought to kabadiwala shop");
-     b.w = kabadiwala_loc.x; 
-     b.h = kabadiwala_loc.y;
-     b.pickedUp = false;
+   //check if the bundle belongs to the correct kabadiwala
+   //if any of the id's within the bundleArray list = p id
+   for(int e = 0; e<bundleArray.size(); e++){
+     String bundleId = String.valueOf(bundleArray.get(e).id.charAt(0));
+     String kabadiId = str(p.id);
+     Bundle s = bundleArray.get(e);
      
-     //println("the bundle #" +b.id+" has been touched by collector "+b.timesCollected+" times");
-     //try making each bundle and material have an ID:{times collected, picked Up, location, etc} value
+     if(bundleId.equals(kabadiId)){ //if the [1] in bundle id 1-1 or 1-2 = kabadiwala[1]       
+       //initial conditions: bundle at source, agent in transit
+       int euclideanAgentBundle = parseInt(dist(s.w, s.h, p.location.x, p.location.y));
+       int euclideanOriginBundle = parseInt(dist(s.w, s.h, kabadiwala_loc.x, kabadiwala_loc.y));
+       //int euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
+       //int euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala_loc.x, kabadiwala_loc.y));
+   
+       //1. when agent encounters bundle
+       if(euclideanAgentBundle < 4 && euclideanOriginBundle > 3){ 
+         println("the agent encountered the bundle and picked it up!");
+         s.w = p.location.x; 
+         s.h = p.location.y;
+         s.pickedUp = true;
+         s.timesCollected = 1;
+         soldToKabadiwala = true;
+       }
+   
+       //2. bundle brought to kabadiwala
+       if(euclideanOriginBundle < 3){ 
+         println("bundle brought to kabadiwala shop");
+         s.w = kabadiwala_loc.x; 
+         s.h = kabadiwala_loc.y;
+         s.pickedUp = false;     
+         s.timesCollected++;
+         //roundtripKM = //total distance of the path
      
-     b.timesCollected++;
-     //roundtripKM = //total distance of the path
-     
-    roundtripCompleted = true;
+         roundtripCompleted = true;
 
-    if(roundtripCompleted == true){
-      p.isAlive = false;
-      println("HERE I AM COMPLETED");
-      //make a new path
-      p.isAlive = true;
-      tempModel();
-    }
+         if(roundtripCompleted == true){
+          p.isAlive = false;
+          println("HERE I AM COMPLETED");
+          //make a new path
+          p.isAlive = true;
+          tempModel();
+          }
+       }
+     }
    }
-   */
+    //else println("haven't collided yet");
   }
 }
 

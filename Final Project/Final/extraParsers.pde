@@ -1,7 +1,6 @@
 void parseDataMumbai() {
   //loop through each of the feature sets in Mumbai
   for (int f=0; f<geometries.size(); f++) {
-    //println("a geometry"+i); //each geometries is a JSONArray, there are 17
     featureCollection = geometries.getJSONObject(f);
     features = featureCollection.getJSONArray("features");
     for (int g = 0; g<features.size(); g++) {

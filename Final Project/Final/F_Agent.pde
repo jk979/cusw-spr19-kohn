@@ -156,12 +156,14 @@ class Agent {
   boolean isAlive;
 
   //agent constructor
-  Agent(float x, float y, int rad, float maxS, ArrayList<Path> pathArray) {
+  Agent(float x, float y, int rad, float maxS, ArrayList<Path> pathArray, int k_id) {
     isAlive = true;
     r = rad;
     tolerance *= r;
     maxspeed = maxS;
     maxforce = 0.2;
+    String id = Integer.toString(k_id);
+    println("the id of this kabadiwala is",id);
     
     //pathArray is all the possible paths Agent can traverse
     this.pathArray = pathArray;
@@ -240,21 +242,6 @@ class Agent {
   
   void update(ArrayList<PVector> others, boolean collisionDetection) {
     
-    ////is path done? (in update)
-    ////each agent gets a set of 7 paths to traverse one at a time
-    ////loop through the path array and show the current path
-    //for(int i = 0; i<pathArray.size();i++){
-    //  println("path array size is",pathArray.size());
-    //  println("getting current path for i = ",i);
-    //  currentPath = pathArray.get(i);
-    //  println("currentPath is now",currentPath);
-    //  path = currentPath.waypoints;
-    //  //println("path of waypoints is now",path);
-    //}
-    
-    //go to next path
-    //path = paths(i+1)
-    
     // Apply Repelling Force
     PVector separateForce = separate(others);
     if (collisionDetection) {
@@ -304,7 +291,7 @@ class Agent {
             path = pathArray.get(pathArrayIndex).waypoints;
             pathToDraw = pathArray.get(pathArrayIndex);
             pathLength = path.size();
-            println(pathArrayIndex);
+            //println(pathArrayIndex);
           } else {
             stop = true;
           }

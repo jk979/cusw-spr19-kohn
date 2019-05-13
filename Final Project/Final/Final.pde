@@ -1,4 +1,5 @@
 //bundles and source must be linked
+//make arraylist of arraylist of arraylists
 
 //make Bandra map
 MercatorMap map; 
@@ -30,8 +31,6 @@ int bundlesCollected;
 boolean soldToKabadiwala;
 boolean roundtripCompleted;
 int j;
-
-Bundle b;
 
 //temporary array for number of bundles created
 ArrayList<Bundle> bundleArray = new ArrayList(); 
@@ -97,21 +96,21 @@ void initModel() {
         
         //2a. get path to bundle
         ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
-        println("3. getting path array for composite id",composite_ID);
+        //println("3. getting path array for composite id",composite_ID);
         
         //2b. get last point in array
         PVector bundlepoint = temp_array.get(temp_array.size()-1);
   
         //3. assign bundle to last point and translate to map coordinates
-        b = new Bundle(map.getScreenLocation(bundlepoint));
-        b.id = composite_ID; //bind to ID
+        //b = new Bundle(map.getScreenLocation(bundlepoint));
+        //b.id = composite_ID; //bind to ID
   
         //4. add to bundleArray for displaying in draw()
-        bundleArray.add(b);
+        // bundleArray.add(b);
   
-        Path a = new Path(kabadiwala_loc, b.loc, temp_array, true);
+        //Path a = new Path(kabadiwala_loc, b.loc, temp_array, true);
         //paths.add(a); //added the single bundle path to this bundle
-        initPopulation(1);
+        //initPopulation(1);
         //println("4. path made, now initializing population...");
         } //end roundtripCompleted = false
        
@@ -249,7 +248,7 @@ void drawBundles(){
   for (int i = 0; i<bundleArray.size(); i++) {
     Bundle Bn = (Bundle) bundleArray.get(i);
     Bn.display();
-    //text("Weight: "+Bn.total_kg, Bn.w, Bn.h);
+    text("Weight: "+Bn.total_kg, Bn.w, Bn.h);
   }
 }
 
@@ -290,7 +289,7 @@ void draw() {
    }
    */
 
-  //println("now checking agent behavior...");
+  println("now checking agent behavior...");
   checkAgentBehavior();
   checkSaleBehavior();
 
