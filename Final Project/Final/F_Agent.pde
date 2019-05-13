@@ -151,7 +151,6 @@ class Agent {
   int collectFrom; //how many stops does it take before returning to the origin? kAgents = 1, wAgents = 10
   ArrayList<String> daysCollected = new ArrayList<String>(); //which days does it do this?
   
-  
   boolean isAlive;
 
   //agent constructor
@@ -168,8 +167,7 @@ class Agent {
     //path is all the waypoints in their current path waypoint set
     path = currentPath.waypoints;
     
-    
-    pathLength = pathArray.size();
+    pathLength = path.size();
     if (random(-1, 1) <= 0 ) {
       pathDirection = -1;
     } else {
@@ -240,17 +238,17 @@ class Agent {
   
   void update(ArrayList<PVector> others, boolean collisionDetection) {
     
-    //is path done? (in update)
-    //each agent gets a set of 7 paths to traverse one at a time
-    //loop through the path array and show the current path
-    for(int i = 0; i<pathArray.size();i++){
-      println("path array size is",pathArray.size());
-      println("getting current path for i = ",i);
-      currentPath = pathArray.get(i);
-      println("currentPath is now",currentPath);
-      path = currentPath.waypoints;
-      //println("path of waypoints is now",path);
-    }
+    ////is path done? (in update)
+    ////each agent gets a set of 7 paths to traverse one at a time
+    ////loop through the path array and show the current path
+    //for(int i = 0; i<pathArray.size();i++){
+    //  println("path array size is",pathArray.size());
+    //  println("getting current path for i = ",i);
+    //  currentPath = pathArray.get(i);
+    //  println("currentPath is now",currentPath);
+    //  path = currentPath.waypoints;
+    //  //println("path of waypoints is now",path);
+    //}
     
     //go to next path
     //path = paths(i+1)
