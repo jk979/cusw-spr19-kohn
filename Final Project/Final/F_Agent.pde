@@ -135,7 +135,10 @@ class Agent {
   float maxforce;
   float maxspeed;
   float tolerance = 1;
+  ArrayList<Path> pathArray;
+  Path currentPath;
   ArrayList<PVector> path;
+  
   int id; 
   int pathIndex, pathLength; // Index and Amount of Nodes in a Path
   int pathDirection; // -1 or +1 to specific directionality
@@ -151,14 +154,22 @@ class Agent {
   
   boolean isAlive;
 
-  Agent(float x, float y, int rad, float maxS, ArrayList<PVector> path) {
+  //agent constructor
+  Agent(float x, float y, int rad, float maxS, ArrayList<Path> pathArray) {
     isAlive = true;
     r = rad;
     tolerance *= r;
     maxspeed = maxS;
     maxforce = 0.2;
-    this.path = path;
-    pathLength = path.size();
+    
+    //pathArray is all the possible paths Agent can traverse
+    this.pathArray = pathArray;
+    this.currentPath = pathArray.get(0); //gets the current path
+    //path is all the waypoints in their current path waypoint set
+    path = currentPath.waypoints;
+    
+    
+    pathLength = pathArray.size();
     if (random(-1, 1) <= 0 ) {
       pathDirection = -1;
     } else {
@@ -228,6 +239,21 @@ class Agent {
   }
   
   void update(ArrayList<PVector> others, boolean collisionDetection) {
+    
+    //is path done? (in update)
+    //each agent gets a set of 7 paths to traverse one at a time
+    //loop through the path array and show the current path
+    for(int i = 0; i<pathArray.size();i++){
+      println("path array size is",pathArray.size());
+      println("getting current path for i = ",i);
+      currentPath = pathArray.get(i);
+      println("currentPath is now",currentPath);
+      path = currentPath.waypoints;
+      //println("path of waypoints is now",path);
+    }
+    
+    //go to next path
+    //path = paths(i+1)
     
     // Apply Repelling Force
     PVector separateForce = separate(others);

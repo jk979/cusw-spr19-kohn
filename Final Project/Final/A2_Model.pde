@@ -8,8 +8,6 @@ boolean pathNotFound; //pathNotFound is a global variable
 import java.util.*;
 float laps; 
 
-//  Object to define and capture a specific origin, destination, and path
-ArrayList<Path> paths = new ArrayList<Path>();
 
 //  Objects to define agents that navigate our environment
 ArrayList<Agent> people = new ArrayList<Agent>();
@@ -104,44 +102,63 @@ void WholesalerPath(){
 
 }
 
-void initPopulation(int count) {
+void initPopulation(int kabadiwalaNum) {
+  //  Object to define and capture a specific origin, destination, and path
+  ArrayList<Path> paths = new ArrayList<Path>();
+  
   /*  An example population that traverses along various paths
   *  FORMAT: Agent(x, y, radius, speed, path);
   */
+  
   //1. make an arraylist of people 
-  //println("1. now in initPopulation, making an arraylist of people");
   people = new ArrayList<Agent>();
+  
   //2. for each bundle...
-  for (int i=0; i<1; i++) {
-  //println("there are "+count+" bundles here, let's go through the for loop and do stuff with them");
-  //3. get the path number of the count (1 = 1st path, 2 = 2nd path, etc)
-    Path bundle_path = paths.get(i);
-    //println("the bundle path number is ",bundle_path);
+  for (int i=0; i<3; i++) {
+
+  //3. get the ID to find the unique path
+  String composite_ID = str(kabadiwalaNum)+"-"+str(i+1);  //gets composite ID of 1-1, 1-2, etc. 
+  println("composite ID is now",composite_ID);
+  
+  //4. get path to bundle for that unique composite_ID
+  ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
+  println("getting path array for composite ID ",composite_ID);
+  
+  //5. get last point in array
+  PVector bundlepoint = temp_array.get(temp_array.size()-1);
+  
+  //6. assign bundle to last point and translate to map coordinates
+  b = new Bundle(map.getScreenLocation(bundlepoint));
+  b.id = composite_ID; //bind to ID
+
+  //7. add to bundleArray for displaying in draw()
+  bundleArray.add(b);
+  
+  //8. add current path to list of paths
+  Path c = new Path(kabadiwala_loc, b.loc, temp_array, true);
+  paths.add(c); //added the single bundle path to this bundle
+  } //repeat for each path
+  
+  //9. once paths has been populated with all the paths for the Agent...
+  println("number of paths in pathArray is: ",paths.size());
     
-    //4. if there's a path made up of waypoints...
-    if (bundle_path.waypoints.size() > 1) { 
-      //float random_speed = random(0.1, 0.3);
-      float random_speed = 0.7;
-      //println("making a waypoints pvector to get the full waypoints path for this bundle");
-      PVector loc = bundle_path.waypoints.get(0); //get the full waypoints path
-      
-      //make an agent with the desired features, and the agent is associated with that bundle_path
-      //println("now making an agent with the desired features and associated with bundle path "+bundle_path);
-      Agent person = new Agent(loc.x, loc.y, 7, random_speed, bundle_path.waypoints);
-      person.id = i+1; //make the person's id "1" if it's the first path, "2" if it's the second path, etc)
-      people.add(person);
-      //println("people array has "+str(people.size())+" people in it.");
-      //println("now drawing the person's bundle path");
-      person.pathToDraw = bundle_path;
-      //Only call the first person of each group to life 
-      //println("is this person alive?"+person.isAlive);
-      if(people.size() == 1 || people.size() == 1) person.isAlive = true;
-      else person.isAlive= false; 
-    }
+  //10. add agent to the path if the path has been parsed successfully
+  if (paths.get(0).waypoints.size() > 1) { 
+    //float random_speed = random(0.1, 0.3);
+    float random_speed = 0.7;
+    //println("making a waypoints pvector to get the full waypoints path for this bundle");
+    PVector loc = paths.get(0).waypoints.get(0); //get the full waypoints path
     
+    //make an agent with the desired features, and the agent is associated with that bundle_path
+    Agent person = new Agent(loc.x, loc.y, 7, random_speed, paths);
+    //person.id = i+1; //make the person's id "1" if it's the first path, "2" if it's the second path, etc)
+    people.add(person);
+
+    person.pathToDraw = paths.get(0);
+    if(people.size() == 1 || people.size() == 1) person.isAlive = true;
+    else person.isAlive= false;
   }
-  //println("People in system: ", people.size());
-}
+  }
 
 ArrayList<PVector> personLocations(ArrayList<Agent> people) {
   ArrayList<PVector> l = new ArrayList<PVector>();

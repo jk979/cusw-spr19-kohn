@@ -53,32 +53,13 @@ boolean showUI = true;
 
 void tempModel(){
   soldToKabadiwala = false;
-  println("activating test model to move on to path 2");
+  println("activating temp model...");
   
   //1. get the kabadiwala
   chooseKabadiwala(0);    
-  String composite_ID = str(1)+"-"+str(2);  
-  println("composite ID is now",composite_ID);
   
-  //2a. get path to bundle
-  ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
-  println("getting path array for composite ID ",composite_ID);
-  
-  //2b. get last point in array
-  PVector bundlepoint = temp_array.get(temp_array.size()-1);
-  
-  //3. assign bundle to last point and translate to map coordinates
-  b = new Bundle(map.getScreenLocation(bundlepoint));
-  b.id = composite_ID; //bind to ID
-
-  //4. add to bundleArray for displaying in draw()
-  bundleArray.add(b);
-  
-  //5. initialize the path
-  Path c = new Path(kabadiwala_loc, b.loc, temp_array, true);
-  paths.add(c); //added the single bundle path to this bundle
-  println("6. path made, now initializing population...");
-  initPopulation(1); // 2
+  //2. initialize the kabadiwala Agent
+  initPopulation(1);
 }
 
 
@@ -129,9 +110,9 @@ void initModel() {
         bundleArray.add(b);
   
         Path a = new Path(kabadiwala_loc, b.loc, temp_array, true);
-        paths.add(a); //added the single bundle path to this bundle
-        //println("4. path made, now initializing population...");
+        //paths.add(a); //added the single bundle path to this bundle
         initPopulation(1);
+        //println("4. path made, now initializing population...");
         } //end roundtripCompleted = false
        
     }
@@ -139,6 +120,7 @@ void initModel() {
     //agent walks on each path in paths
 
   }
+  
 
   //set up Level 2
   for (int i = m_min; i<m_max; i++) {
@@ -154,7 +136,7 @@ void initModel() {
     //make path with origin at MRF and destination at same MRF
     Path b = new Path(mrf_loc, mrf_loc, mrf_test_array, true);
     println("MRF LOC IS ",mrf_loc);
-    paths.add(b);
+    //paths.add(b);
     initPopulation(1); // 2
   }
   for (int i = w_min; i<w_max; i++) {
@@ -237,7 +219,7 @@ void setup() {
 
   //initialize model and simulation
   println("initializing model...");
-  initModel();
+  tempModel();
 
   //draw the static GIS objects
   println("now beginning to draw gis objects...");
