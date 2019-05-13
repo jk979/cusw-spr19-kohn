@@ -136,6 +136,8 @@ class Agent {
   float maxspeed;
   float tolerance = 1;
   ArrayList<Path> pathArray;
+  int pathArrayIndex = 0;
+  boolean stop = false;
   Path currentPath;
   ArrayList<PVector> path;
   
@@ -270,17 +272,19 @@ class Agent {
     seekForce.mult(1);
     acceleration.add(seekForce);
     
-    // Update velocity
-    velocity.add(acceleration);
-    
-    // Update Location
-    location.add(new PVector(velocity.x, velocity.y));
-        
-    // Limit speed
-    velocity.limit(maxspeed);
-    
-    // Reset acceleration to 0 each cycle
-    acceleration.mult(0);
+    if (!stop) {
+      // Update velocity
+      velocity.add(acceleration);
+      
+      // Update Location
+      location.add(new PVector(velocity.x, velocity.y));
+          
+      // Limit speed
+      velocity.limit(maxspeed);
+      
+      // Reset acceleration to 0 each cycle
+      acceleration.mult(0);
+    }
     
     
     // Checks if Agents reached current waypoint
@@ -290,6 +294,21 @@ class Agent {
     if (prox < 3 && path.size() > 1 ) {
       if (pathDirection == 1 && pathIndex == pathLength-1 || pathDirection == -1 && pathIndex == 0) {
         pathDirection *= -1;
+        
+        // If back to the beginning, move on to the next path
+        if (pathDirection == 1) {
+          
+          // increment path index
+          pathArrayIndex++;
+          if(pathArrayIndex < pathArray.size()) {
+            path = pathArray.get(pathArrayIndex).waypoints;
+            pathToDraw = pathArray.get(pathArrayIndex);
+            pathLength = path.size();
+            println(pathArrayIndex);
+          } else {
+            stop = true;
+          }
+        }
       }
       pathIndex += pathDirection;
     }

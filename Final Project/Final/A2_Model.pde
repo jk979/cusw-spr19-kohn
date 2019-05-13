@@ -116,27 +116,28 @@ void initPopulation(int kabadiwalaNum) {
   //2. for each bundle...
   for (int i=0; i<3; i++) {
 
-  //3. get the ID to find the unique path
-  String composite_ID = str(kabadiwalaNum)+"-"+str(i+1);  //gets composite ID of 1-1, 1-2, etc. 
-  println("composite ID is now",composite_ID);
+    //3. get the ID to find the unique path
+    String composite_ID = str(kabadiwalaNum)+"-"+str(i+1);  //gets composite ID of 1-1, 1-2, etc. 
+    println("composite ID is now",composite_ID);
+    
+    //4. get path to bundle for that unique composite_ID
+    ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
+    println("getting path array for composite ID ",composite_ID);
+    
+    //5. get last point in array
+    PVector bundlepoint = temp_array.get(temp_array.size()-1);
+    
+    //6. assign bundle to last point and translate to map coordinates
+    b = new Bundle(map.getScreenLocation(bundlepoint));
+    b.id = composite_ID; //bind to ID
   
-  //4. get path to bundle for that unique composite_ID
-  ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
-  println("getting path array for composite ID ",composite_ID);
-  
-  //5. get last point in array
-  PVector bundlepoint = temp_array.get(temp_array.size()-1);
-  
-  //6. assign bundle to last point and translate to map coordinates
-  b = new Bundle(map.getScreenLocation(bundlepoint));
-  b.id = composite_ID; //bind to ID
-
-  //7. add to bundleArray for displaying in draw()
-  bundleArray.add(b);
-  
-  //8. add current path to list of paths
-  Path c = new Path(kabadiwala_loc, b.loc, temp_array, true);
-  paths.add(c); //added the single bundle path to this bundle
+    //7. add to bundleArray for displaying in draw()
+    bundleArray.add(b);
+    
+    //8. add current path to list of paths
+    Path c = new Path(kabadiwala_loc, b.loc, temp_array, true);
+    paths.add(c); //added the single bundle path to this bundle
+    
   } //repeat for each path
   
   //9. once paths has been populated with all the paths for the Agent...
@@ -158,7 +159,7 @@ void initPopulation(int kabadiwalaNum) {
     if(people.size() == 1 || people.size() == 1) person.isAlive = true;
     else person.isAlive= false;
   }
-  }
+}
 
 ArrayList<PVector> personLocations(ArrayList<Agent> people) {
   ArrayList<PVector> l = new ArrayList<PVector>();
@@ -180,6 +181,8 @@ void checkAgentBehavior(){
     p.display(); //draw agent
     b.display(); //draw bundle
     }
+   
+   /*
    
    //checking where the bundle is. Is it with the agent? Is it at the origin?
    
@@ -222,6 +225,7 @@ void checkAgentBehavior(){
       tempModel();
     }
    }
+   */
   }
 }
 
