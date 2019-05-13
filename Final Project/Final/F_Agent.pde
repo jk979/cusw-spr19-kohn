@@ -122,9 +122,6 @@ class WholesalerAgent{
 
 ////////////////////////////////
 
-
-
-
 class Agent {
   //movement properties
   PVector location;

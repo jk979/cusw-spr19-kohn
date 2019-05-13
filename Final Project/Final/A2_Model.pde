@@ -10,7 +10,7 @@ float laps;
 
 
 //  Objects to define agents that navigate our environment
-ArrayList<Agent> people = new ArrayList<Agent>();
+//ArrayList<Agent> people = new ArrayList<Agent>();
 
 //ways network using roads as ways
 void waysNetwork(ArrayList<Way> w) {
@@ -111,7 +111,7 @@ void initPopulation(int kabadiwalaNum) {
   */
   
   //1. make an arraylist of people 
-  people = new ArrayList<Agent>();
+  kabadiwalaArmy = new ArrayList<Agent>();
   
   //2. for each bundle...
   for (int i=0; i<5; i++) {
@@ -161,17 +161,18 @@ void initPopulation(int kabadiwalaNum) {
     Agent person = new Agent(loc.x, loc.y, 7, random_speed, paths, kabadiwalaNum);
     person.id = kabadiwalaNum;
     println("now inputting id into kabadiwala person, kabadiwalaNum is ",kabadiwalaNum," and person id is",person.id);
-    people.add(person);
-
+    kabadiwalaArmy.add(person);
+    
     person.pathToDraw = paths.get(0);
-    if(people.size() == 1 || people.size() == 1) person.isAlive = true;
+    if(kabadiwalaArmy.size() == 1 || kabadiwalaArmy.size() == 1) person.isAlive = true;
     else person.isAlive= false;
   }
+  println("size of kabadiwala army is",kabadiwalaArmy.size());
 }
 
-ArrayList<PVector> personLocations(ArrayList<Agent> people) {
+ArrayList<PVector> personLocations(ArrayList<Agent> kabadiwalaArmy) {
   ArrayList<PVector> l = new ArrayList<PVector>();
-  for (Agent a: people) {
+  for (Agent a: kabadiwalaArmy) {
     l.add(a.location);
   }
   return l;
@@ -182,9 +183,9 @@ void checkAgentBehavior(){
   boolean collisionDetection = true;
   
   //check if Agent is alive
-  for (Agent p: people) {
+  for (Agent p: kabadiwalaArmy) {
     if(p.isAlive){
-      p.update(personLocations(people), collisionDetection);
+      p.update(personLocations(kabadiwalaArmy), collisionDetection);
       p.pathToDraw.display(100, 100); //draw path for agent to follow
       p.display(); //draw agent
       //display each of the bundles in bundleArray
@@ -238,7 +239,6 @@ void checkAgentBehavior(){
        }
      }
    }
-    //else println("haven't collided yet");
   }
 }
 

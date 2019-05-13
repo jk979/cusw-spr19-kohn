@@ -34,7 +34,9 @@ int j;
 
 //temporary array for number of bundles created
 ArrayList<Bundle> bundleArray = new ArrayList(); 
-ArrayList<KabadiwalaAgent> kabadiwalaArray = new ArrayList(); 
+//ArrayList<KabadiwalaAgent> kabadiwalaArray = new ArrayList(); 
+
+ArrayList<Agent> kabadiwalaArmy = new ArrayList();
 ArrayList<MRFAgent> mrfArray = new ArrayList(); 
 ArrayList<WholesalerAgent> wholesalerArray = new ArrayList(); 
 
@@ -254,8 +256,8 @@ void drawBundles(){
 
 void drawAgents(){
     //draw the KABADIWALA!
-  for (int i = 0; i<kabadiwalaArray.size(); i++) {
-    KabadiwalaAgent k = (KabadiwalaAgent) kabadiwalaArray.get(i);
+  for (int i = 0; i<kabadiwalaArmy.size(); i++) {
+    Agent k = (Agent) kabadiwalaArmy.get(i);
     k.display();
   }
 
@@ -289,7 +291,6 @@ void draw() {
    }
    */
 
-  println("now checking agent behavior...");
   checkAgentBehavior();
   checkSaleBehavior();
 
