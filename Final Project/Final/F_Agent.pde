@@ -133,7 +133,11 @@ class Agent {
   float maxspeed;
   float tolerance = 0.1;
   ArrayList<Path> pathArray;
-  int pathArrayIndex = 0;
+  
+  int pathArrayIndex_k = 0;
+  int pathArrayIndex_mrf = 0; 
+  int pathArrayIndex_w = 0; 
+  
   boolean stop = false;
   Path currentPath;
   ArrayList<PVector> path;
@@ -307,10 +311,10 @@ class Agent {
         if ((pathDirection == 1 && type.equals("k"))) {
 
           // increment path index
-          pathArrayIndex++;
-          if (pathArrayIndex < pathArray.size()) {
-            path = pathArray.get(pathArrayIndex).waypoints;
-            pathToDraw = pathArray.get(pathArrayIndex);
+          pathArrayIndex_k++;
+          if (pathArrayIndex_k < pathArray.size()) {
+            path = pathArray.get(pathArrayIndex_k).waypoints;
+            pathToDraw = pathArray.get(pathArrayIndex_k);
             pathLength = path.size();
             //println(pathArrayIndex);
           } else {
@@ -318,8 +322,22 @@ class Agent {
           }
         }
         
+       /*
+       if((pathDirection !=1 && type.equals("m")) || (pathDirection !=1 && type.equals("w"))){
+         // increment path index
+          pathArrayIndex_mrf++;
+          if (pathArrayIndex_mrf < pathArray.size()) {
+            path = pathArray.get(pathArrayIndex_mrf).waypoints;
+            pathToDraw = pathArray.get(pathArrayIndex_mrf);
+            pathLength = path.size();
+            //println(pathArrayIndex);
+          } else {
+            stop = true;
+          }
+       }
+       */
       }
-      pathIndex += pathDirection;
+    pathIndex += pathDirection;
     }
   }
 

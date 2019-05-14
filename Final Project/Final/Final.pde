@@ -171,27 +171,82 @@ void setup() {
   addDays();
   //add background graphic to place GIS objects on
   pg = createGraphics(width, height);
-
-  // TEMPORARY MOVING TO HW //
-  width_map = 450;
-  scalarForMap_a = 19.0942; 
-  scalarForMap_b = 19.0391;
-  scalarForMap_c = 72.8143;
-  scalarForMap_d = 72.8462;
-  setMap();
-    
-  //set number of actors for HW
-  k_min = 0; 
-  k_max = numKabadiwalas; //testing one at a time
-  m_min = 17;
-  m_max = 19;
-  w_min = 1;
-  w_max = 2;
   
-  // END TEMPORARY HW MAP //
+  String whichStartingMap = "0";
+  
+  if(whichStartingMap == "HW"){
 
-  //set the world map
-  setMap();
+    width_map = 450;
+    scalarForMap_a = 19.0942; 
+    scalarForMap_b = 19.0391;
+    scalarForMap_c = 72.8143;
+    scalarForMap_d = 72.8462;
+    setMap();
+      
+    //set number of actors for HW
+    k_min = 0; 
+    k_max = numKabadiwalas; //testing one at a time
+    m_min = 17;
+    m_max = 19;
+    w_min = 1;
+    w_max = 2;
+  }
+  
+  else if(whichStartingMap == "N"){
+    width_map = 600;
+    height_map = height - 400;
+    scalarForMap_a = 19.1213; 
+    scalarForMap_b = 19.0545;
+    scalarForMap_c = 72.8787;
+    scalarForMap_d = 72.9612;
+    setMap();
+    
+    //set number of actors for N
+    k_min = 67; 
+    k_max = 112;
+    m_min = 36;
+    m_max = 37;
+    w_min = 0;
+    w_max = 1;
+    
+  }
+  
+  else if(whichStartingMap == "RN"){
+    width_map = 1150;
+    scalarForMap_a = 19.2729; 
+    scalarForMap_b = 19.2322;
+    scalarForMap_c = 72.8309;
+    scalarForMap_d = 72.8989;
+    setMap();
+    
+    //set number of actors for RN
+    k_min = 113;
+    k_max = 162;
+    m_min = 29;
+    m_max = 31;
+    w_min = 2;
+    w_max = 3;
+  }
+  
+  else if(whichStartingMap == "0"){
+    width_map = 600;
+    height_map = height;
+
+    scalarForMap_a = 19.2904; 
+    scalarForMap_b = 18.8835;
+    scalarForMap_c = 72.7364;
+    scalarForMap_d = 73.0570;
+    setMap();
+    
+    //set number of actors for Mumbai
+    k_min = 158; //could be 0 for real
+    k_max = 162;
+    m_min = 0;
+    m_max = 39;
+    w_min = 0;
+    w_max = 3;
+    
+  }
   
   //load roads
   loadDataSpeeds();
@@ -357,7 +412,7 @@ void keyPressed() {
     drawShops();
     drawBundles();
     drawAgents();
-    initModel();
+    tempModel();
     
   } else if (key=='x') {    //redraw the GIS objects to RN
 
@@ -377,7 +432,7 @@ void keyPressed() {
     w_min = 2;
     w_max = 3;
     
-    initModel();
+    tempModel();
    
     pg.beginDraw();
     pg.background(0);
@@ -407,7 +462,7 @@ void keyPressed() {
     w_min = 0;
     w_max = 1;
     
-    initModel();
+    tempModel();
    
     pg.beginDraw();
     pg.background(0);
@@ -437,7 +492,7 @@ void keyPressed() {
     w_min = 0;
     w_max = 3;
     
-    initModel();
+    tempModel();
    
     pg.beginDraw();
     pg.background(0);

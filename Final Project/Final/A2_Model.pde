@@ -92,7 +92,7 @@ void initWholesalers(){
   wholesalerArmy = new ArrayList<Agent>();
   
   //2. add wholesalers to army along with their bundle paths
-  for(int w = 1; w<3; w++){
+  for(int w = w_min; w<w_max; w++){
     chooseWholesaler(w); 
     ArrayList<Path> paths = new ArrayList<Path>();
     
@@ -106,7 +106,6 @@ void initWholesalers(){
     w_wards.add("HW-sector6");
     w_wards.add("HW-remainder");
     
-    /*
     w_wards.add("N-sector1");
     w_wards.add("N-sector2");
     w_wards.add("N-sector3");
@@ -118,7 +117,7 @@ void initWholesalers(){
     w_wards.add("RN-sector3");
     w_wards.add("RN-sector4");
     w_wards.add("RN-sector5");
-    */
+    
     //for each path...
     for(int i=0; i<w_wards.size(); i++){
       String w_composite_ID = "W-"+w_wards.get(i);
@@ -162,7 +161,7 @@ void initMRFs(){
   mrfArmy = new ArrayList<Agent>();
   
   //2. add MRFs to army along with their bundle paths
-  for(int m = 17; m < 20; m++){
+  for(int m = m_min; m < m_max; m++){
     chooseMRF(m);
     ArrayList<Path> paths = new ArrayList<Path>();
     
@@ -239,7 +238,7 @@ void initPopulation() {
   kabadiwalaArmy = new ArrayList<Agent>();
   
   //2. add kabadiwalas to the army along with their bundles and bundle paths
-  for(int kab = 0; kab < 3; kab++){
+  for(int kab = k_min; kab < k_max; kab++){
     chooseKabadiwala(kab);
     ArrayList<Path> paths = new ArrayList<Path>();
 
