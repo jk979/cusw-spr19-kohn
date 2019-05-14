@@ -380,24 +380,31 @@ void checkAgentBehavior(){
       stroke(mrf_fill);
       t.pathToDraw.display(50,50);
       
-      for(int e = 0; e<bundleArray.size(); e++){     
+      for(int e = 0; e<bundleArray.size(); e++){    
         Bundle s = bundleArray.get(e);
-        int euclideanAgentBundle = parseInt(dist(s.w, s.h, t.location.x, t.location.y));
+        Block a = bundleArray.get(e).plastic;
+        Block b = bundleArray.get(e).paper;
+        Block c = bundleArray.get(e).glass;
+        Block d = bundleArray.get(e).metal;
+        
+        int euclideanAgentBundle = parseInt(dist(s.w, s.h,  t.location.x, t.location.y));
         int euclideanOriginBundle = parseInt(dist(s.w, s.h, mrf_loc.x, mrf_loc.y));
+        
         //1. when agent encounters bundle
        if(euclideanAgentBundle < 4 && euclideanOriginBundle > 4){ 
-         s.w = t.location.x; 
-         s.h = t.location.y;
-         s.pickedUp = true;
-         s.timesCollected = 1;
+         println("block was grabbed by mrf");
+         a.loc_x = t.location.x; 
+         a.loc_y = t.location.y;
+         a.pickedUp = true;
+         a.timesCollected = 1;
          soldToKabadiwala = true;
        }
    
        //2. bundle brought to kabadiwala, but still bundles to go 
        else if(euclideanOriginBundle <= 4 && t.stop == false){ 
-         s.w = mrf_loc.x; 
-         s.h = mrf_loc.y;
-         s.pickedUp = false;     
+         a.loc_x = mrf_loc.x; 
+         a.loc_y = mrf_loc.y;
+         a.pickedUp = false;     
          roundtripCompleted = true;  
          //roundtripKM = Math.round((hh_dist_MergedMap.get(s.id))*2*100.0/100.0); //for that s.id, total roundtrip distance
        }

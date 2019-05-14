@@ -9,6 +9,7 @@ class Block {
   PVector location, loc;
   float kg;   //it has a weight
   String type;  //it has a type
+  float loc_x, loc_y;
   
   //transit properties
   boolean pickedUp; //if true, it's picked up by the agent; if false, it's sitting stationary somewhere
@@ -23,10 +24,11 @@ class Block {
   int timeW; //time waiting at wholesaler
     
   //constructor
-  Block(String t, float weight){
+  Block(String t, float weight, float x, float y){
     type = t;
     kg = weight;
-    loc = location;
+    loc_x = x;
+    loc_y = y;
   }
   
   void display(float x,float y){ //give block shape/color
@@ -82,10 +84,10 @@ class Block {
      loc = location;
      id = id;
      
-     plastic = new Block("plastic", wt_plastic);
-     paper = new Block("paper", wt_paper);
-     glass = new Block("glass", wt_glass);
-     metal = new Block("metal", wt_metal);
+     plastic = new Block("plastic", wt_plastic, w, h);
+     paper = new Block("paper", wt_paper, w+12, h);
+     glass = new Block("glass", wt_glass, w, h+12);
+     metal = new Block("metal", wt_metal, w+12, h+12);
      
      //add all these to the materials inventory list
      ArrayList<Block> materials_inventory = new ArrayList<Block>();

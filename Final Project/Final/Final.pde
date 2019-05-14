@@ -251,7 +251,6 @@ void draw() {
   image(pg, 0, 0);
 
   drawShops();
-  drawBundles();
 
   //draw each of the poi_hh
   /*
@@ -259,11 +258,11 @@ void draw() {
    poi_hh_array.get(i).draw();
    }
    */
-
+  drawAgents();
+  drawBundles();
   checkAgentBehavior();
   checkSaleBehavior();
-
-  drawAgents();
+  
   drawInfo();  
   //noLoop();
 }
