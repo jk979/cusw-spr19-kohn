@@ -24,7 +24,7 @@ void drawInfo(){
   //draw title box
   int bgColor = 230;
   noStroke();
-  fill(bgColor, 3*baseAlpha);
+  fill(128,128,128);
   rect(520,20,700,120,10);
   //draw title text
   fill(255,255,255);
@@ -34,10 +34,10 @@ void drawInfo(){
   fill(240,240,240);
   textSize(12);
   text("Kabadiwalas are the informal recycling heroes of Mumbai, India. \nThey collect recyclable plastic, paper, glass, and metal from households and sell it up the value chain.",540,70);
-  text("This map shows kabadiwalas between their shop (red) and the source of material (yellow). \n Bundle of Materials: red circle",540,110);
+  //text("This map shows kabadiwalas between their shop (red) and the source of material (yellow). \n Bundle of Materials: red circle",540,110);
   text("By Jacob Kohn", 1100,50);
   //draw input box
-  fill(bgColor, 2*baseAlpha); 
+  fill(128,128,128); 
   rect(520, 150, 300, 500, 10);
   //draw input title
   textSize(16);
@@ -95,7 +95,7 @@ void drawInfo(){
   text("Miscellaneous Items: "+ misc + " INR",525,580);
 
   //draw output box
-  fill(bgColor,2*baseAlpha); //, 0*baseAlpha);
+  fill(128,128,128); //, 0*baseAlpha);
   rect(920, 150, 300, 500, 10);
   //draw output title
   textSize(16);

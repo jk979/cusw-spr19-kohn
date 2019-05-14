@@ -249,15 +249,14 @@ void draw() {
   //camera(70.0,-35.0, 1200.0, 450.0, -50, 0, 0, 1, 0);
   background(0);
   image(pg, 0, 0);
-
-  drawShops();
-
+  
   //draw each of the poi_hh
   /*
   for(int i = 0; i<poi_hh_array.size(); i++){
    poi_hh_array.get(i).draw();
    }
    */
+  drawShops();
   drawAgents();
   drawBundles();
   checkAgentBehavior();
@@ -283,13 +282,13 @@ void keyPressed() {
     image(pg, 0, 0);
 
     drawShops();
+    drawAgents();
     drawBundles();
       
     tempModel();
     checkAgentBehavior();
     checkSaleBehavior();
 
-    drawAgents();
     drawInfo();
   } else if (key=='q') {
     square = !square;
