@@ -110,16 +110,30 @@ void initMRFs(){
   mrfArmy = new ArrayList<Agent>();
   
   //2. add MRFs to army along with their bundle paths
-  for(int m = 17; m < 19; m++){
+  for(int m = 17; m < 20; m++){
     chooseMRF(m);
     ArrayList<Path> paths = new ArrayList<Path>();
     
-    //for each bundle...
-    for(int i=0; i<1; i++){
+    //get list of possible wards
+    ArrayList<String> mrfwards = new ArrayList<String>();
+    mrfwards.add("HW17-sector1");
+    mrfwards.add("HW17-sector2");
+    mrfwards.add("HW17-sector3");
+
+    /*
+    mrfwards.add("HW18");
+    mrfwards.add("N36");
+    mrfwards.add("RN30");
+    mrfwards.add("RN31");
+    */
+    
+    //for each path...
+    for(int i=0; i<mrfwards.size(); i++){
+      String mrf_composite_ID = "MRF-"+mrfwards.get(i);
+      println("mrf composite id: ",mrf_composite_ID);
       //add current path to list of paths
-      ArrayList<PVector> mrf_test_array = MRFMergedMap.get("MRF-HW17-sector1");
-      println("test array: ",mrf_test_array);
-      Path n = new Path(mrf_loc, mrf_loc, mrf_test_array, true);
+      ArrayList<PVector> mrf_array = MRFMergedMap.get(mrf_composite_ID);
+      Path n = new Path(mrf_loc, mrf_loc, mrf_array, true);
       paths.add(n); //added the single bundle path to this bundle 
     }
     
@@ -259,6 +273,29 @@ void checkAgentBehavior(){
       t.update(mrfpersonLocations(mrfArmy), collisionDetection);
       t.pathToDraw.display(50,50);
       t.display();
+      
+      for(int e = 0; e<bundleArray.size(); e++){     
+        Bundle s = bundleArray.get(e);
+        int euclideanAgentBundle = parseInt(dist(s.w, s.h, t.location.x, t.location.y));
+        int euclideanOriginBundle = parseInt(dist(s.w, s.h, mrf_loc.x, mrf_loc.y));
+        //1. when agent encounters bundle
+       if(euclideanAgentBundle < 4 && euclideanOriginBundle > 4){ 
+         s.w = t.location.x; 
+         s.h = t.location.y;
+         s.pickedUp = true;
+         s.timesCollected = 1;
+         soldToKabadiwala = true;
+       }
+   
+       //2. bundle brought to kabadiwala, but still bundles to go 
+       else if(euclideanOriginBundle <= 4 && t.stop == false){ 
+         s.w = mrf_loc.x; 
+         s.h = mrf_loc.y;
+         s.pickedUp = false;     
+         roundtripCompleted = true;  
+         //roundtripKM = Math.round((hh_dist_MergedMap.get(s.id))*2*100.0/100.0); //for that s.id, total roundtrip distance
+       }
+      } 
     }
   }
   
@@ -280,13 +317,13 @@ void checkAgentBehavior(){
      String kabadiId = str(p.id+1);
      Bundle s = bundleArray.get(e);
      
-     if(bundleId.equals(kabadiId)){ //if the [1] in bundle id 1-1 or 1-2 = kabadiwala[1]       
-       //initial conditions: bundle at source, agent in transit
-       int euclideanAgentBundle = parseInt(dist(s.w, s.h, p.location.x, p.location.y));
-       int euclideanOriginBundle = parseInt(dist(s.w, s.h, kabadiwala_loc.x, kabadiwala_loc.y));
-       //int euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
-       //int euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala_loc.x, kabadiwala_loc.y));
-   
+       if(bundleId.equals(kabadiId)){ //if the [1] in bundle id 1-1 or 1-2 = kabadiwala[1]       
+         //initial conditions: bundle at source, agent in transit
+         int euclideanAgentBundle = parseInt(dist(s.w, s.h, p.location.x, p.location.y));
+         int euclideanOriginBundle = parseInt(dist(s.w, s.h, kabadiwala_loc.x, kabadiwala_loc.y));
+         //int euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
+         //int euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala_loc.x, kabadiwala_loc.y));
+     
        //1. when agent encounters bundle
        if(euclideanAgentBundle < 4 && euclideanOriginBundle > 4){ 
          s.w = p.location.x; 
@@ -315,11 +352,10 @@ void checkAgentBehavior(){
            //sum += hhDistArray.get(i);
          //}
    }
-       
-       }
-     }
-   }
+    }
   }
+  }
+    }
 
     
 void checkSaleBehavior(){

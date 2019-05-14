@@ -58,10 +58,9 @@ void tempModel(){
   println("activating temp model...");
   
   //1. initialize the Kabadiwala Army
-  //initPopulation(); 
+  initPopulation(); 
   
   //2. initialize the MRFs
-  initMRFs();
 }
 
 
@@ -257,7 +256,7 @@ void drawBundles(){
 }
 
 void drawAgents(){
-    //draw the KABADIWALA!
+  //draw the KABADIWALA!
   for (int i = 0; i<kabadiwalaArmy.size(); i++) {
     Agent k = (Agent) kabadiwalaArmy.get(i);
     k.display();
@@ -466,6 +465,9 @@ void keyTyped() {
     currentDay = day.get(5);
   } else if (key == '7') {
     currentDay = day.get(6);
+  }
+  else if (key == 'm'){
+    initMRFs();
   }
 }
 

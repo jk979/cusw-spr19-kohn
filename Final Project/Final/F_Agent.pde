@@ -304,7 +304,7 @@ class Agent {
         pathDirection *= -1;
 
         // If back to the beginning, move on to the next path
-        if (pathDirection == 1) {
+        if ((pathDirection == 1 && type.equals("k"))) {
 
           // increment path index
           pathArrayIndex++;
@@ -317,6 +317,7 @@ class Agent {
             stop = true;
           }
         }
+        
       }
       pathIndex += pathDirection;
     }
