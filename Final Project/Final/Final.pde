@@ -38,7 +38,7 @@ ArrayList<Bundle> bundleArray = new ArrayList();
 
 ArrayList<Agent> kabadiwalaArmy = new ArrayList();
 ArrayList<Agent> mrfArmy = new ArrayList(); 
-ArrayList<WholesalerAgent> wholesalerArray = new ArrayList(); 
+ArrayList<Agent> wholesalerArmy = new ArrayList(); 
 ArrayList<Float> hhDistArray = new ArrayList<Float>();
 
 ///////////////////////
@@ -143,7 +143,7 @@ void initModel() {
   for (int i = w_min; i<w_max; i++) {
     chooseWholesaler(i);
     WholesalerAgent w = new WholesalerAgent(w_loc.x, w_loc.y);
-    wholesalerArray.add(w);
+    //wholesalerArmy.add(w);
     
   }
   
@@ -269,10 +269,10 @@ void drawAgents(){
   }
 
   //draw the wholesaler!
-  //for (int i = 0; i<wholesalerArray.size(); i++) {
-  //  WholesalerAgent w = (WholesalerAgent) wholesalerArray.get(i);
-  //  w.display();
-  //}
+  for (int i = 0; i<wholesalerArmy.size(); i++) {
+    Agent w = (Agent) wholesalerArmy.get(i);
+    w.display();
+  }
 }
 
 void draw() {
@@ -468,6 +468,9 @@ void keyTyped() {
   }
   else if (key == 'm'){
     initMRFs();
+  }
+  else if (key == 'w'){
+    initWholesalers();
   }
 }
 

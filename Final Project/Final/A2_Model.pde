@@ -86,23 +86,75 @@ void kPath() {
  */
 
 
-//draws a path that hits 10 kabadiwalas using the shortest distance between them and the Wholesaler/MRF
-void WholesalerPath(){ 
-//option 1. wholesaler is picking up
-//origin = wholesaler point on map
+//raise the wholesaler army
+void initWholesalers(){
+  //1. make arraylist of people
+  wholesalerArmy = new ArrayList<Agent>();
+  
+  //2. add wholesalers to army along with their bundle paths
+  for(int w = 1; w<3; w++){
+    chooseWholesaler(w); 
+    ArrayList<Path> paths = new ArrayList<Path>();
+    
+    //get list of possible wards
+    ArrayList<String> w_wards = new ArrayList<String>();
+    w_wards.add("HW-sector1");
+    w_wards.add("HW-sector2");
+    w_wards.add("HW-sector3");
+    w_wards.add("HW-sector4");
+    w_wards.add("HW-sector5");
+    w_wards.add("HW-sector6");
+    w_wards.add("HW-remainder");
+    
+    /*
+    w_wards.add("N-sector1");
+    w_wards.add("N-sector2");
+    w_wards.add("N-sector3");
+    w_wards.add("N-sector4");
+    w_wards.add("N-remainder");
+    
+    w_wards.add("RN-sector1");
+    w_wards.add("RN-sector2");
+    w_wards.add("RN-sector3");
+    w_wards.add("RN-sector4");
+    w_wards.add("RN-sector5");
+    */
+    //for each path...
+    for(int i=0; i<w_wards.size(); i++){
+      String w_composite_ID = "W-"+w_wards.get(i);
+      //add current path to list of paths
+      ArrayList<PVector> wholesaler_array = MRFMergedMap.get(w_composite_ID);
+      println("wholesaler array size: ",wholesaler_array.size());
+      Path n = new Path(w_loc, w_loc, wholesaler_array, true);
+      paths.add(n); //added the single bundle path to this bundle 
+    }
+    
+    //10. add agent to the path if the path has been parsed successfully
+    println("paths size is ",paths.size());
+    if (paths.get(0).waypoints.size() > 1) { 
+      float random_speed = 0.9;
+      PVector loc = paths.get(0).waypoints.get(0); //get the full waypoints path
+    //11. make an agent with the desired features, and the agent is associated with that bundle_path
+    //populate wholesalerArmy with w collectors
 
-//option 2. MRF is picking up
-//origin = MRF point on map
+      println("making new person");
+      Agent wperson = new Agent(loc.x, loc.y, 2, random_speed, paths, w);
+      wperson.isAlive = true;
+      wperson.id = w;
+      wperson.type = "w";
 
-//from the list of kabadiwalas, divide them into groups of 3
-//for each group: 
-//check if all of them have bundles in their shops
-//get the shortest distance linking all of them with Wholesaler point as origin and destination
-//run the path using an agent and pick up all the materials
-//stop when you reach the Wholesaler point again
+      println("now inputting id into w person, wNum is ",w," and person id is",wperson.id);
+      wholesalerArmy.add(wperson);
+    }
+      println("size of MRF army is",wholesalerArmy.size());
 
+      //raise the army!
+      for(int personLabel = 0; personLabel<wholesalerArmy.size(); personLabel++){
+        (wholesalerArmy.get(personLabel)).pathToDraw = (wholesalerArmy.get(personLabel)).pathArray.get(0);
+      }
+    }  
 }
-
+    
 
 //raise the MRF Army
 void initMRFs(){
@@ -119,14 +171,25 @@ void initMRFs(){
     mrfwards.add("HW17-sector1");
     mrfwards.add("HW17-sector2");
     mrfwards.add("HW17-sector3");
-
+    mrfwards.add("HW17-remainder");
     /*
-    mrfwards.add("HW18");
-    mrfwards.add("N36");
-    mrfwards.add("RN30");
-    mrfwards.add("RN31");
+    mrfwards.add("HW18-sector1");
+    mrfwards.add("HW18-sector2");
+    mrfwards.add("HW18-sector3");
+    mrfwards.add("HW18-remainder");
+    mrfwards.add("N-sector1");
+    mrfwards.add("N-sector2");
+    mrfwards.add("N-sector3");
+    mrfwards.add("N-sector4");
+    mrfwards.add("N-remainder");
+    mrfwards.add("RN30-sector1");
+    mrfwards.add("RN30-sector2");
+    mrfwards.add("RN30-remainder");
+    mrfwards.add("RN31-sector1");
+    mrfwards.add("RN31-sector2");
+    mrfwards.add("RN31-remainder");
     */
-    
+     
     //for each path...
     for(int i=0; i<mrfwards.size(); i++){
       String mrf_composite_ID = "MRF-"+mrfwards.get(i);
@@ -246,6 +309,14 @@ void initPopulation() {
   }
 }
 
+ArrayList<PVector> wpersonLocations(ArrayList<Agent> wholesalerArmy) {
+  ArrayList<PVector> l = new ArrayList<PVector>();
+  for (Agent a: wholesalerArmy) {
+    l.add(a.location);
+  }
+  return l;
+}
+
 ArrayList<PVector> mrfpersonLocations(ArrayList<Agent> mrfArmy) {
   ArrayList<PVector> l = new ArrayList<PVector>();
   for (Agent a: mrfArmy) {
@@ -253,7 +324,6 @@ ArrayList<PVector> mrfpersonLocations(ArrayList<Agent> mrfArmy) {
   }
   return l;
 }
-
 
 ArrayList<PVector> personLocations(ArrayList<Agent> kabadiwalaArmy) {
   ArrayList<PVector> l = new ArrayList<PVector>();
@@ -268,11 +338,44 @@ void checkAgentBehavior(){
   
   boolean collisionDetection = true;
   
+  for(Agent d: wholesalerArmy){
+    if(d.isAlive){
+      d.update(wpersonLocations(wholesalerArmy), collisionDetection);
+      d.display();
+      stroke(w_fill);
+      d.pathToDraw.display(50,50);
+      
+      for(int e = 0; e<bundleArray.size(); e++){     
+        Bundle s = bundleArray.get(e);
+        int euclideanAgentBundle = parseInt(dist(s.w, s.h, d.location.x, d.location.y));
+        int euclideanOriginBundle = parseInt(dist(s.w, s.h, w_loc.x, w_loc.y));
+        //1. when agent encounters bundle
+       if(euclideanAgentBundle < 4 && euclideanOriginBundle > 4){ 
+         s.w = d.location.x; 
+         s.h = d.location.y;
+         s.pickedUp = true;
+         s.timesCollected = 1;
+         soldToKabadiwala = true;
+       }
+   
+       //2. bundle brought to kabadiwala, but still bundles to go 
+       else if(euclideanOriginBundle <= 4 && d.stop == false){ 
+         s.w = w_loc.x; 
+         s.h = w_loc.y;
+         s.pickedUp = false;     
+         roundtripCompleted = true;  
+         //roundtripKM = Math.round((hh_dist_MergedMap.get(s.id))*2*100.0/100.0); //for that s.id, total roundtrip distance
+       }
+      } 
+    }
+  }
+  
   for(Agent t : mrfArmy) {
     if(t.isAlive){
       t.update(mrfpersonLocations(mrfArmy), collisionDetection);
-      t.pathToDraw.display(50,50);
       t.display();
+      stroke(mrf_fill);
+      t.pathToDraw.display(50,50);
       
       for(int e = 0; e<bundleArray.size(); e++){     
         Bundle s = bundleArray.get(e);
@@ -303,8 +406,9 @@ void checkAgentBehavior(){
   for (Agent p: kabadiwalaArmy) {
     if(p.isAlive){
       p.update(personLocations(kabadiwalaArmy), collisionDetection);
-      p.pathToDraw.display(100, 100); //draw path for agent to follow
       p.display(); //draw agent
+      stroke(k_fill);
+      p.pathToDraw.display(50, 50); //draw path for agent to follow
       //display each of the bundles in bundleArray
       for(int e = 0; e<bundleArray.size(); e++){
         bundleArray.get(e).display(); //draw bundle
