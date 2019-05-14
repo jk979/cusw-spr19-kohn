@@ -105,7 +105,7 @@ void drawInfo(){
   fill(255,255,255);
   textSize(12);
   text("Kabadiwala's Gross Profit: "+ (kabadiwala_offload_cost_paper - totalKPickupCost)+ " INR",925,220);
-  text("Kabadiwala's Roundtrip Distance: "+ roundtripKM + " KM", 925, 240);
+  text("Kabadiwala's Total Distance: "+ roundtripKM + " KM", 925, 240);
   //text("Kabadiwala's Roundtrip Average: " + roundtripKM
   text("---------Bundle Status----------------", 925,260);
   //text("bundle times collected: "+b.timesCollected,925,280);

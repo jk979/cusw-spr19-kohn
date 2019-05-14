@@ -8,6 +8,7 @@ boolean pathNotFound; //pathNotFound is a global variable
 import java.util.*;
 float laps; 
 
+float totalTripDistanceForKabadiwala;
 
 //  Objects to define agents that navigate our environment
 //ArrayList<Agent> people = new ArrayList<Agent>();
@@ -102,6 +103,7 @@ void WholesalerPath(){
 
 }
 
+//raise the Kabadiwala Army all at once
 void initPopulation(int kabadiwalaNum) {
   //  Object to define and capture a specific origin, destination, and path
   ArrayList<Path> paths = new ArrayList<Path>();
@@ -112,65 +114,65 @@ void initPopulation(int kabadiwalaNum) {
   
   //1. make an arraylist of people 
   kabadiwalaArmy = new ArrayList<Agent>();
+
+  //kabadiwalaArmy.get(kabadiwalaNum) //get Agent 1, 2, 3...
+    //2. for each bundle...
+    for (int i=0; i<3; i++) {
+      //reset hhDistArray
+      hhDistArray = new ArrayList<Float>();
   
-  //2. for each bundle...
-  for (int i=0; i<1; i++) {
+      //initialize bundle object
+      Bundle b;
+      
+      //3. get the ID to find the unique path
+      String composite_ID = str(kabadiwalaNum)+"-"+str(i+1);  //gets composite ID of 1-1, 1-2, etc. 
+      println("composite ID is now",composite_ID);
+      
+      //4. get path to bundle for that unique composite_ID
+      ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
+      println("getting path array for composite ID ",composite_ID);
+      
+      //5. get last point in array
+      PVector bundlepoint = temp_array.get(temp_array.size()-1);
+      
+      //6. assign bundle to last point and translate to map coordinates
+      b = new Bundle(map.getScreenLocation(bundlepoint));
+      b.id = composite_ID; //bind to ID
     
-    //initialize bundle object
-    Bundle b;
+      //7. add to bundleArray for displaying in draw()
+      bundleArray.add(b);
+      
+      //8. add current path to list of paths
+      Path c = new Path(kabadiwala_loc, b.loc, temp_array, true);
+      paths.add(c); //added the single bundle path to this bundle
+      
+    } //repeat for each path
     
-    //3. get the ID to find the unique path
-    String composite_ID = str(kabadiwalaNum)+"-"+str(i+1);  //gets composite ID of 1-1, 1-2, etc. 
-    println("composite ID is now",composite_ID);
     
-    //4. get path to bundle for that unique composite_ID
-    ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
-    println("getting path array for composite ID ",composite_ID);
-    
-    //5. get last point in array
-    PVector bundlepoint = temp_array.get(temp_array.size()-1);
-    
-    //6. assign bundle to last point and translate to map coordinates
-    b = new Bundle(map.getScreenLocation(bundlepoint));
-    b.id = composite_ID; //bind to ID
+    //9. once paths has been populated with all the paths for the Agent...
+    totalTripDistanceForKabadiwala = 0;
+    for(int e = 0; e<bundleArray.size(); e++){
+      println("total trip distance: ",totalTripDistanceForKabadiwala);
+      totalTripDistanceForKabadiwala += hh_dist_MergedMap.get(bundleArray.get(e).id);
+    }
   
-    //7. add to bundleArray for displaying in draw()
-    bundleArray.add(b);
-    
-    //8. add current path to list of paths
-    Path c = new Path(kabadiwala_loc, b.loc, temp_array, true);
-    paths.add(c); //added the single bundle path to this bundle
-    
-  } //repeat for each path
-  
-  //9. once paths has been populated with all the paths for the Agent...
-  
-  /*
-  println("number of paths in pathArray is: ",paths.size());
-  println("i have bundles gathered for the kabadiwala, the size of bundle array is ",bundleArray.size());
-  println("bundles in bundleArray: ");
-  for(int e = 0; e<bundleArray.size(); e++){
-    println("bundleArray bundle: ",bundleArray.get(e).id);
-  }*/
-  
-  //10. add agent to the path if the path has been parsed successfully
-  if (paths.get(0).waypoints.size() > 1) { 
-    //float random_speed = random(0.1, 0.3);
-    float random_speed = 1.3;
-    //println("making a waypoints pvector to get the full waypoints path for this bundle");
-    PVector loc = paths.get(0).waypoints.get(0); //get the full waypoints path
-    
-    //make an agent with the desired features, and the agent is associated with that bundle_path
-    Agent person = new Agent(loc.x, loc.y, 7, random_speed, paths, kabadiwalaNum);
-    person.id = kabadiwalaNum;
-    println("now inputting id into kabadiwala person, kabadiwalaNum is ",kabadiwalaNum," and person id is",person.id);
-    kabadiwalaArmy.add(person);
-    
-    person.pathToDraw = paths.get(0);
-    if(kabadiwalaArmy.size() == 1 || kabadiwalaArmy.size() == 1) person.isAlive = true;
-    else person.isAlive= false;
+    //10. add agent to the path if the path has been parsed successfully
+    if (paths.get(0).waypoints.size() > 1) { 
+      float random_speed = 1.3;
+      PVector loc = paths.get(0).waypoints.get(0); //get the full waypoints path
+      
+    //11. make an agent with the desired features, and the agent is associated with that bundle_path
+    //populate kabadiwalaArmy with kabadiwalas
+
+      println("making new person");
+      Agent person = new Agent(loc.x, loc.y, 7, random_speed, paths, kabadiwalaNum);
+      person.isAlive = true;
+      person.id = kabadiwalaNum;
+      println("now inputting id into kabadiwala person, kabadiwalaNum is ",kabadiwalaNum," and person id is",person.id);
+      kabadiwalaArmy.add(person);
+      println("size of kabadiwala army is",kabadiwalaArmy.size());
+      person.pathToDraw = paths.get(0);
   }
-  println("size of kabadiwala army is",kabadiwalaArmy.size());
 }
 
 ArrayList<PVector> personLocations(ArrayList<Agent> kabadiwalaArmy) {
@@ -180,6 +182,9 @@ ArrayList<PVector> personLocations(ArrayList<Agent> kabadiwalaArmy) {
   }
   return l;
 }
+
+
+
 
 void checkAgentBehavior(){
   
@@ -200,8 +205,6 @@ void checkAgentBehavior(){
    //check if the bundle belongs to the correct kabadiwala
    //if any of the id's within the bundleArray list = p id
    for(int e = 0; e<bundleArray.size(); e++){
-     ArrayList<Float> hhDistArray = new ArrayList<Float>();
-     float sum = 0; 
      String bundleId = String.valueOf(bundleArray.get(e).id.charAt(0));
      String kabadiId = str(p.id);
      Bundle s = bundleArray.get(e);
@@ -222,26 +225,29 @@ void checkAgentBehavior(){
          soldToKabadiwala = true;
        }
    
-       //2. bundle brought to kabadiwala
+       //2. bundle brought to kabadiwala, but still bundles to go 
        else if(euclideanOriginBundle <= 4 && p.stop == false){ 
          s.w = kabadiwala_loc.x; 
          s.h = kabadiwala_loc.y;
          s.pickedUp = false;     
-         s.timesCollected++;
-         //look up KM based on s.id
-         hhDistArray.add(hh_dist_MergedMap.get(s.id));         
          roundtripCompleted = true;  
+         //roundtripKM = Math.round((hh_dist_MergedMap.get(s.id))*2*100.0/100.0); //for that s.id, total roundtrip distance
        }
-       else if(euclideanOriginBundle <= 4 && p.stop == true){
-         for(int i = 0; i < hhDistArray.size(); i++){
-          sum += hhDistArray.get(i);
-         }
-         roundtripKM = Math.round(sum*100.0/100.0);
+       
+       //stuff governing agent's behavior
+       if(p.stop == true){
+          roundtripKM = Math.round(totalTripDistanceForKabadiwala*2*100.0/100.0);
+       }
+       //3. bundle brought to kabadiwala, and finished track
+           //println("sum: ",sum);
+           //println(hhDistArray.get(i));
+           //sum += hhDistArray.get(i);
+         //}
+       
        }
      }
    }
   }
-}
 
     
 void checkSaleBehavior(){

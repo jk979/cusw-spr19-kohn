@@ -39,6 +39,7 @@ ArrayList<Bundle> bundleArray = new ArrayList();
 ArrayList<Agent> kabadiwalaArmy = new ArrayList();
 ArrayList<MRFAgent> mrfArray = new ArrayList(); 
 ArrayList<WholesalerAgent> wholesalerArray = new ArrayList(); 
+ArrayList<Float> hhDistArray = new ArrayList<Float>();
 
 ///////////////////////
 
@@ -59,7 +60,7 @@ void tempModel(){
   //1. get the kabadiwala
   chooseKabadiwala(0);    
   
-  //2. initialize the kabadiwala Agent
+  //2. initialize the Kabadiwala Army
   initPopulation(1); 
 }
 

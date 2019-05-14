@@ -201,6 +201,7 @@ void parseHHdist(){
       }
      hh_dist_MergedMap.put(currentID, sum_dist);
     }
+    println("MERGEDMAP DIST: ",hh_dist_MergedMap);
  }
  
   
