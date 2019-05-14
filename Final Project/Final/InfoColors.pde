@@ -16,6 +16,7 @@ color w_fill = color(0,200,255);
 color colorWardBounds = color(128,128,128);
 color colorHHPaths = color(255,211,0);
 color colorMRFPaths = color(230,45,10);
+color stoppedAgent = color(230,230,230);
 
 void drawInfo(){
   text(frameRate, 25, 25);

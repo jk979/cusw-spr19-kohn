@@ -115,7 +115,7 @@ void initPopulation(int kabadiwalaNum) {
   kabadiwalaArmy = new ArrayList<Agent>();
   
   //2. add kabadiwalas to the army along with their bundles and bundle paths
-  for(int kab = 0; kab < 2; kab++){
+  for(int kab = 0; kab < 3; kab++){
     chooseKabadiwala(kab);
     ArrayList<Path> paths = new ArrayList<Path>();
 
@@ -152,7 +152,6 @@ void initPopulation(int kabadiwalaNum) {
       
     } //repeat for each path
     
-    
     //9. once paths has been populated with all the paths for the Agent...
     totalTripDistanceForKabadiwala = 0;
     for(int e = 0; e<bundleArray.size(); e++){
@@ -162,32 +161,22 @@ void initPopulation(int kabadiwalaNum) {
   
     //10. add agent to the path if the path has been parsed successfully
     if (paths.get(0).waypoints.size() > 1) { 
-      float random_speed = 1.3;
+      float random_speed = 0.9;
       PVector loc = paths.get(0).waypoints.get(0); //get the full waypoints path
       
     //11. make an agent with the desired features, and the agent is associated with that bundle_path
     //populate kabadiwalaArmy with kabadiwalas
 
       println("making new person");
-      Agent person = new Agent(loc.x, loc.y, 7, random_speed, paths, kab);
-      //get paths from bundle assignment
-      //get kabadiwalaNum from chooseKabadiwala
-      //must chooseKabadiwala from kabadiwalaArmy
-      //each kabadiwala has its own paths and kabadiwalaNum
-      //but don't do pathToDraw until you have the entire kabadiwalaArmy assembled with its paths and numbers
+      Agent person = new Agent(loc.x, loc.y, 2, random_speed, paths, kab);
       person.isAlive = true;
       person.id = kab;
       println("now inputting id into kabadiwala person, kabadiwalaNum is ",kab," and person id is",person.id);
       kabadiwalaArmy.add(person);
     }
       println("size of kabadiwala army is",kabadiwalaArmy.size());
-      //println(kabadiwalaArmy);
-      //println("the first agent is", kabadiwalaArmy.get(0));
-      //println("the first agent's paths array is: ",kabadiwalaArmy.get(0).pathArray);
-      //kabadiwalaArmy.get(0).pathToDraw = kabadiwalaArmy.get(0).pathArray.get(0);
-      
+
       //raise the army!
-      //they are following the same paths. they need to follow their own paths. 
       for(int personLabel = 0; personLabel<kabadiwalaArmy.size(); personLabel++){
         (kabadiwalaArmy.get(personLabel)).pathToDraw = (kabadiwalaArmy.get(personLabel)).pathArray.get(0);
       }
@@ -220,21 +209,13 @@ void checkAgentBehavior(){
       for(int e = 0; e<bundleArray.size(); e++){
         bundleArray.get(e).display(); //draw bundle
       }
-    }
+    
    
    //check if the bundle belongs to the correct kabadiwala
    //if any of the id's within the bundleArray list = p id
-   for(int e = 0; e<bundleArray.size(); e++){
-     //it appears that the bundle ID is not catching to the correct one
-     
-     
-     
-     
-     
+   for(int e = 0; e<bundleArray.size(); e++){     
      String bundleId = String.valueOf(bundleArray.get(e).id.charAt(0));
-     String kabadiId = str(p.id);
-     println("bundle ID is",bundleId);
-     println("kabadi ID is",kabadiId);
+     String kabadiId = str(p.id+1);
      Bundle s = bundleArray.get(e);
      
      if(bundleId.equals(kabadiId)){ //if the [1] in bundle id 1-1 or 1-2 = kabadiwala[1]       
@@ -271,6 +252,7 @@ void checkAgentBehavior(){
            //println(hhDistArray.get(i));
            //sum += hhDistArray.get(i);
          //}
+   }
        
        }
      }

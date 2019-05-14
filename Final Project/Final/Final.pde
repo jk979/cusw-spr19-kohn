@@ -252,7 +252,7 @@ void drawBundles(){
   for (int i = 0; i<bundleArray.size(); i++) {
     Bundle Bn = (Bundle) bundleArray.get(i);
     Bn.display();
-    text("Weight: "+Bn.total_kg, Bn.w, Bn.h);
+    //text("Weight: "+Bn.total_kg, Bn.w, Bn.h);
   }
 }
 

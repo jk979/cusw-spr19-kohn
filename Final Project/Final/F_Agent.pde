@@ -131,7 +131,7 @@ class Agent {
   float r;
   float maxforce;
   float maxspeed;
-  float tolerance = 1;
+  float tolerance = 0.1;
   ArrayList<Path> pathArray;
   int pathArrayIndex = 0;
   boolean stop = false;
@@ -323,7 +323,12 @@ class Agent {
   }
 
   void display() {
+    if(!stop){
     fill(18, 247, 41);
+    }
+    else if(stop){
+      fill(stoppedAgent);
+    }
     smooth();
     noStroke();
     render();
