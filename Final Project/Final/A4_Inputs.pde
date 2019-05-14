@@ -60,4 +60,4 @@ float totalKPickupCost;
 
 //distance calculation
 float HavD;
-int roundtripKM;
+float roundtripKM = 0; //initialized at 0

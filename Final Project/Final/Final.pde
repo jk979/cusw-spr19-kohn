@@ -57,10 +57,10 @@ void tempModel(){
   println("activating temp model...");
   
   //1. get the kabadiwala
-  chooseKabadiwala(1);    
+  chooseKabadiwala(0);    
   
   //2. initialize the kabadiwala Agent
-  initPopulation(2); 
+  initPopulation(1); 
 }
 
 

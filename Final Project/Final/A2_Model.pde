@@ -114,7 +114,7 @@ void initPopulation(int kabadiwalaNum) {
   kabadiwalaArmy = new ArrayList<Agent>();
   
   //2. for each bundle...
-  for (int i=0; i<3; i++) {
+  for (int i=0; i<1; i++) {
     
     //initialize bundle object
     Bundle b;
@@ -144,16 +144,19 @@ void initPopulation(int kabadiwalaNum) {
   } //repeat for each path
   
   //9. once paths has been populated with all the paths for the Agent...
+  
+  /*
   println("number of paths in pathArray is: ",paths.size());
   println("i have bundles gathered for the kabadiwala, the size of bundle array is ",bundleArray.size());
   println("bundles in bundleArray: ");
   for(int e = 0; e<bundleArray.size(); e++){
     println("bundleArray bundle: ",bundleArray.get(e).id);
-  }
+  }*/
+  
   //10. add agent to the path if the path has been parsed successfully
   if (paths.get(0).waypoints.size() > 1) { 
     //float random_speed = random(0.1, 0.3);
-    float random_speed = 0.7;
+    float random_speed = 1.3;
     //println("making a waypoints pvector to get the full waypoints path for this bundle");
     PVector loc = paths.get(0).waypoints.get(0); //get the full waypoints path
     
@@ -197,6 +200,8 @@ void checkAgentBehavior(){
    //check if the bundle belongs to the correct kabadiwala
    //if any of the id's within the bundleArray list = p id
    for(int e = 0; e<bundleArray.size(); e++){
+     ArrayList<Float> hhDistArray = new ArrayList<Float>();
+     float sum = 0; 
      String bundleId = String.valueOf(bundleArray.get(e).id.charAt(0));
      String kabadiId = str(p.id);
      Bundle s = bundleArray.get(e);
@@ -209,8 +214,7 @@ void checkAgentBehavior(){
        //int euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala_loc.x, kabadiwala_loc.y));
    
        //1. when agent encounters bundle
-       if(euclideanAgentBundle < 4 && euclideanOriginBundle > 3){ 
-         println("the agent encountered the bundle and picked it up!");
+       if(euclideanAgentBundle < 4 && euclideanOriginBundle > 4){ 
          s.w = p.location.x; 
          s.h = p.location.y;
          s.pickedUp = true;
@@ -219,26 +223,20 @@ void checkAgentBehavior(){
        }
    
        //2. bundle brought to kabadiwala
-       if(euclideanOriginBundle < 3){ 
-         println("bundle brought to kabadiwala shop");
+       else if(euclideanOriginBundle <= 4 && p.stop == false){ 
          s.w = kabadiwala_loc.x; 
          s.h = kabadiwala_loc.y;
          s.pickedUp = false;     
          s.timesCollected++;
          //look up KM based on s.id
-         println("path distance was ",s.id, hh_dist_MergedMap.get(s.id));
-
-         //roundtripKM = //total distance of the path
-     
-         roundtripCompleted = true;
-
-         if(roundtripCompleted == true){
-          p.isAlive = false;
-          println("HERE I AM COMPLETED");
-          //make a new path
-          p.isAlive = true;
-          tempModel();
-          }
+         hhDistArray.add(hh_dist_MergedMap.get(s.id));         
+         roundtripCompleted = true;  
+       }
+       else if(euclideanOriginBundle <= 4 && p.stop == true){
+         for(int i = 0; i < hhDistArray.size(); i++){
+          sum += hhDistArray.get(i);
+         }
+         roundtripKM = Math.round(sum*100.0/100.0);
        }
      }
    }
