@@ -182,7 +182,7 @@ void initPopulation(int kabadiwalaNum) {
     }
       println("size of kabadiwala army is",kabadiwalaArmy.size());
       //println(kabadiwalaArmy);
-      println("the first agent is", kabadiwalaArmy.get(0));
+      //println("the first agent is", kabadiwalaArmy.get(0));
       //println("the first agent's paths array is: ",kabadiwalaArmy.get(0).pathArray);
       //kabadiwalaArmy.get(0).pathToDraw = kabadiwalaArmy.get(0).pathArray.get(0);
       
@@ -225,8 +225,16 @@ void checkAgentBehavior(){
    //check if the bundle belongs to the correct kabadiwala
    //if any of the id's within the bundleArray list = p id
    for(int e = 0; e<bundleArray.size(); e++){
+     //it appears that the bundle ID is not catching to the correct one
+     
+     
+     
+     
+     
      String bundleId = String.valueOf(bundleArray.get(e).id.charAt(0));
      String kabadiId = str(p.id);
+     println("bundle ID is",bundleId);
+     println("kabadi ID is",kabadiId);
      Bundle s = bundleArray.get(e);
      
      if(bundleId.equals(kabadiId)){ //if the [1] in bundle id 1-1 or 1-2 = kabadiwala[1]       

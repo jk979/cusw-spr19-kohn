@@ -313,7 +313,18 @@ void addDays() {
 
 void keyPressed() {
   if (key==ENTER || key==RETURN) {
+    background(0);
+    image(pg, 0, 0);
+
+    drawShops();
+    drawBundles();
+      
     tempModel();
+    checkAgentBehavior();
+    checkSaleBehavior();
+
+    drawAgents();
+    drawInfo();
   } else if (key=='q') {
     square = !square;
   } else if (key=='z') {     //redraw the GIS objects to HW
