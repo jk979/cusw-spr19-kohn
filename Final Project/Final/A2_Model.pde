@@ -103,8 +103,55 @@ void WholesalerPath(){
 
 }
 
+
+//raise the MRF Army
+void initMRFs(){
+  //1. make arraylist of people
+  mrfArmy = new ArrayList<Agent>();
+  
+  //2. add MRFs to army along with their bundle paths
+  for(int m = 17; m < 19; m++){
+    chooseMRF(m);
+    ArrayList<Path> paths = new ArrayList<Path>();
+    
+    //for each bundle...
+    for(int i=0; i<1; i++){
+      //add current path to list of paths
+      ArrayList<PVector> mrf_test_array = MRFMergedMap.get("MRF-HW17-sector1");
+      println("test array: ",mrf_test_array);
+      Path n = new Path(mrf_loc, mrf_loc, mrf_test_array, true);
+      paths.add(n); //added the single bundle path to this bundle 
+    }
+    
+    //10. add agent to the path if the path has been parsed successfully
+    println("paths size is ",paths.size());
+    if (paths.get(0).waypoints.size() > 1) { 
+      float random_speed = 0.9;
+      PVector loc = paths.get(0).waypoints.get(0); //get the full waypoints path
+      
+    //11. make an agent with the desired features, and the agent is associated with that bundle_path
+    //populate mrfArmy with mrf collectors
+
+      println("making new person");
+      Agent mrfperson = new Agent(loc.x, loc.y, 2, random_speed, paths, m);
+      mrfperson.isAlive = true;
+      mrfperson.id = m;
+      mrfperson.type = "m";
+
+      println("now inputting id into MRF person, mrfNum is ",m," and person id is",mrfperson.id);
+      mrfArmy.add(mrfperson);
+    }
+      println("size of MRF army is",mrfArmy.size());
+
+      //raise the army!
+      for(int personLabel = 0; personLabel<mrfArmy.size(); personLabel++){
+        (mrfArmy.get(personLabel)).pathToDraw = (mrfArmy.get(personLabel)).pathArray.get(0);
+      }
+    }  
+}
+
 //raise the Kabadiwala Army all at once
-void initPopulation(int kabadiwalaNum) {
+void initPopulation() {
   //  Object to define and capture a specific origin, destination, and path
   
   /*  An example population that traverses along various paths
@@ -171,6 +218,7 @@ void initPopulation(int kabadiwalaNum) {
       Agent person = new Agent(loc.x, loc.y, 2, random_speed, paths, kab);
       person.isAlive = true;
       person.id = kab;
+      person.type = "k";
       println("now inputting id into kabadiwala person, kabadiwalaNum is ",kab," and person id is",person.id);
       kabadiwalaArmy.add(person);
     }
@@ -184,6 +232,15 @@ void initPopulation(int kabadiwalaNum) {
   }
 }
 
+ArrayList<PVector> mrfpersonLocations(ArrayList<Agent> mrfArmy) {
+  ArrayList<PVector> l = new ArrayList<PVector>();
+  for (Agent a: mrfArmy) {
+    l.add(a.location);
+  }
+  return l;
+}
+
+
 ArrayList<PVector> personLocations(ArrayList<Agent> kabadiwalaArmy) {
   ArrayList<PVector> l = new ArrayList<PVector>();
   for (Agent a: kabadiwalaArmy) {
@@ -193,11 +250,17 @@ ArrayList<PVector> personLocations(ArrayList<Agent> kabadiwalaArmy) {
 }
 
 
-
-
 void checkAgentBehavior(){
   
   boolean collisionDetection = true;
+  
+  for(Agent t : mrfArmy) {
+    if(t.isAlive){
+      t.update(mrfpersonLocations(mrfArmy), collisionDetection);
+      t.pathToDraw.display(50,50);
+      t.display();
+    }
+  }
   
   //check if Agent is alive
   for (Agent p: kabadiwalaArmy) {
@@ -209,7 +272,6 @@ void checkAgentBehavior(){
       for(int e = 0; e<bundleArray.size(); e++){
         bundleArray.get(e).display(); //draw bundle
       }
-    
    
    //check if the bundle belongs to the correct kabadiwala
    //if any of the id's within the bundleArray list = p id

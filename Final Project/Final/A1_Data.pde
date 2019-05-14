@@ -144,10 +144,11 @@ void parseKabadiwalaToMRF(){
 for(String currentID : ids){
      ArrayList<PVector> coordinatesTest = new ArrayList<PVector>();
      for(int i = 0; i<mrf_paths_features.size(); i++){
-        mrfpaths_k_id = mrf_paths_features.getJSONObject(i).getJSONObject("attributes").getString("ward");
+       mrfpaths_level2_id = mrf_paths_features.getJSONObject(i).getJSONObject("attributes").getString("type");
+       mrfpaths_k_id = mrf_paths_features.getJSONObject(i).getJSONObject("attributes").getString("ward");
         mrfpaths_pt_id = mrf_paths_features.getJSONObject(i).getJSONObject("attributes").getString("id");
         JSONArray mrf_path_jsonarray = mrf_paths_features.getJSONObject(i).getJSONObject("geometry").getJSONArray("paths");
-        String id = mrfpaths_k_id+"-"+mrfpaths_pt_id; //i.e. 1-1
+        String id = mrfpaths_level2_id+"-"+mrfpaths_k_id+"-"+mrfpaths_pt_id; //i.e. 1-1
         if(id.equals(currentID)){
             for (int j = 0; j<mrf_path_jsonarray.size(); j++){
                 for(int k = 0; k<mrf_path_jsonarray.getJSONArray(j).size(); k++){

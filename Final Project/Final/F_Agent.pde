@@ -323,10 +323,16 @@ class Agent {
   }
 
   void display() {
-    if(!stop){
-    fill(18, 247, 41);
+    if(type.equals("m")){
+      fill(mrf_fill);
     }
-    else if(stop){
+    else if(type.equals("k")){
+      fill(k_fill);
+    }
+    else if(type.equals("w")){
+      fill(w_fill);
+    }
+    if(stop){
       fill(stoppedAgent);
     }
     smooth();

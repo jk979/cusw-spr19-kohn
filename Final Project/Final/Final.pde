@@ -37,7 +37,7 @@ ArrayList<Bundle> bundleArray = new ArrayList();
 //ArrayList<KabadiwalaAgent> kabadiwalaArray = new ArrayList(); 
 
 ArrayList<Agent> kabadiwalaArmy = new ArrayList();
-ArrayList<MRFAgent> mrfArray = new ArrayList(); 
+ArrayList<Agent> mrfArmy = new ArrayList(); 
 ArrayList<WholesalerAgent> wholesalerArray = new ArrayList(); 
 ArrayList<Float> hhDistArray = new ArrayList<Float>();
 
@@ -57,11 +57,11 @@ void tempModel(){
   soldToKabadiwala = false;
   println("activating temp model...");
   
-  //1. get the kabadiwala
-  //chooseKabadiwala(0);    
+  //1. initialize the Kabadiwala Army
+  //initPopulation(); 
   
-  //2. initialize the Kabadiwala Army
-  initPopulation(1); 
+  //2. initialize the MRFs
+  initMRFs();
 }
 
 
@@ -130,7 +130,7 @@ void initModel() {
     println("MRF CHOSEN IS ",i);
     MRFAgent m = new MRFAgent(mrf_loc.x, mrf_loc.y);
     println("MRF agent is at location",m);
-    mrfArray.add(m);
+    //mrfArray.add(m);
     
     //Issue #1 
     ArrayList<PVector> mrf_test_array = MRFMergedMap.get("MRF-HW17-sector1");
@@ -139,7 +139,7 @@ void initModel() {
     Path b = new Path(mrf_loc, mrf_loc, mrf_test_array, true);
     println("MRF LOC IS ",mrf_loc);
     //paths.add(b);
-    initPopulation(1); // 2
+    //initPopulation(1); // 2
   }
   for (int i = w_min; i<w_max; i++) {
     chooseWholesaler(i);
@@ -264,8 +264,8 @@ void drawAgents(){
   }
 
   //draw the MRF agent!
-  for (int i = 0; i<mrfArray.size(); i++) {
-    MRFAgent m = (MRFAgent) mrfArray.get(i);
+  for (int i = 0; i<mrfArmy.size(); i++) {
+    Agent m = (Agent) mrfArmy.get(i);
     m.display();
   }
 

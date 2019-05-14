@@ -59,6 +59,7 @@ void chooseMRF(int i) {
   randomMIndex = i; 
   mrf_loc = (PVector) collection_mrfcoords.get(randomMIndex);
   mrf_loc = map.getScreenLocation(mrf_loc);
+  println("MRF successfully chosen");
 }
 
 void chooseWholesaler(int i) {
