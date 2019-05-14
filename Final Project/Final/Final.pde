@@ -172,7 +172,7 @@ void setup() {
   //add background graphic to place GIS objects on
   pg = createGraphics(width, height);
   
-  String whichStartingMap = "0";
+  String whichStartingMap = "HW";
   
   if(whichStartingMap == "HW"){
 
