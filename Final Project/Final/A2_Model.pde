@@ -106,7 +106,6 @@ void WholesalerPath(){
 //raise the Kabadiwala Army all at once
 void initPopulation(int kabadiwalaNum) {
   //  Object to define and capture a specific origin, destination, and path
-  ArrayList<Path> paths = new ArrayList<Path>();
   
   /*  An example population that traverses along various paths
   *  FORMAT: Agent(x, y, radius, speed, path);
@@ -114,10 +113,15 @@ void initPopulation(int kabadiwalaNum) {
   
   //1. make an arraylist of people 
   kabadiwalaArmy = new ArrayList<Agent>();
+  
+  //2. add kabadiwalas to the army along with their bundles and bundle paths
+  for(int kab = 0; kab < 2; kab++){
+    chooseKabadiwala(kab);
+    ArrayList<Path> paths = new ArrayList<Path>();
 
-  //kabadiwalaArmy.get(kabadiwalaNum) //get Agent 1, 2, 3...
     //2. for each bundle...
     for (int i=0; i<3; i++) {
+
       //reset hhDistArray
       hhDistArray = new ArrayList<Float>();
   
@@ -125,7 +129,7 @@ void initPopulation(int kabadiwalaNum) {
       Bundle b;
       
       //3. get the ID to find the unique path
-      String composite_ID = str(kabadiwalaNum)+"-"+str(i+1);  //gets composite ID of 1-1, 1-2, etc. 
+      String composite_ID = str(kab+1)+"-"+str(i+1);  //gets composite ID of 1-1, 1-2, etc. 
       println("composite ID is now",composite_ID);
       
       //4. get path to bundle for that unique composite_ID
@@ -152,7 +156,7 @@ void initPopulation(int kabadiwalaNum) {
     //9. once paths has been populated with all the paths for the Agent...
     totalTripDistanceForKabadiwala = 0;
     for(int e = 0; e<bundleArray.size(); e++){
-      println("total trip distance: ",totalTripDistanceForKabadiwala);
+      //println("total trip distance: ",totalTripDistanceForKabadiwala);
       totalTripDistanceForKabadiwala += hh_dist_MergedMap.get(bundleArray.get(e).id);
     }
   
@@ -165,13 +169,29 @@ void initPopulation(int kabadiwalaNum) {
     //populate kabadiwalaArmy with kabadiwalas
 
       println("making new person");
-      Agent person = new Agent(loc.x, loc.y, 7, random_speed, paths, kabadiwalaNum);
+      Agent person = new Agent(loc.x, loc.y, 7, random_speed, paths, kab);
+      //get paths from bundle assignment
+      //get kabadiwalaNum from chooseKabadiwala
+      //must chooseKabadiwala from kabadiwalaArmy
+      //each kabadiwala has its own paths and kabadiwalaNum
+      //but don't do pathToDraw until you have the entire kabadiwalaArmy assembled with its paths and numbers
       person.isAlive = true;
-      person.id = kabadiwalaNum;
-      println("now inputting id into kabadiwala person, kabadiwalaNum is ",kabadiwalaNum," and person id is",person.id);
+      person.id = kab;
+      println("now inputting id into kabadiwala person, kabadiwalaNum is ",kab," and person id is",person.id);
       kabadiwalaArmy.add(person);
+    }
       println("size of kabadiwala army is",kabadiwalaArmy.size());
-      person.pathToDraw = paths.get(0);
+      //println(kabadiwalaArmy);
+      println("the first agent is", kabadiwalaArmy.get(0));
+      //println("the first agent's paths array is: ",kabadiwalaArmy.get(0).pathArray);
+      //kabadiwalaArmy.get(0).pathToDraw = kabadiwalaArmy.get(0).pathArray.get(0);
+      
+      //raise the army!
+      //they are following the same paths. they need to follow their own paths. 
+      for(int personLabel = 0; personLabel<kabadiwalaArmy.size(); personLabel++){
+        (kabadiwalaArmy.get(personLabel)).pathToDraw = (kabadiwalaArmy.get(personLabel)).pathArray.get(0);
+      }
+      
   }
 }
 

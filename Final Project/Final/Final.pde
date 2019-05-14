@@ -58,7 +58,7 @@ void tempModel(){
   println("activating temp model...");
   
   //1. get the kabadiwala
-  chooseKabadiwala(0);    
+  //chooseKabadiwala(0);    
   
   //2. initialize the Kabadiwala Army
   initPopulation(1); 
@@ -134,7 +134,7 @@ void initModel() {
     
     //Issue #1 
     ArrayList<PVector> mrf_test_array = MRFMergedMap.get("MRF-HW17-sector1");
-    println(mrf_test_array);
+    //println(mrf_test_array);
     //make path with origin at MRF and destination at same MRF
     Path b = new Path(mrf_loc, mrf_loc, mrf_test_array, true);
     println("MRF LOC IS ",mrf_loc);
@@ -313,7 +313,7 @@ void addDays() {
 
 void keyPressed() {
   if (key==ENTER || key==RETURN) {
-    initModel();
+    tempModel();
   } else if (key=='q') {
     square = !square;
   } else if (key=='z') {     //redraw the GIS objects to HW

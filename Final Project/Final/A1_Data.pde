@@ -579,8 +579,8 @@ void parseWholesaler() {
     lat_w = wData.getFloat(w,3);
     lon_w = wData.getFloat(w,4);
     int w_id = int(wData.getString(w,0));
-    println(lat_w);
-    println(lon_w);
+    //println(lat_w);
+    //println(lon_w);
     println("ID WHOLESALER",w_id);
     if (w_id != previd_w) {
       if (wcoords.size() > 0) { //create constructor for kcoords
