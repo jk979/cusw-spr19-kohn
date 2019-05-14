@@ -1,4 +1,8 @@
 // Objects to define our Network
+
+//objective today: 
+//get MRFs and wholesalers to start new course
+
 //
 ObstacleCourse course;
 Graph network;
@@ -89,7 +93,7 @@ void kPath() {
 //raise the wholesaler army
 void initWholesalers(){
   //1. make arraylist of people
-  wholesalerArmy = new ArrayList<Agent>();
+  wholesalerArmy = new ArrayList<Agent2>();
   
   //2. add wholesalers to army along with their bundle paths
   for(int w = w_min; w<w_max; w++){
@@ -137,7 +141,7 @@ void initWholesalers(){
     //populate wholesalerArmy with w collectors
 
       println("making new person");
-      Agent wperson = new Agent(loc.x, loc.y, 2, random_speed, paths, w);
+      Agent2 wperson = new Agent2(loc.x, loc.y, 2, random_speed, paths, w);
       wperson.isAlive = true;
       wperson.id = w;
       wperson.type = "w";
@@ -158,7 +162,7 @@ void initWholesalers(){
 //raise the MRF Army
 void initMRFs(){
   //1. make arraylist of people
-  mrfArmy = new ArrayList<Agent>();
+  mrfArmy = new ArrayList<Agent2>();
   
   //2. add MRFs to army along with their bundle paths
   for(int m = m_min; m < m_max; m++){
@@ -202,14 +206,14 @@ void initMRFs(){
     //10. add agent to the path if the path has been parsed successfully
     println("paths size is ",paths.size());
     if (paths.get(0).waypoints.size() > 1) { 
-      float random_speed = 0.9;
+      float random_speed = 1.3;
       PVector loc = paths.get(0).waypoints.get(0); //get the full waypoints path
       
     //11. make an agent with the desired features, and the agent is associated with that bundle_path
     //populate mrfArmy with mrf collectors
 
       println("making new person");
-      Agent mrfperson = new Agent(loc.x, loc.y, 2, random_speed, paths, m);
+      Agent2 mrfperson = new Agent2(loc.x, loc.y, 2, random_speed, paths, m);
       mrfperson.isAlive = true;
       mrfperson.id = m;
       mrfperson.type = "m";
@@ -243,7 +247,7 @@ void initPopulation() {
     ArrayList<Path> paths = new ArrayList<Path>();
 
     //2. for each bundle...
-    for (int i=0; i<3; i++) {
+    for (int i=0; i<numBundlesPerKabadiwala; i++) {
 
       //reset hhDistArray
       hhDistArray = new ArrayList<Float>();
@@ -308,17 +312,17 @@ void initPopulation() {
   }
 }
 
-ArrayList<PVector> wpersonLocations(ArrayList<Agent> wholesalerArmy) {
+ArrayList<PVector> wpersonLocations(ArrayList<Agent2> wholesalerArmy) {
   ArrayList<PVector> l = new ArrayList<PVector>();
-  for (Agent a: wholesalerArmy) {
+  for (Agent2 a: wholesalerArmy) {
     l.add(a.location);
   }
   return l;
 }
 
-ArrayList<PVector> mrfpersonLocations(ArrayList<Agent> mrfArmy) {
+ArrayList<PVector> mrfpersonLocations(ArrayList<Agent2> mrfArmy) {
   ArrayList<PVector> l = new ArrayList<PVector>();
-  for (Agent a: mrfArmy) {
+  for (Agent2 a: mrfArmy) {
     l.add(a.location);
   }
   return l;
@@ -337,7 +341,7 @@ void checkAgentBehavior(){
   
   boolean collisionDetection = true;
   
-  for(Agent d: wholesalerArmy){
+  for(Agent2 d: wholesalerArmy){
     if(d.isAlive){
       d.update(wpersonLocations(wholesalerArmy), collisionDetection);
       d.display();
@@ -369,7 +373,7 @@ void checkAgentBehavior(){
     }
   }
   
-  for(Agent t : mrfArmy) {
+  for(Agent2 t : mrfArmy) {
     if(t.isAlive){
       t.update(mrfpersonLocations(mrfArmy), collisionDetection);
       t.display();

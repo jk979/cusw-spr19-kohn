@@ -37,8 +37,8 @@ ArrayList<Bundle> bundleArray = new ArrayList();
 //ArrayList<KabadiwalaAgent> kabadiwalaArray = new ArrayList(); 
 
 ArrayList<Agent> kabadiwalaArmy = new ArrayList();
-ArrayList<Agent> mrfArmy = new ArrayList(); 
-ArrayList<Agent> wholesalerArmy = new ArrayList(); 
+ArrayList<Agent2> mrfArmy = new ArrayList(); 
+ArrayList<Agent2> wholesalerArmy = new ArrayList(); 
 ArrayList<Float> hhDistArray = new ArrayList<Float>();
 
 ///////////////////////
@@ -63,93 +63,6 @@ void tempModel(){
   //2. initialize the MRFs
 }
 
-
-//contain the model initialization
-void initModel() {
-  soldToKabadiwala = false;
-
-  //println("NOT initializing ways network"); //because the paths along the network are already chosen
-  //waysNetwork(ways); //initialize the Ways network (roads)
-
-  println("entering group for loop");
-  
-  //1. Set up the number of kabadiwalas
-  for (int i = k_min; i<k_max; i++) {
-    //println("going from ",k_min," to ",k_max);
-    chooseKabadiwala(i); //choose the #i kabadiwala agent
-    //initialize the agent on screen
-
-    //initialize 0 for each variable
-    roundtripKM = 0;
-    totalKPickupCost = 0;
-    kabadiwala_pickup_cost_paper = 0;
-    kabadiwala_pickup_cost_plastic = 0;
-    kabadiwala_pickup_cost_glass = 0;
-    kabadiwala_pickup_cost_metal = 0;
-    misc = 0;
-
-    //2. For each kabadiwala, set up each kabadiwala's bundles
-    println("setting up "+numBundlesPerKabadiwala+" bundles for kabadiwala "+str(i));
-    for (int j = 0; j<numBundlesPerKabadiwala; j++) { //how many bundles one kabadiwala should get
-    println("2. now getting bundle #"+j+" for this kabadiwala");
-      if(roundtripCompleted == false){
-        
-        String composite_ID = str(i+1)+"-"+str(j+1);  
-        
-        //2a. get path to bundle
-        ArrayList<PVector> temp_array = newMergedMap.get(composite_ID);
-        //println("3. getting path array for composite id",composite_ID);
-        
-        //2b. get last point in array
-        PVector bundlepoint = temp_array.get(temp_array.size()-1);
-  
-        //3. assign bundle to last point and translate to map coordinates
-        //b = new Bundle(map.getScreenLocation(bundlepoint));
-        //b.id = composite_ID; //bind to ID
-  
-        //4. add to bundleArray for displaying in draw()
-        // bundleArray.add(b);
-  
-        //Path a = new Path(kabadiwala_loc, b.loc, temp_array, true);
-        //paths.add(a); //added the single bundle path to this bundle
-        //initPopulation(1);
-        //println("4. path made, now initializing population...");
-        } //end roundtripCompleted = false
-       
-    }
-    //once all the bundle paths are added to Paths...
-    //agent walks on each path in paths
-
-  }
-  
-
-  //set up Level 2
-  for (int i = m_min; i<m_max; i++) {
-    chooseMRF(i);
-    println("MRF CHOSEN IS ",i);
-    MRFAgent m = new MRFAgent(mrf_loc.x, mrf_loc.y);
-    println("MRF agent is at location",m);
-    //mrfArray.add(m);
-    
-    //Issue #1 
-    ArrayList<PVector> mrf_test_array = MRFMergedMap.get("MRF-HW17-sector1");
-    //println(mrf_test_array);
-    //make path with origin at MRF and destination at same MRF
-    Path b = new Path(mrf_loc, mrf_loc, mrf_test_array, true);
-    println("MRF LOC IS ",mrf_loc);
-    //paths.add(b);
-    //initPopulation(1); // 2
-  }
-  for (int i = w_min; i<w_max; i++) {
-    chooseWholesaler(i);
-    WholesalerAgent w = new WholesalerAgent(w_loc.x, w_loc.y);
-    //wholesalerArmy.add(w);
-    
-  }
-  
-   
-  
-}
 
 //////////////////////////////////// setup /////////////////////////////////////
 
@@ -319,13 +232,13 @@ void drawAgents(){
 
   //draw the MRF agent!
   for (int i = 0; i<mrfArmy.size(); i++) {
-    Agent m = (Agent) mrfArmy.get(i);
+    Agent2 m = (Agent2) mrfArmy.get(i);
     m.display();
   }
 
   //draw the wholesaler!
   for (int i = 0; i<wholesalerArmy.size(); i++) {
-    Agent w = (Agent) wholesalerArmy.get(i);
+    Agent2 w = (Agent2) wholesalerArmy.get(i);
     w.display();
   }
 }
