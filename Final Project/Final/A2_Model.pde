@@ -208,6 +208,7 @@ void initMRFs(){
     if (paths.get(0).waypoints.size() > 1) { 
       float random_speed = 1.3;
       PVector loc = paths.get(0).waypoints.get(0); //get the full waypoints path
+      mrf_loc = new PVector(loc.x, loc.y);
       
     //11. make an agent with the desired features, and the agent is associated with that bundle_path
     //populate mrfArmy with mrf collectors
@@ -353,22 +354,22 @@ void checkAgentBehavior(){
         int euclideanAgentBundle = parseInt(dist(s.w, s.h, d.location.x, d.location.y));
         int euclideanOriginBundle = parseInt(dist(s.w, s.h, w_loc.x, w_loc.y));
         //1. when agent encounters bundle
-       if(euclideanAgentBundle < 4 && euclideanOriginBundle > 4){ 
+        if(euclideanAgentBundle < 4 && euclideanOriginBundle > 4){ 
          s.w = d.location.x; 
          s.h = d.location.y;
          s.pickedUp = true;
          s.timesCollected = 1;
          soldToKabadiwala = true;
-       }
+        }
    
-       //2. bundle brought to kabadiwala, but still bundles to go 
-       else if(euclideanOriginBundle <= 4 && d.stop == false){ 
+        //2. bundle brought to kabadiwala, but still bundles to go 
+        else if(euclideanOriginBundle <= 4 && d.stop == false){ 
          s.w = w_loc.x; 
          s.h = w_loc.y;
          s.pickedUp = false;     
          roundtripCompleted = true;  
          //roundtripKM = Math.round((hh_dist_MergedMap.get(s.id))*2*100.0/100.0); //for that s.id, total roundtrip distance
-       }
+        }
       } 
     }
   }
@@ -380,34 +381,29 @@ void checkAgentBehavior(){
       stroke(mrf_fill);
       t.pathToDraw.display(50,50);
       
-      for(int e = 0; e<bundleArray.size(); e++){    
+      for(int e = 0; e<bundleArray.size(); e++){
         Bundle s = bundleArray.get(e);
-        Block a = bundleArray.get(e).plastic;
-        Block b = bundleArray.get(e).paper;
-        Block c = bundleArray.get(e).glass;
-        Block d = bundleArray.get(e).metal;
+        Block a = s.plastic;
+        Block b = s.paper;
+        Block c = s.glass;
+        Block d = s.metal;
         
-        int euclideanAgentBundle = parseInt(dist(s.w, s.h,  t.location.x, t.location.y));
-        int euclideanOriginBundle = parseInt(dist(s.w, s.h, mrf_loc.x, mrf_loc.y));
+        int euclideanAgentBundle = parseInt(dist(a.loc_x, a.loc_y,  t.location.x, t.location.y));
+        int euclideanOriginBundle = parseInt(dist(a.loc_x, a.loc_y, mrf_loc.x, mrf_loc.y));
+        println(euclideanAgentBundle, euclideanOriginBundle, a.loc_x, a.loc_y, mrf_loc.x, mrf_loc.y);
         
         //1. when agent encounters bundle
-       if(euclideanAgentBundle < 4 && euclideanOriginBundle > 4){ 
-         println("block was grabbed by mrf");
-         a.loc_x = t.location.x; 
-         a.loc_y = t.location.y;
-         a.pickedUp = true;
-         a.timesCollected = 1;
-         soldToKabadiwala = true;
-       }
+        if(euclideanAgentBundle < 4 && euclideanOriginBundle > 4){ 
+          //println("block was grabbed by mrf");
+          a.carry(t.location.x, t.location.y, 2);
+        }
    
-       //2. bundle brought to kabadiwala, but still bundles to go 
-       else if(euclideanOriginBundle <= 4 && t.stop == false){ 
-         a.loc_x = mrf_loc.x; 
-         a.loc_y = mrf_loc.y;
-         a.pickedUp = false;     
-         roundtripCompleted = true;  
-         //roundtripKM = Math.round((hh_dist_MergedMap.get(s.id))*2*100.0/100.0); //for that s.id, total roundtrip distance
-       }
+        //2. bundle brought to mrf, but still bundles to go 
+        else if(euclideanOriginBundle <= 4 && t.stop == false){ 
+          println("block was drobbed by mrf");
+          a.drop(mrf_loc.x, mrf_loc.y);
+          roundtripCompleted = true;  
+        }
       } 
     }
   }
@@ -424,50 +420,53 @@ void checkAgentBehavior(){
         bundleArray.get(e).display(); //draw bundle
       }
    
-   //check if the bundle belongs to the correct kabadiwala
-   //if any of the id's within the bundleArray list = p id
-   for(int e = 0; e<bundleArray.size(); e++){     
-     String bundleId = String.valueOf(bundleArray.get(e).id.charAt(0));
-     String kabadiId = str(p.id+1);
-     Bundle s = bundleArray.get(e);
-     
-       if(bundleId.equals(kabadiId)){ //if the [1] in bundle id 1-1 or 1-2 = kabadiwala[1]       
-         //initial conditions: bundle at source, agent in transit
-         int euclideanAgentBundle = parseInt(dist(s.w, s.h, p.location.x, p.location.y));
-         int euclideanOriginBundle = parseInt(dist(s.w, s.h, kabadiwala_loc.x, kabadiwala_loc.y));
-         //int euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
-         //int euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala_loc.x, kabadiwala_loc.y));
-     
-       //1. when agent encounters bundle
-       if(euclideanAgentBundle < 4 && euclideanOriginBundle > 4){ 
-         s.carryAll(p.location.x, p.location.y);
-         s.pickedUp = true;
-         s.timesCollected = 1;
-         soldToKabadiwala = true;
-       }
-   
-       //2. bundle brought to kabadiwala, but still bundles to go 
-       else if(euclideanOriginBundle <= 4 && p.stop == false){ 
-         s.carryAll(kabadiwala_loc.x, kabadiwala_loc.y);
-         s.pickedUp = false;     
-         roundtripCompleted = true;  
-         //roundtripKM = Math.round((hh_dist_MergedMap.get(s.id))*2*100.0/100.0); //for that s.id, total roundtrip distance
-       }
-       
-       //stuff governing agent's behavior
-       if(p.stop == true){
-          roundtripKM = Math.round(totalTripDistanceForKabadiwala*2*100.0/100.0);
-       }
-       //3. bundle brought to kabadiwala, and finished track
-           //println("sum: ",sum);
-           //println(hhDistArray.get(i));
-           //sum += hhDistArray.get(i);
-         //}
-   }
+      //check if the bundle belongs to the correct kabadiwala
+      if(!p.stop) {
+        //if any of the id's within the bundleArray list = p id
+        for(int e = 0; e<bundleArray.size(); e++){     
+          String bundleId = String.valueOf(bundleArray.get(e).id.charAt(0));
+          String kabadiId = str(p.id+1);
+          Bundle s = bundleArray.get(e);
+         
+          if(bundleId.equals(kabadiId)){ //if the [1] in bundle id 1-1 or 1-2 = kabadiwala[1]       
+            //initial conditions: bundle at source, agent in transit
+            int euclideanAgentBundle = parseInt(dist(s.w, s.h, p.location.x, p.location.y));
+            int euclideanOriginBundle = parseInt(dist(s.w, s.h, kabadiwala_loc.x, kabadiwala_loc.y));
+            //int euclideanAgentSource = parseInt(dist(p.location.x, p.location.y, source.x, source.y));
+            //int euclideanAgentOrigin = parseInt(dist(p.location.x, p.location.y, kabadiwala_loc.x, kabadiwala_loc.y));
+         
+            //1. when agent encounters bundle
+            if(euclideanAgentBundle < 4 && euclideanOriginBundle > 4){ 
+               s.carryAll(p.location.x, p.location.y);
+               s.pickedUp = true;
+               s.timesCollected = 1;
+               soldToKabadiwala = true;
+            }
+         
+            //2. bundle brought to kabadiwala, but still bundles to go 
+            else if(euclideanOriginBundle <= 4 && p.stop == false){ 
+               s.carryAll(kabadiwala_loc.x, kabadiwala_loc.y);
+               s.pickedUp = false;     
+               roundtripCompleted = true;  
+               //roundtripKM = Math.round((hh_dist_MergedMap.get(s.id))*2*100.0/100.0); //for that s.id, total roundtrip distance
+            }
+             
+            //stuff governing agent's behavior
+            if(p.stop == true){
+                roundtripKM = Math.round(totalTripDistanceForKabadiwala*2*100.0/100.0);
+            }
+             
+            //3. bundle brought to kabadiwala, and finished track
+            //println("sum: ",sum);
+            //println(hhDistArray.get(i));
+            //sum += hhDistArray.get(i);
+          }
+        }
+      }
     }
   }
-  }
-    }
+}
+    
 
     
 void checkSaleBehavior(){

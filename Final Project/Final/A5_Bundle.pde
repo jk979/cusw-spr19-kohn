@@ -31,6 +31,19 @@ class Block {
     loc_y = y;
   }
   
+  void carry(float _x, float _y, int count) {
+    loc_x = _x; 
+    loc_y = _y;
+    timesCollected = count;
+    pickedUp = true;
+  }
+  
+  void drop(float _x, float _y) {
+    loc_x = _x; 
+    loc_y = _y;
+    pickedUp = false;
+  }
+  
   int x_offset = 0;
   int y_offset = 0;
   void display(){ //give block shape/color

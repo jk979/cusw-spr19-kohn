@@ -58,7 +58,10 @@ void chooseKabadiwala(int i) {
 void chooseMRF(int i) {
   randomMIndex = i; 
   mrf_loc = (PVector) collection_mrfcoords.get(randomMIndex);
+  
+  // Ira: These are NOT the coordinates that are compatible with agents ...
   mrf_loc = map.getScreenLocation(mrf_loc);
+  
   println("MRF successfully chosen");
 }
 

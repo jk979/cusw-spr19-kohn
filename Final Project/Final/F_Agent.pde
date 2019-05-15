@@ -77,13 +77,16 @@ class Agent {
     this.currentPath = pathArray.get(0); //gets the current path
     //path is all the waypoints in their current path waypoint set
     path = currentPath.waypoints;
-
+    
+    
+    
     pathLength = path.size();
-    if (random(-1, 1) <= 0 ) {
-      pathDirection = -1;
-    } else {
-      pathDirection = +1;
-    }
+    pathDirection = +1;
+    //if (random(-1, 1) <= 0 ) {
+    //  pathDirection = -1;
+    //} else {
+    //  pathDirection = +1;
+    //}
     float jitterX = random(-tolerance, tolerance);
     float jitterY = random(-tolerance, tolerance);
     location = new PVector(x + jitterX, y + jitterY);
