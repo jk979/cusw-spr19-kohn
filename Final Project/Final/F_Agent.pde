@@ -219,7 +219,7 @@ class Agent {
        }
        */
       }
-    pathIndex += pathDirection;
+    if(!stop) pathIndex += pathDirection;
     }
   }
 
@@ -449,7 +449,7 @@ class Agent2 {
     //
     float prox = sqrt( sq(location.x - waypoint.x) + sq(location.y - waypoint.y) );
     if (prox < 3 && path.size() > 1 ) {
-      if (pathIndex == pathLength) {
+      if (pathIndex == pathLength - 1) {
 
         // If back to the beginning, move on to the next path
           // increment path index, go to the next path
@@ -464,8 +464,8 @@ class Agent2 {
           }
         }
     //decrease pathIndex by 1, so it eventually goes to 0
-    pathIndex = pathIndex + 1; //pathIndex advances to the next waypoint
-    println("pathIndex is",pathIndex);
+    if(!stop) pathIndex++; //pathIndex advances to the next waypoint
+    //println("pathIndex is",pathIndex);
     }
   }
 
