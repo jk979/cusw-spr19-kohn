@@ -135,13 +135,12 @@ void initWholesalers(){
     //10. add agent to the path if the path has been parsed successfully
     println("paths size is ",paths.size());
     if (paths.get(0).waypoints.size() > 1) { 
-      float random_speed = 0.9;
       PVector loc = paths.get(0).waypoints.get(0); //get the full waypoints path
     //11. make an agent with the desired features, and the agent is associated with that bundle_path
     //populate wholesalerArmy with w collectors
 
       println("making new person");
-      Agent2 wperson = new Agent2(loc.x, loc.y, 2, random_speed, paths, w);
+      Agent2 wperson = new Agent2(loc.x, loc.y, 2, wholesaler_speed, paths, w);
       wperson.isAlive = true;
       wperson.id = w;
       wperson.type = "w";
@@ -179,8 +178,8 @@ void initMRFs(){
     }
     else if(m == 18){
     mrfwards.add("HW18-sector1");
-    mrfwards.add("HW18-sector2");
     mrfwards.add("HW18-sector3");
+    mrfwards.add("HW18-sector2");
     mrfwards.add("HW18-remainder");
     }
     else if(m == 36){
@@ -214,7 +213,6 @@ void initMRFs(){
     //10. add agent to the path if the path has been parsed successfully
     println("paths size is ",paths.size());
     if (paths.get(0).waypoints.size() > 1) { 
-      float random_speed = 1.3;
       PVector loc = paths.get(0).waypoints.get(0); //get the full waypoints path
       mrf_loc = new PVector(loc.x, loc.y);
       
@@ -222,7 +220,7 @@ void initMRFs(){
     //populate mrfArmy with mrf collectors
 
       println("making new person");
-      Agent2 mrfperson = new Agent2(loc.x, loc.y, 2, random_speed, paths, m);
+      Agent2 mrfperson = new Agent2(loc.x, loc.y, 2, mrf_speed, paths, m);
       mrfperson.isAlive = true;
       mrfperson.id = m;
       mrfperson.type = "m";
@@ -297,14 +295,13 @@ void initPopulation() {
   
     //10. add agent to the path if the path has been parsed successfully
     if (paths.get(0).waypoints.size() > 1) { 
-      float random_speed = 0.9;
       PVector loc = paths.get(0).waypoints.get(0); //get the full waypoints path
       
     //11. make an agent with the desired features, and the agent is associated with that bundle_path
     //populate kabadiwalaArmy with kabadiwalas
 
       println("making new person");
-      Agent person = new Agent(loc.x, loc.y, 2, random_speed, paths, kab);
+      Agent person = new Agent(loc.x, loc.y, 2, kabadiwala_speed, paths, kab);
       person.isAlive = true;
       person.id = kab;
       person.type = "k";
@@ -391,20 +388,22 @@ void checkAgentBehavior(){
       
       for(int e = 0; e<bundleArray.size(); e++){
         Bundle s = bundleArray.get(e);
-        Block a = s.plastic;
-        Block b = s.paper;
-        Block c = s.glass;
-        Block d = s.metal;
         
-        ArrayList<Block> iterate_blocks = new ArrayList<Block>();
-        iterate_blocks.add(a);
-        iterate_blocks.add(b);
-        iterate_blocks.add(c);
-        iterate_blocks.add(d);
+        Block f = s.plastic;
         
-        //f is a block to iterate on
-        for(int i = 0; i<iterate_blocks.size(); i++){
-          Block f = iterate_blocks.get(i);
+        if(pickingPlastic == true){
+           f = s.plastic;
+        }
+        else if(pickingPaper == true){
+          f = s.paper;
+        }
+        else if(pickingGlass == true){
+          f = s.glass;
+        }
+        else if(pickingMetal == true){
+          f = s.metal;
+        }
+      
         int euclideanAgentBundle = parseInt(dist(f.loc_x, f.loc_y,  t.location.x, t.location.y));
         int euclideanOriginBundle = parseInt(dist(f.loc_x, f.loc_y, mrf_loc.x, mrf_loc.y));
         println(euclideanAgentBundle, euclideanOriginBundle, f.loc_x, f.loc_y, mrf_loc.x, mrf_loc.y);
@@ -419,7 +418,6 @@ void checkAgentBehavior(){
           println("block was drobbed by mrf");
           f.drop(mrf_loc.x, mrf_loc.y);
           roundtripCompleted = true;  
-        }
         }
       } 
     }

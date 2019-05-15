@@ -188,6 +188,7 @@ void setup() {
 
   //initialize model and simulation
   println("initializing model...");
+  currentDay = day.get(0); //default to Monday
   tempModel();
 
   //draw the static GIS objects
@@ -282,10 +283,8 @@ void clearArrays(){
   wholesalerArmy.clear();
 }
 
-void keyPressed() {
-  if (key==ENTER || key==RETURN) {
-    
-    //don't need to redraw the map or re-parse
+void resetModel(){
+  //don't need to redraw the map or re-parse
     clearArrays();
     background(0);
     image(pg, 0, 0);
@@ -299,19 +298,17 @@ void keyPressed() {
     checkSaleBehavior();
 
     drawInfo();
+}
+void keyPressed() {
+  if (key==ENTER || key==RETURN) {
+    
+    currentDay = day.get(0); //default to Monday
+    resetModel();
   } 
   
   else if (key=='q') {
     square = !square;
   } 
-  
-  /*
-  else if (key==DELETE){
-    clearArrays();
-    background(0);
-    image(pg, 0, 0);
-  }
-  */
   
   else if (key=='z') {     //redraw the GIS objects to HW
     
@@ -423,23 +420,120 @@ void keyPressed() {
   }
 }
 
+boolean pickingPlastic = false;
+boolean pickingPaper = false;
+boolean pickingGlass = false;
+boolean pickingMetal = false;
+
+boolean wholesalerPlastic = false;
+boolean wholesalerPaper = false;
+boolean wholesalerGlass = false;
+boolean wholesalerMetal = false;
+
 void keyTyped() {
-  if (key == '1') {
-    currentDay = day.get(0);
-    //Monday
-    //activate model
-    tempModel();
+  if (key == '1') { //Monday
+    currentDay = day.get(0); //prints currentDay on screen
     
-  } else if (key == '2') {
+    //MRF schedule
+    pickingPlastic = true;
+    pickingPaper = true;
+    pickingGlass = true;
+    pickingMetal = true;
+    
+    //W schedule
+    wholesalerPlastic = true;
+    wholesalerPaper = true;
+    wholesalerGlass = true;
+    wholesalerMetal = true;
+    
+    //activate model
+    resetModel();
+    
+  } else if (key == '2') { //Tuesday
     currentDay = day.get(1);
-  } else if (key == '3') {
+    
+    //MRF schedule
+    pickingPlastic = false;
+    pickingPaper = true;
+    pickingGlass = false;
+    pickingMetal = false;
+    
+    //W schedule
+    wholesalerPlastic = false;
+    wholesalerPaper = false;
+    wholesalerGlass = false;
+    wholesalerMetal = false;
+    
+    resetModel();
+
+  } else if (key == '3') { //Wednesday
     currentDay = day.get(2);
-  } else if (key == '4') {
+    
+    //MRF schedule
+    pickingPlastic = false;
+    pickingPaper = true;
+    pickingGlass = false;
+    pickingMetal = false;
+    
+    //W schedule
+    wholesalerPlastic = false;
+    wholesalerPaper = false;
+    wholesalerGlass = false;
+    wholesalerMetal = false;
+    
+    resetModel();
+    
+  } else if (key == '4') { //Thursday
     currentDay = day.get(3);
-  } else if (key == '5') {
+    
+    //MRF schedule
+    pickingPlastic = true;
+    pickingPaper = true;
+    pickingGlass = true;
+    pickingMetal = true;
+    
+    //W schedule
+    wholesalerPlastic = true;
+    wholesalerPaper = true;
+    wholesalerGlass = true;
+    wholesalerMetal = true;
+    
+    resetModel();
+    
+  } else if (key == '5') { //Friday
     currentDay = day.get(4);
-  } else if (key == '6') {
+    
+    //MRF schedule
+    pickingPlastic = false;
+    pickingPaper = true;
+    pickingGlass = false;
+    pickingMetal = false;
+    
+    //W schedule
+    wholesalerPlastic = false;
+    wholesalerPaper = false;
+    wholesalerGlass = false;
+    wholesalerMetal = false;
+    
+    resetModel();
+    
+  } else if (key == '6') { //Saturday
     currentDay = day.get(5);
+    
+    //MRF schedule
+    pickingPlastic = true;
+    pickingPaper = true;
+    pickingGlass = true;
+    pickingMetal = false;
+    
+    //W schedule
+    wholesalerPlastic = false;
+    wholesalerPaper = true;
+    wholesalerGlass = true;
+    wholesalerMetal = false;
+    
+    resetModel();
+    
   } else if (key == '7') {
     currentDay = day.get(6);
   }
