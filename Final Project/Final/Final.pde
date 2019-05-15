@@ -60,7 +60,6 @@ void tempModel(){
   //1. initialize the Kabadiwala Army
   initPopulation(); 
   
-  //2. initialize the MRFs
 }
 
 
@@ -276,8 +275,18 @@ void addDays() {
   println(day);
 }
 
+void clearArrays(){
+  bundleArray.clear();
+  kabadiwalaArmy.clear();
+  mrfArmy.clear();
+  wholesalerArmy.clear();
+}
+
 void keyPressed() {
   if (key==ENTER || key==RETURN) {
+    
+    //don't need to redraw the map or re-parse
+    clearArrays();
     background(0);
     image(pg, 0, 0);
 
@@ -290,10 +299,23 @@ void keyPressed() {
     checkSaleBehavior();
 
     drawInfo();
-  } else if (key=='q') {
-    square = !square;
-  } else if (key=='z') {     //redraw the GIS objects to HW
+  } 
   
+  else if (key=='q') {
+    square = !square;
+  } 
+  
+  /*
+  else if (key==DELETE){
+    clearArrays();
+    background(0);
+    image(pg, 0, 0);
+  }
+  */
+  
+  else if (key=='z') {     //redraw the GIS objects to HW
+    
+    clearArrays();
     background(0);
     width_map = 450;
     scalarForMap_a = 19.0942; 
@@ -310,23 +332,19 @@ void keyPressed() {
     w_min = 1;
     w_max = 2;
     
-  loadHHtoKabadiwala();
-  parseHHtoKabadiwala();
-  parseHHPoints();
+    loadHHtoKabadiwala();
+    parseHHtoKabadiwala();
+    parseHHPoints();
 
-   
     pg.beginDraw();
     pg.background(0);
     drawGISObjects(); //make this into PGraphic
     pg.endDraw();
     println("ended drawing new gis objects");
-    drawShops();
-    drawBundles();
-    drawAgents();
-    tempModel();
     
   } else if (key=='x') {    //redraw the GIS objects to RN
-
+    
+    clearArrays();
     background(0);
     width_map = 1150;
     scalarForMap_a = 19.2729; 
@@ -343,19 +361,15 @@ void keyPressed() {
     w_min = 2;
     w_max = 3;
     
-    tempModel();
-   
     pg.beginDraw();
     pg.background(0);
     drawGISObjects(); //make this into PGraphic
     pg.endDraw();
     println("ended drawing new gis objects");
-    drawShops();
-    drawBundles();
-    drawAgents();
     
   } else if (key=='c') {    //redraw the GIS objects to N
-
+    
+    clearArrays();
     background(0);
     width_map = 600;
     height_map = height - 400;
@@ -372,17 +386,14 @@ void keyPressed() {
     m_max = 37;
     w_min = 0;
     w_max = 1;
-    
-    tempModel();
+
    
     pg.beginDraw();
     pg.background(0);
     drawGISObjects(); //make this into PGraphic
     pg.endDraw();
     println("ended drawing new gis objects");
-    drawShops();
-    drawBundles();
-    drawAgents();
+
   } else if (key=='v') {    //redraw the GIS objects to Mumbai
 
     background(0);
@@ -402,23 +413,23 @@ void keyPressed() {
     m_max = 39;
     w_min = 0;
     w_max = 3;
-    
-    tempModel();
    
     pg.beginDraw();
     pg.background(0);
     drawGISObjects(); //make this into PGraphic
     pg.endDraw();
     println("ended drawing new gis objects");
-    drawShops();
-    drawBundles();
-    drawAgents();
+
   }
 }
 
 void keyTyped() {
   if (key == '1') {
     currentDay = day.get(0);
+    //Monday
+    //activate model
+    tempModel();
+    
   } else if (key == '2') {
     currentDay = day.get(1);
   } else if (key == '3') {
