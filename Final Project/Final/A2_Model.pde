@@ -440,8 +440,7 @@ void checkAgentBehavior(){
      
        //1. when agent encounters bundle
        if(euclideanAgentBundle < 4 && euclideanOriginBundle > 4){ 
-         s.w = p.location.x; 
-         s.h = p.location.y;
+         s.carryAll(p.location.x, p.location.y);
          s.pickedUp = true;
          s.timesCollected = 1;
          soldToKabadiwala = true;
@@ -449,8 +448,7 @@ void checkAgentBehavior(){
    
        //2. bundle brought to kabadiwala, but still bundles to go 
        else if(euclideanOriginBundle <= 4 && p.stop == false){ 
-         s.w = kabadiwala_loc.x; 
-         s.h = kabadiwala_loc.y;
+         s.carryAll(kabadiwala_loc.x, kabadiwala_loc.y);
          s.pickedUp = false;     
          roundtripCompleted = true;  
          //roundtripKM = Math.round((hh_dist_MergedMap.get(s.id))*2*100.0/100.0); //for that s.id, total roundtrip distance

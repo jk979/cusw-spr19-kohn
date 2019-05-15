@@ -31,24 +31,30 @@ class Block {
     loc_y = y;
   }
   
-  void display(float x,float y){ //give block shape/color
+  int x_offset = 0;
+  int y_offset = 0;
+  void display(){ //give block shape/color
     if(type == "plastic"){
     fill(color(#FFFF00));
     }
     else if(type == "glass"){ 
       fill(color(#00FF00));
+      x_offset = 2;
     }
     else if(type == "metal"){
       fill(color(#FF0000)); 
+      y_offset = 2;
     }
     else if(type == "paper"){
       fill(color(#FFFFF0));
+      x_offset = 2;
+      y_offset = 2;
     }
     if(square==true){
-    rect(x,y,10,10);
+    rect(loc_x + x_offset, loc_y + y_offset, 10, 10);
     }
     else if(square==false){
-    ellipse(x,y,4,4);
+    ellipse(loc_x + x_offset, loc_y + y_offset, 4, 4);
     }
 }
 }
@@ -85,9 +91,9 @@ class Block {
      id = id;
      
      plastic = new Block("plastic", wt_plastic, w, h);
-     paper = new Block("paper", wt_paper, w+12, h);
-     glass = new Block("glass", wt_glass, w, h+12);
-     metal = new Block("metal", wt_metal, w+12, h+12);
+     paper = new Block("paper", wt_paper, w, h);
+     glass = new Block("glass", wt_glass, w, h);
+     metal = new Block("metal", wt_metal, w, h);
      
      //add all these to the materials inventory list
      ArrayList<Block> materials_inventory = new ArrayList<Block>();
@@ -101,15 +107,28 @@ class Block {
      
   }
   
+  void carryAll(float _x, float _y) {
+    w = _x;
+    h = _y;
+    plastic.loc_x = _x;
+    plastic.loc_y = _y;
+    paper.loc_x = _x;
+    paper.loc_y = _y;
+    glass.loc_x = _x;
+    glass.loc_y = _y;
+    metal.loc_x = _x;
+    metal.loc_y = _y;;
+  }
+  
   void display(){
     
     if(square == true){
     //draw all four blocks
     noStroke();
-    plastic.display(w,h);
-    paper.display(w+12,h);
-    glass.display(w,h+12);
-    metal.display(w+12,h+12);
+    plastic.display();
+    paper.display();
+    glass.display();
+    metal.display();
     
     //draw a border around the four blocks to show that they're bundled
     noFill();
@@ -121,10 +140,10 @@ class Block {
     else if(square == false){
     //draw all four blocks
     noStroke();
-    plastic.display(w,h);
-    paper.display(w+2,h);
-    glass.display(w,h+2);
-    metal.display(w+2,h+2);
+    plastic.display();
+    paper.display();
+    glass.display();
+    metal.display();
     
     //draw a border around the four blocks to show that they're bundled
     noFill();
