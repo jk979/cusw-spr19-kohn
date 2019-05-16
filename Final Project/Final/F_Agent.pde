@@ -241,7 +241,12 @@ class Agent {
     }
     smooth();
     noStroke();
-    render();
+    if(pacman){
+      render();
+    }
+    else{
+      ellipse(location.x,location.y,7,7);
+    }
   }
 
   void render() {
@@ -484,7 +489,12 @@ class Agent2 {
     }
     smooth();
     noStroke();
-    render();
+    if(pacman){
+      render();
+    }
+    else{
+      ellipse(location.x,location.y,7,7);
+    }
   }
 
   void render() {

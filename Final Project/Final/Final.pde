@@ -1,15 +1,21 @@
 //bundles and source must be linked
 //make arraylist of arraylist of arraylists
 
+boolean pacman;
+
 //make Bandra map
 MercatorMap map; 
 String whichBackground;
+
+int k_min, k_max, m_min, m_max, w_min, w_max;
+/*
 int k_min = 0;
 int k_max = 162;
 int m_min = 0;
 int m_max = 39;
 int w_min = 0;
 int w_max = 3;
+*/
 
 PImage background;
 PGraphics pg;
@@ -34,7 +40,10 @@ int j;
 
 //temporary array for number of bundles created
 ArrayList<Bundle> bundleArray = new ArrayList(); 
-//ArrayList<KabadiwalaAgent> kabadiwalaArray = new ArrayList(); 
+
+//make new graphArray which keeps track of the kabadiwala distances in the system; globally accessible
+ArrayList<Float> graphArray = new ArrayList<Float>();
+float totalTripDistanceForKabadiwala; //globally initialized but locally defined
 
 ArrayList<Agent> kabadiwalaArmy = new ArrayList();
 ArrayList<Agent2> mrfArmy = new ArrayList(); 
@@ -85,6 +94,7 @@ void setup() {
   pg = createGraphics(width, height);
   
   String whichStartingMap = "HW";
+  numKabadiwalas = k_max-k_min;
   
   if(whichStartingMap == "HW"){
 
@@ -97,7 +107,7 @@ void setup() {
       
     //set number of actors for HW
     k_min = 0; 
-    k_max = numKabadiwalas; //testing one at a time
+    k_max = 5; //testing one at a time
     m_min = 17;
     m_max = 19;
     w_min = 1;
@@ -281,10 +291,12 @@ void clearArrays(){
   kabadiwalaArmy.clear();
   mrfArmy.clear();
   wholesalerArmy.clear();
+  graphArray.clear();
 }
 
 void resetModel(){
   //don't need to redraw the map or re-parse
+
     clearArrays();
     background(0);
     image(pg, 0, 0);
@@ -296,7 +308,7 @@ void resetModel(){
     tempModel();
     checkAgentBehavior();
     checkSaleBehavior();
-
+    
     drawInfo();
 }
 void keyPressed() {
@@ -305,10 +317,14 @@ void keyPressed() {
     currentDay = day.get(0); //default to Monday
     resetModel();
   } 
-  
+ 
   else if (key=='q') {
     square = !square;
   } 
+  
+  else if (key=='e'){
+    pacman = !pacman;
+  }
   
   else if (key=='z') {     //redraw the GIS objects to HW
     
@@ -323,7 +339,7 @@ void keyPressed() {
     
     //set number of actors for HW
     k_min = 0; 
-    k_max = numKabadiwalas; //testing one at a time
+    k_max = 66; //testing one at a time
     m_min = 16;
     m_max = 18;
     w_min = 1;
@@ -418,6 +434,22 @@ void keyPressed() {
     println("ended drawing new gis objects");
 
   }
+  
+  else if (key=='a'){
+      println("incrementing up numKabadiwalas by 1 "+numKabadiwalas);
+        k_max = k_max + 1; 
+        numKabadiwalas = numKabadiwalas+=1;
+        resetModel();
+    }
+    
+  else if (key=='s'){
+      println("incrementing down numKabadiwalas by 1 "+numKabadiwalas);
+      if(numKabadiwalas!=0){
+        k_max = k_max - 1;
+        numKabadiwalas = numKabadiwalas-=1;
+        resetModel();
+      }
+    }
 }
 
 boolean pickingPlastic = false;

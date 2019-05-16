@@ -10,7 +10,7 @@ color colorRail = color(255,170,170);
 color colorStreet = color(105,105,105); //dark gray (64,70,77,100) //blue: (0,200,255,100)
 color colorWaterway = color(0,0,255); 
 color colorRailways = color(255,170,170);
-color mrf_fill = color(173,255,47); //MRF points (yellow)
+color mrf_fill = color(255,255,0); //MRF points (yellow)
 color k_fill = color(34, 200, 34); //Kabadiwala shops(green)
 color w_fill = color(0,200,255);
 color colorWardBounds = color(128,128,128);
@@ -24,7 +24,7 @@ void drawInfo(){
   //draw title box
   int bgColor = 230;
   noStroke();
-  fill(128,128,128);
+  fill(20,20,20);
   rect(520,20,700,120,10);
   //draw title text
   fill(255,255,255);
@@ -34,20 +34,32 @@ void drawInfo(){
   fill(240,240,240);
   textSize(12);
   text("Kabadiwalas are the informal recycling heroes of Mumbai, India. \nThey collect recyclable plastic, paper, glass, and metal from households and sell it up the value chain.",540,70);
-  //text("This map shows kabadiwalas between their shop (red) and the source of material (yellow). \n Bundle of Materials: red circle",540,110);
+  fill(255,255,255);
+  text("Kabadiwala ", 550,110);
+  fill(k_fill);
+  ellipse(540,105,7,7);
+  fill(255,255,255);
+  text("MRF Collector ", 550,120);
+  fill(mrf_fill);
+  ellipse(540,115,7,7);
+  fill(255,255,255);
+  text("Wholesaler Collector ", 550,130);
+  fill(w_fill);
+  ellipse(540,125,7,7);
+  fill(255,255,255);
   text("By Jacob Kohn", 1100,50);
   //draw input box
-  fill(128,128,128); 
+  fill(5,5,5); 
   rect(520, 150, 300, 500, 10);
   //draw input title
   textSize(16);
   rect(520,150,300,50,10);
   fill(139,0,0);
-  text("Inputs",600,180);
+  text("Inputs",650,180);
   fill(255,255,255);
   //draw input content
   textSize(12);
-  text("Kabadiwalas in System: "+numKabadiwalas,525,220);
+  text("Kabadiwalas in System: "+str(k_max-k_min),525,220);
   text("Bundles per Kabadiwala: "+numBundlesPerKabadiwala,525,240);
   //quantities
   text("---Quantities From Each Household---", 525,260);
@@ -95,7 +107,7 @@ void drawInfo(){
   text("Miscellaneous Items: "+ misc + " INR",525,580);
 
   //draw output box
-  fill(128,128,128); //, 0*baseAlpha);
+  fill(5,5,5); //, 0*baseAlpha);
   rect(920, 150, 300, 500, 10);
   //draw output title
   textSize(16);
@@ -107,11 +119,47 @@ void drawInfo(){
   textSize(12);
   text("Kabadiwala's Gross Profit: "+ (kabadiwala_offload_cost_paper - totalKPickupCost)+ " INR",925,220);
   text("Kabadiwala's Total Distance: "+ roundtripKM + " KM", 925, 240);
+
+  //text("Distance for Kabadiwala 1: "+graphArray.get(1), 925, 260);
+  //text("Distance for Kabadiwala 2: "+graphArray.get(2), 925, 280);
+  textSize(12);
+  fill(255,255,255);
+  text("Distance for Each Kabadiwala Displayed", 925,380);
+  //draw the graph
+  fill(k_fill);
+  stroke(k_fill);
+  
+  //each individual distance on a graph
+  int x_offset = 0; //offset for graphs
+  for(int e = 0; e<k_max-k_min; e++){
+    if(e>0){
+      rect(925+x_offset,400,5,-1*(graphArray.get(e)-graphArray.get(e-1)));
+      x_offset+=5;
+    }
+    else if(e==0){
+      rect(925+x_offset,400,5,-1*(graphArray.get(e)));
+      x_offset+=5;
+    }
+  }
+  
+  fill(255,255,255);
+  text("Distance for Each Kabadiwala Displayed", 925,480);
+  //draw the graph
+  fill(k_fill);
+  stroke(k_fill);
+  int x_sum_offset = 0; //offset for graphs
+  //sum of distances on a graph
+  for(int e = 0; e<k_max-k_min; e++){
+      rect(925+x_sum_offset,700,5,-1*(graphArray.get(e)));
+      x_sum_offset+=5;
+  }
+  
+  
   //text("Kabadiwala's Roundtrip Average: " + roundtripKM
-  text("---------Bundle Status----------------", 925,260);
+  //text("---------Bundle Status----------------", 925,260);
   //text("bundle times collected: "+b.timesCollected,925,280);
   //text("bundle is picked up? "+b.pickedUp,925,300);
-  text("---------Wholesalers----------------", 925,320);
+  //text("---------Wholesalers----------------", 925,320);
   
   text("current day: "+currentDay, 1100, 70);
 

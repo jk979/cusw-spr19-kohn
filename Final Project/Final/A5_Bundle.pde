@@ -120,10 +120,16 @@ class Block {
      
   }
   
+  void dropLevel2(float _x, float _y) {
+    glass.loc_x = _x;
+    glass.loc_y = _y;
+    pickedUp = false;
+  }
+  
   void carryAll(float _x, float _y) {
-    w = _x;
+    w = _x; //carry the ring
     h = _y;
-    plastic.loc_x = _x;
+    plastic.loc_x = _x; //carry the plastic
     plastic.loc_y = _y;
     paper.loc_x = _x;
     paper.loc_y = _y;
@@ -131,6 +137,30 @@ class Block {
     glass.loc_y = _y;
     metal.loc_x = _x;
     metal.loc_y = _y;;
+  }
+  
+  void carryLevel2(float _x, float _y){
+      glass.loc_x = _x;
+      glass.loc_y = _y;
+      
+    if(pickingPaper == true){
+      w = _x;
+      h = _y; 
+      paper.loc_x = _x;
+      paper.loc_y = _y;
+    }
+    if(pickingGlass == true){
+      w = _x;
+      h = _y; 
+      glass.loc_x = _x;
+      glass.loc_y = _y;
+    }
+    if(pickingMetal == true){
+      w = _x;
+      h = _y; 
+      metal.loc_x = _x;
+      metal.loc_y = _y;
+    }
   }
   
   void display(){

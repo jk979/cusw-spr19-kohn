@@ -12,8 +12,6 @@ boolean pathNotFound; //pathNotFound is a global variable
 import java.util.*;
 float laps; 
 
-float totalTripDistanceForKabadiwala;
-
 //  Objects to define agents that navigate our environment
 //ArrayList<Agent> people = new ArrayList<Agent>();
 
@@ -27,68 +25,6 @@ void waysNetwork(ArrayList<Way> w) {
 }
 
 //draw a shortest path between the kabadiwala and the source; Path defined by two coordinates "origin" and "destination"
-
-/*
-void kPath() {
-  /*  An pathfinder object used to derive the shortest path. */
-  //finder = new Pathfinder(network);
-  //println("initialized finder");
-
-  // Searches for valid paths only
-  //pathNotFound = true;    
-  
-  /*
-  while(pathNotFound) {
-    //identify the path between kabadiwala and source
-    Path a = new Path(kabadiwala_loc, source);
-     if(HavD<=3500){ //solve the path only if HavD<=3km
-        a.solve(finder);
-        //println(a.waypoints.size());
-        //a.straightPath();
-        if(a.waypoints.size() > 1 && a.waypoints.get(a.waypoints.size()-1) == source) {
-          println("found valid path!");
-          pathNotFound = false;
-          paths.add(a);
-        }
-        else{
-          //are you resetting your source, etc? 
-         println("No valid path found, resetting source" , kabadiwala_loc, source);
-         //chooseSource();
-        }
-     }
-  } //end while notFound
-  println("paths: ", paths.size());
-}
-*/ //end KPaths 
-
-/*
- void makeCompletePathFromKabadiwala(){
-   //initialize path
-   paths = new ArrayList<Path>();
-   
-   println("now choosing source...");
-   //chooseSource(); //returns source
-   
-   //initialize kPath
-   //kPath();
-   println("drawing path now");
-   //within kPath, use kabadiwala and source
-   //choose source
-   //if no valid path, reset the source and repeat kPath
-   
-   if(pathNotFound == false){
-     //if valid path, make sourceLocation the chooseSource()
-     PVector sourceLocation = new PVector();
-     sourceLocation = source;
-     //sourceLocation = temp; //returns source
-     println("Source Location: ",sourceLocation);
-     
-     //initialize bundle at sourceLocation
-     
- }
- }
- */
-
 
 //raise the wholesaler army
 void initWholesalers(){
@@ -247,11 +183,18 @@ void initPopulation() {
   
   //1. make an arraylist of people 
   kabadiwalaArmy = new ArrayList<Agent>();
-  
+  //ArrayList<Float> graphArray = new ArrayList<Float>(); //holds all the points in the graphArray of all kabadiwalas; access through kabadiwala index
+  println("size of kabadiwalaArmy before filling is",kabadiwalaArmy.size());
+  println("size of graphArray befoe filling is",graphArray.size());
+
   //2. add kabadiwalas to the army along with their bundles and bundle paths
   for(int kab = k_min; kab < k_max; kab++){
+    println("looping through kabadiwalas, going to fill graphArray");
     chooseKabadiwala(kab);
     ArrayList<Path> paths = new ArrayList<Path>();
+
+    //make a graphArray to track distance
+    totalTripDistanceForKabadiwala = 0; //initialize kabadiwala's total trip distance as 0
 
     //2. for each bundle...
     for (int i=0; i<numBundlesPerKabadiwala; i++) {
@@ -285,13 +228,17 @@ void initPopulation() {
       paths.add(c); //added the single bundle path to this bundle
       
     } //repeat for each path
+   
     
-    //9. once paths has been populated with all the paths for the Agent...
-    totalTripDistanceForKabadiwala = 0;
+    //fill in his total trip distance by summing the distance to all his bundle arrays
     for(int e = 0; e<bundleArray.size(); e++){
-      //println("total trip distance: ",totalTripDistanceForKabadiwala);
       totalTripDistanceForKabadiwala += hh_dist_MergedMap.get(bundleArray.get(e).id);
     }
+    
+    //when this is all added, it's the total trip distance for that kabadiwala for all bundles
+    //[1:20, 2:40, 3:30]
+    graphArray.add(totalTripDistanceForKabadiwala);
+    println("the distance for kabadiwala "+str(kab)+" is ",graphArray.get(kab));
   
     //10. add agent to the path if the path has been parsed successfully
     if (paths.get(0).waypoints.size() > 1) { 
@@ -309,7 +256,9 @@ void initPopulation() {
       kabadiwalaArmy.add(person);
     }
       println("size of kabadiwala army is",kabadiwalaArmy.size());
-
+      println("graph array looks like ",graphArray);
+      println("size of graph array is ",graphArray.size());
+      
       //raise the army!
       for(int personLabel = 0; personLabel<kabadiwalaArmy.size(); personLabel++){
         (kabadiwalaArmy.get(personLabel)).pathToDraw = (kabadiwalaArmy.get(personLabel)).pathArray.get(0);
@@ -389,34 +338,58 @@ void checkAgentBehavior(){
       for(int e = 0; e<bundleArray.size(); e++){
         Bundle s = bundleArray.get(e);
         
-        Block f = s.plastic;
+        //determine the size of the bundle to pick up
+        //add them to the group of things to pick up if the picking boolean is true
         
-        if(pickingPlastic == true){
-           f = s.plastic;
-        }
-        else if(pickingPaper == true){
-          f = s.paper;
-        }
-        else if(pickingGlass == true){
-          f = s.glass;
-        }
-        else if(pickingMetal == true){
-          f = s.metal;
-        }
-      
-        int euclideanAgentBundle = parseInt(dist(f.loc_x, f.loc_y,  t.location.x, t.location.y));
-        int euclideanOriginBundle = parseInt(dist(f.loc_x, f.loc_y, mrf_loc.x, mrf_loc.y));
-        println(euclideanAgentBundle, euclideanOriginBundle, f.loc_x, f.loc_y, mrf_loc.x, mrf_loc.y);
+        Block a = s.plastic;
+        Block b = s.paper;
+        Block c = s.glass;
+        Block d = s.metal;
         
+        //intersect with the bundle and pick up its materials
+        
+        //int euclideanAgentBundle = parseInt(dist(s.w, s.h, t.location.x, t.location.y));
+        //int euclideanOriginBundle = parseInt(dist(s.w, s.h, mrf_loc.x, mrf_loc.y));
+
+        
+        int euclideanAgentBundle_plastic = parseInt(dist(a.loc_x, a.loc_y,  t.location.x, t.location.y));    
+        int euclideanOriginBundle_plastic = parseInt(dist(a.loc_x, a.loc_y, mrf_loc.x, mrf_loc.y));
+        
+        int euclideanAgentBundle_paper = parseInt(dist(b.loc_x, b.loc_y,  t.location.x, t.location.y));
+        int euclideanOriginBundle_paper = parseInt(dist(b.loc_x, b.loc_y, mrf_loc.x, mrf_loc.y));
+        
+        int euclideanAgentBundle_glass = parseInt(dist(c.loc_x, c.loc_y,  t.location.x, t.location.y));
+        int euclideanOriginBundle_glass = parseInt(dist(c.loc_x, c.loc_y, mrf_loc.x, mrf_loc.y));
+        
+        int euclideanAgentBundle_metal = parseInt(dist(d.loc_x, d.loc_y,  t.location.x, t.location.y));
+        int euclideanOriginBundle_metal = parseInt(dist(d.loc_x, d.loc_y, mrf_loc.x, mrf_loc.y));
+        
+        ////////////PRINTING DISTANCE BETWEEN BUNDLE AND MRF LOC///////////////
+        //println(euclideanAgentBundle, euclideanOriginBundle, d.loc_x, d.loc_y, mrf_loc.x, mrf_loc.y);
+        println(d.loc_x, d.loc_y);
         //1. when agent encounters bundle
-        if(euclideanAgentBundle < 4 && euclideanOriginBundle > 4){ 
-          f.carry(t.location.x, t.location.y, 2);
+        if(euclideanAgentBundle_metal < 4 && euclideanOriginBundle_metal > 4){ 
+          d.carry(t.location.x, t.location.y,2);   
         }
+        /*
+        if(euclideanAgentBundle_paper < 4 && euclideanOriginBundle_paper > 4 && pickingPaper == true){ 
+          b.carry(t.location.x, t.location.y,2);   
+          //s.pickedUp = true;
+        }
+        if(euclideanAgentBundle_glass < 4 && euclideanOriginBundle_glass > 4 && pickingGlass == true){ 
+          c.carry(t.location.x, t.location.y,2);   
+          //s.pickedUp = true;
+        }
+        if(euclideanAgentBundle_metal < 4 && euclideanOriginBundle_metal > 4 && pickingMetal == true){ 
+          d.carry(t.location.x, t.location.y,2);   
+          //s.pickedUp = true;
+        }
+        */
    
         //2. bundle brought to mrf, but still bundles to go 
-        else if(euclideanOriginBundle <= 4 && t.stop == false){ 
-          println("block was drobbed by mrf");
-          f.drop(mrf_loc.x, mrf_loc.y);
+        else if(euclideanOriginBundle_metal <= 4 && t.stop == false){ 
+          //println("block was drobbed by mrf");
+          d.drop(mrf_loc.x, mrf_loc.y);
           roundtripCompleted = true;  
         }
       } 

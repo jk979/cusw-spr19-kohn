@@ -6,15 +6,15 @@
  * Modified by Nina Lutz 
  */
 
-    
+
 public class MercatorMap {
-  
+
   public static final float DEFAULT_TOP_LATITUDE = 80;
   public static final float DEFAULT_BOTTOM_LATITUDE = -80;
   public static final float DEFAULT_LEFT_LONGITUDE = -180;
   public static final float DEFAULT_RIGHT_LONGITUDE = 180;
   public static final float DEFAULT_ROTATION = 0;
-  
+
   /** Horizontal dimension of this map, in pixels. */
   protected float mapScreenWidth;
   /** Vertical dimension of this map, in pixels. */
@@ -33,9 +33,9 @@ public class MercatorMap {
   private float bottomLatitudeRelative;
   private float leftLongitudeRadians;
   private float rightLongitudeRadians;
-  
+
   private float rotation;
-  
+
   // Dimensions for larger or equal-size canvas, perpendicular to north, that bounds and intersects 4 corners of original 
   private float lg_width;
   private float lg_height;
@@ -43,7 +43,7 @@ public class MercatorMap {
   public MercatorMap(float mapScreenWidth, float mapScreenHeight) {
     this(mapScreenWidth, mapScreenHeight, DEFAULT_TOP_LATITUDE, DEFAULT_BOTTOM_LATITUDE, DEFAULT_LEFT_LONGITUDE, DEFAULT_RIGHT_LONGITUDE, DEFAULT_ROTATION);
   }
-  
+
   /**
    * Creates a new MercatorMap with dimensions and bounding box to convert between geo-locations and screen coordinates.
    *
@@ -66,9 +66,9 @@ public class MercatorMap {
     this.bottomLatitudeRelative = getScreenYRelative(bottomLatitude);
     this.leftLongitudeRadians = getRadians(leftLongitude);
     this.rightLongitudeRadians = getRadians(rightLongitude);
-    
+
     this.rotation = rotation;
-    
+
     lg_width  = mapScreenHeight * sin( abs(getRadians(rotation)) ) + mapScreenWidth * cos( abs(getRadians(rotation)) );
     lg_height = mapScreenWidth * sin( abs(getRadians(rotation)) ) + mapScreenHeight * cos( abs(getRadians(rotation)) );
   }
@@ -82,14 +82,14 @@ public class MercatorMap {
   public PVector getScreenLocation(PVector geoLocation) {
     float latitudeInDegrees = geoLocation.x;
     float longitudeInDegrees = geoLocation.y;
-    
+
     PVector loc = new PVector(getScreenX(longitudeInDegrees), getScreenY(latitudeInDegrees));
     loc.x -= lg_width/2;
     loc.y -= lg_height/2;
     loc.rotate(getRadians(rotation));
     loc.x += mapScreenWidth/2;
     loc.y += mapScreenHeight/2;
-    
+
     return loc;
   }
 
@@ -100,11 +100,11 @@ public class MercatorMap {
   private float getScreenY(float latitudeInDegrees) {
     return lg_height * (getScreenYRelative(latitudeInDegrees) - topLatitudeRelative) / (bottomLatitudeRelative - topLatitudeRelative);
   }
-  
+
   private float getRadians(float deg) {
     return deg * PI / 180;
   }
-  
+
   private float getDegrees(float rad) {
     return rad * 180 / PI;
   }
@@ -113,9 +113,9 @@ public class MercatorMap {
     float longitudeInRadians = getRadians(longitudeInDegrees);
     return lg_width * (longitudeInRadians - leftLongitudeRadians) / (rightLongitudeRadians - leftLongitudeRadians);
   }
-  
+
   public PVector getGeo(PVector loc) {
-    
+
     PVector screen = new PVector(loc.x, loc.y);
     screen.x -= mapScreenWidth/2;
     screen.y -= mapScreenHeight/2;
@@ -123,21 +123,19 @@ public class MercatorMap {
     screen.x += lg_width/2;
     screen.y += lg_height/2;
     return new PVector(getLatitude(screen.y), getLongitude(screen.x));
-    
-    
   }
-  
+
   private float getLatitude(float screenY) {
     //return topLatitude + (360f / PI) * (atan(exp(getLatitudeRelative(screenY))) - PI / 4);
     return topLatitude + (bottomLatitude - topLatitude) * screenY / lg_height;
   }
-  
+
   private float getLongitude(float screenX) {
     return leftLongitude + (rightLongitude - leftLongitude) * screenX / lg_width;
   }
 
-//additional utilities by Anisha Nakagawa, modified by Nina Lutz
-//Returns distance in meters 
+  //additional utilities by Anisha Nakagawa, modified by Nina Lutz
+  //Returns distance in meters 
   public float Haversine(PVector p1, PVector p2)
   {
     int R = 6371000; // meters
@@ -150,9 +148,9 @@ public class MercatorMap {
     float c = 2 * atan2(sqrt(a), sqrt(1-a));
 
     float d = R * c;
-    return d;    
+    return d;
   }
-  
+
   // Find an intermediate point at a given fraction between two points
   // Smaller fractions are closer to p1
   public PVector intermediate(PVector p1, PVector p2, float fraction)
@@ -164,23 +162,22 @@ public class MercatorMap {
     float phi2 = radians(p2.x); // convert to radians
     float lambda1 = radians(p1.y); // convert to radians
     float lambda2 = radians(p2.y); // convert to radians
-    
+
     float a = sin((1-fraction)*angularDist)/sin(angularDist);
     float b = sin(fraction*angularDist)/sin(angularDist);
     float x = (a*cos(phi1)*cos(lambda1)) + (b*cos(phi2)*cos(lambda2));
     float y = (a*cos(phi1)*sin(lambda1)) + (b*cos(phi2)*sin(lambda2));
     float z = (a*sin(phi1)) + (b*sin(phi2));
-    
+
     float phiNew = atan2(z, sqrt(x*x + y*y));
-    float lambdaNew = atan2(y,x);
-    
+    float lambdaNew = atan2(y, x);
+
     float xNew = degrees(phiNew);
     float yNew = degrees(lambdaNew);
-    
+
     return new PVector(xNew, yNew);
-    
   }
-  
+
   // Find a point a distance (in meters away) in the direction given by the bearing
   // from the point p1
   public  PVector endpoint(PVector p1, float distance, float bearing)
@@ -190,17 +187,16 @@ public class MercatorMap {
     float angularDist = distance/R;
     float phi1 = radians(p1.x); // convert to radians
     float lambda1 = radians(p1.y); // convert to radians
-    
+
     bearing = radians(bearing);
-    
+
     float phi2 = asin(sin(phi1)*cos(angularDist) + cos(phi1)*sin(angularDist)*cos(bearing));
     float lambda2 = lambda1 + atan2(sin(bearing)*sin(angularDist)*cos(phi1), cos(angularDist) - sin(phi1)*sin(phi2));
-  
-    
+
+
     float xNew = degrees(phi2);
     float yNew = degrees(lambda2);
-    
+
     return new PVector(xNew, yNew);
   }
-  
 }
