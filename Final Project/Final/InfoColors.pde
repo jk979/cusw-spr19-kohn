@@ -24,7 +24,7 @@ void drawInfo(){
   //draw title box
   int bgColor = 230;
   noStroke();
-  fill(20,20,20);
+  fill(105,105,105);
   rect(520,20,700,120,10);
   //draw title text
   fill(255,255,255);
@@ -49,12 +49,13 @@ void drawInfo(){
   fill(255,255,255);
   text("By Jacob Kohn", 1100,50);
   //draw input box
-  fill(5,5,5); 
-  rect(520, 150, 300, 500, 10);
+  stroke(105,105,105);
+  fill(105,105,105); 
+  rect(520, 150, 300, 550, 10);
   //draw input title
   textSize(16);
   rect(520,150,300,50,10);
-  fill(139,0,0);
+  fill(255,69,0);
   text("Inputs",650,180);
   fill(255,255,255);
   //draw input content
@@ -107,12 +108,13 @@ void drawInfo(){
   text("Miscellaneous Items: "+ misc + " INR",525,580);
 
   //draw output box
-  fill(5,5,5); //, 0*baseAlpha);
-  rect(920, 150, 300, 500, 10);
+  stroke(105,105,105);
+  fill(105,105,105); //, 0*baseAlpha);
+  rect(920, 150, 300, 550, 10);
   //draw output title
   textSize(16);
   rect(920,150,300,50,10);
-  fill(0,100,0);
+  fill(50, 205, 50);
   text("Outputs",1040,180);
   //draw output content
   fill(255,255,255);
@@ -124,7 +126,7 @@ void drawInfo(){
   //text("Distance for Kabadiwala 2: "+graphArray.get(2), 925, 280);
   textSize(12);
   fill(255,255,255);
-  text("Distance for Each Kabadiwala Displayed", 925,380);
+  text("Distance for Each Kabadiwala Displayed", 925,260);
   //draw the graph
   fill(k_fill);
   stroke(k_fill);
@@ -133,26 +135,46 @@ void drawInfo(){
   int x_offset = 0; //offset for graphs
   for(int e = 0; e<k_max-k_min; e++){
     if(e>0){
-      rect(925+x_offset,400,5,-1*(graphArray.get(e)-graphArray.get(e-1)));
+      rect(925+x_offset,280,5,-5*(graphArray.get(e)-graphArray.get(e-1))); //changed from -1 to make it easier to see
       x_offset+=5;
     }
     else if(e==0){
-      rect(925+x_offset,400,5,-1*(graphArray.get(e)));
+      rect(925+x_offset,280,5,-5*(graphArray.get(e)));
       x_offset+=5;
     }
   }
   
   fill(255,255,255);
-  text("Distance for Each Kabadiwala Displayed", 925,480);
+  text("Distance for Each Kabadiwala Displayed", 925,340);
   //draw the graph
   fill(k_fill);
   stroke(k_fill);
   int x_sum_offset = 0; //offset for graphs
   //sum of distances on a graph
   for(int e = 0; e<k_max-k_min; e++){
-      rect(925+x_sum_offset,700,5,-1*(graphArray.get(e)));
+      rect(925+x_sum_offset,380,5,-1*(graphArray.get(e)));
       x_sum_offset+=5;
   }
+  
+  int ctrl = 400;
+  fill(255,255,255);
+  text("CONTROLS", 925, ctrl);
+  text("a: Decrease Kabadiwala Numbers", 925, ctrl+20);
+  text("s: Increase Kabadiwala Numbers", 925, ctrl+40);
+  text("e: Toggle Agent Rendering", 925, ctrl+60);
+  text("ENTER/RETURN: Reset Simulation", 925, ctrl+80);
+  text("1-6: Display Activity for Weekdays ",925,ctrl+100);
+  text("Monday through Saturday", 925, ctrl+120);
+  text("-- ZOOM --", 925, ctrl+140);
+  text("z: Zoom to Ward H-W", 925, ctrl+160);
+  text("x: Zoom to Ward R-N", 925, ctrl+180);
+  text("c: Zoom to Ward N", 925, ctrl+200);
+  text("v: View All of Mumbai", 925, ctrl+220);
+  text("-- ACTIVATE --", 925, ctrl+240);
+  text("m: Activate MRFs", 925, ctrl+260);
+  text("w: Activate Wholesalers", 925, ctrl+280);
+  
+  
   
   
   //text("Kabadiwala's Roundtrip Average: " + roundtripKM

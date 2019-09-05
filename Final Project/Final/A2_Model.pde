@@ -38,6 +38,7 @@ void initWholesalers(){
     
     //get list of possible wards
     ArrayList<String> w_wards = new ArrayList<String>();
+    if(w == 1){
     w_wards.add("HW-sector1");
     w_wards.add("HW-sector2");
     w_wards.add("HW-sector3");
@@ -45,18 +46,21 @@ void initWholesalers(){
     w_wards.add("HW-sector5");
     w_wards.add("HW-sector6");
     w_wards.add("HW-remainder");
-    
+    }
+    else if(w == 0){
     w_wards.add("N-sector1");
     w_wards.add("N-sector2");
     w_wards.add("N-sector3");
     w_wards.add("N-sector4");
     w_wards.add("N-remainder");
-    
+    }
+    else if(w == 2){
     w_wards.add("RN-sector1");
     w_wards.add("RN-sector2");
     w_wards.add("RN-sector3");
     w_wards.add("RN-sector4");
     w_wards.add("RN-sector5");
+    }
     
     //for each path...
     for(int i=0; i<w_wards.size(); i++){

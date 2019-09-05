@@ -339,7 +339,7 @@ void keyPressed() {
     
     //set number of actors for HW
     k_min = 0; 
-    k_max = 66; //testing one at a time
+    k_max = 12; //testing one at a time for HW max is 66
     m_min = 16;
     m_max = 18;
     w_min = 1;
@@ -368,7 +368,7 @@ void keyPressed() {
     
     //set number of actors for RN
     k_min = 113;
-    k_max = 162;
+    k_max = 118; //could be 162
     m_min = 29;
     m_max = 31;
     w_min = 2;
@@ -394,7 +394,7 @@ void keyPressed() {
     
     //set number of actors for N
     k_min = 67; 
-    k_max = 112;
+    k_max = 72; //could be 112
     m_min = 36;
     m_max = 37;
     w_min = 0;
@@ -421,7 +421,7 @@ void keyPressed() {
     
     //set number of actors for N
     k_min = 0; 
-    k_max = 162;
+    k_max = 10; //could be 162
     m_min = 0;
     m_max = 39;
     w_min = 0;
